@@ -4,8 +4,8 @@ import { Github, Linkedin, Mail, Send, MapPin, Phone } from 'lucide-react';
 import { toast } from 'sonner';
 
 const socialLinks = [
-  { name: 'GitHub', icon: <Github className="w-6 h-6" />, href: 'https://github.com', color: 'hover:text-foreground' },
-  { name: 'LinkedIn', icon: <Linkedin className="w-6 h-6" />, href: 'https://linkedin.com', color: 'hover:text-blue-400' },
+  { name: 'GitHub', icon: <Github className="w-6 h-6" />, href: 'https://github.com/vjain5375', color: 'hover:text-foreground' },
+  { name: 'LinkedIn', icon: <Linkedin className="w-6 h-6" />, href: 'https://www.linkedin.com/in/vansh-jain-8b3704273/', color: 'hover:text-blue-400' },
   { name: 'Email', icon: <Mail className="w-6 h-6" />, href: 'mailto:vjain5375@gmail.com', color: 'hover:text-primary' },
 ];
 
