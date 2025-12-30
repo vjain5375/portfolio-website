@@ -102,7 +102,7 @@ export const ContactSection = () => {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground/70">Location</p>
-                  <p className="text-foreground">San Francisco, CA</p>
+                  <p className="text-foreground">Bathinda, Punjab</p>
                 </div>
               </div>
 
@@ -122,7 +122,7 @@ export const ContactSection = () => {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground/70">Phone</p>
-                  <p className="text-foreground">+1 (555) 123-4567</p>
+                  <p className="text-foreground">+91 6280436730</p>
                 </div>
               </div>
             </div>
