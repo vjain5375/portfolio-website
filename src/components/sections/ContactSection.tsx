@@ -40,10 +40,13 @@ export const ContactSection = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Create mailto link with form data
+    const subject = encodeURIComponent(`Portfolio Contact from ${formData.name}`);
+    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
     
-    toast.success('Message sent successfully! I\'ll get back to you soon.');
+    window.open(`mailto:vjain5375@gmail.com?subject=${subject}&body=${body}`, '_blank');
+    
+    toast.success('Opening your email client to send the message!');
     setFormData({ name: '', email: '', message: '' });
     setIsSubmitting(false);
   };
