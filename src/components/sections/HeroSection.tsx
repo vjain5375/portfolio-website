@@ -48,7 +48,7 @@ export const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="text-xl md:text-2xl text-muted-foreground font-light mb-4 max-w-2xl mx-auto"
         >
-          Hi, I'm <span className="text-primary font-medium">Alex Chen</span>
+          Hi, I'm <span className="text-primary font-medium">Vansh Jain</span>
         </motion.p>
 
         <motion.p
