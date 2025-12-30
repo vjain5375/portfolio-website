@@ -170,10 +170,14 @@ export const AboutSection = () => {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: 0.9 }}
             >
-              <button className="group relative inline-flex items-center gap-3 px-8 py-4 font-display font-semibold text-primary-foreground bg-gradient-to-r from-primary to-accent rounded-lg btn-glow transition-all duration-300 hover:scale-105">
+              <a
+                href="/Vansh_Jain_Resume.pdf"
+                download="Vansh_Jain_Resume.pdf"
+                className="group relative inline-flex items-center gap-3 px-8 py-4 font-display font-semibold text-primary-foreground bg-gradient-to-r from-primary to-accent rounded-lg btn-glow transition-all duration-300 hover:scale-105"
+              >
                 <Download className="w-5 h-5 transition-transform group-hover:-translate-y-1" />
                 <span>Download Resume</span>
-              </button>
+              </a>
             </motion.div>
           </motion.div>
         </div>
