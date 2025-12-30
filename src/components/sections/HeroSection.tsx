@@ -27,7 +27,7 @@ export const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <span className="inline-block px-4 py-2 mb-6 text-sm font-mono text-primary border border-primary/30 rounded-full glass">
-            B.Tech Engineering Student
+            B.Tech CSE Student
           </span>
         </motion.div>
 
@@ -57,7 +57,7 @@ export const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.7 }}
           className="text-lg text-muted-foreground/80 mb-12 max-w-xl mx-auto"
         >
-          Passionate about robotics, AI, and building innovative solutions that push the boundaries of technology.
+          Passionate about web development, AI, and building innovative software solutions that push the boundaries of technology.
         </motion.p>
 
         <motion.div
