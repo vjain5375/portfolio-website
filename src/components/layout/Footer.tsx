@@ -13,7 +13,7 @@ export const Footer = () => {
             <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-r from-primary to-accent">
               <Terminal className="w-4 h-4 text-primary-foreground" />
             </div>
-            <span className="font-display font-bold text-foreground">
+            <span className="font-display font-bold text-foreground">Vansh Jain
               Alex Chen<span className="text-primary">.</span>
             </span>
           </div>
@@ -39,7 +39,7 @@ export const Footer = () => {
               <Linkedin className="w-5 h-5" />
             </motion.a>
             <motion.a
-              href="mailto:alex@example.com"
+              href="mailto:vjain5375@gmail.com"
               whileHover={{ scale: 1.1, y: -2 }}
               className="p-2 text-muted-foreground hover:text-primary transition-colors"
             >
@@ -51,7 +51,7 @@ export const Footer = () => {
           <p className="text-sm text-muted-foreground flex items-center gap-1">
             <span>© {currentYear} Made with</span>
             <Heart className="w-4 h-4 text-destructive fill-destructive" />
-            <span>by Alex Chen</span>
+            <span>by Vansh Jain</span>
           </p>
         </div>
       </div>

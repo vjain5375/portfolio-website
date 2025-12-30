@@ -4,7 +4,7 @@ import { Download, Code, Database, Cpu, Layers } from 'lucide-react';
 
 const terminalLines = [
   { type: 'command', content: '$ whoami' },
-  { type: 'output', content: 'alex_chen' },
+  { type: 'output', content: 'vansh_jain' },
   { type: 'command', content: '$ cat education.txt' },
   { type: 'output', content: 'B.Tech in Electronics Engineering' },
   { type: 'output', content: 'Expected Graduation: 2025' },

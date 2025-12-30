@@ -39,7 +39,7 @@ export const Navbar = () => {
               <Terminal className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="font-display font-bold text-lg text-foreground group-hover:text-primary transition-colors">
-              AC<span className="text-primary">.</span>
+              VJ<span className="text-primary">.</span>
             </span>
           </a>
 

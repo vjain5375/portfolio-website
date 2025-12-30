@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 const socialLinks = [
   { name: 'GitHub', icon: <Github className="w-6 h-6" />, href: 'https://github.com', color: 'hover:text-foreground' },
   { name: 'LinkedIn', icon: <Linkedin className="w-6 h-6" />, href: 'https://linkedin.com', color: 'hover:text-blue-400' },
-  { name: 'Email', icon: <Mail className="w-6 h-6" />, href: 'mailto:alex@example.com', color: 'hover:text-primary' },
+  { name: 'Email', icon: <Mail className="w-6 h-6" />, href: 'mailto:vjain5375@gmail.com', color: 'hover:text-primary' },
 ];
 
 const FloatingSocialIcon = ({ link, index }: { link: typeof socialLinks[0]; index: number }) => {
@@ -112,7 +112,7 @@ export const ContactSection = () => {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground/70">Email</p>
-                  <p className="text-foreground">alex@example.com</p>
+                  <p className="text-foreground">vjain5375@gmail.com</p>
                 </div>
               </div>
 
