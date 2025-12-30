@@ -95,6 +95,8 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
           {project.github && (
             <a
               href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
             >
               <Github className="w-4 h-4" />
@@ -104,6 +106,8 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
           {project.link && (
             <a
               href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
             >
               <ExternalLink className="w-4 h-4" />
