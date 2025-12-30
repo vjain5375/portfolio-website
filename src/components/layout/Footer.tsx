@@ -13,8 +13,8 @@ export const Footer = () => {
             <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-r from-primary to-accent">
               <Terminal className="w-4 h-4 text-primary-foreground" />
             </div>
-            <span className="font-display font-bold text-foreground">Vansh Jain
-              Alex Chen<span className="text-primary">.</span>
+            <span className="font-display font-bold text-foreground">
+              Vansh Jain<span className="text-primary">.</span>
             </span>
           </div>
 
