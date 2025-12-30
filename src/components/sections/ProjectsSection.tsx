@@ -17,9 +17,9 @@ interface Project {
 const projects: Project[] = [
   {
     id: 1,
-    title: "Autonomous Drone Navigation",
-    description: "AI-powered drone with real-time obstacle detection and path planning using computer vision and reinforcement learning.",
-    technologies: ["Python", "TensorFlow", "ROS", "OpenCV"],
+    title: "AI-Powered Code Assistant",
+    description: "An intelligent coding assistant using machine learning to provide real-time code suggestions, bug detection, and automated documentation.",
+    technologies: ["Python", "TensorFlow", "React", "Node.js"],
     icon: <Bot className="w-8 h-8" />,
     gradient: "from-primary to-accent",
     github: "#",
@@ -27,9 +27,9 @@ const projects: Project[] = [
   },
   {
     id: 2,
-    title: "Smart Grid Energy Monitor",
-    description: "IoT-based energy monitoring system with predictive analytics for optimizing power consumption in smart buildings.",
-    technologies: ["Arduino", "Node.js", "MongoDB", "React"],
+    title: "Smart Task Management System",
+    description: "Full-stack task management application with real-time collaboration, analytics dashboard, and AI-based priority suggestions.",
+    technologies: ["React", "Node.js", "MongoDB", "Socket.io"],
     icon: <Zap className="w-8 h-8" />,
     gradient: "from-accent to-primary",
     github: "#",
@@ -37,18 +37,18 @@ const projects: Project[] = [
   },
   {
     id: 3,
-    title: "Neural Network Accelerator",
-    description: "Custom FPGA implementation for accelerating neural network inference with 10x performance improvement.",
-    technologies: ["Verilog", "CUDA", "PyTorch", "C++"],
+    title: "Machine Learning Pipeline",
+    description: "End-to-end ML pipeline for data preprocessing, model training, and deployment with automated hyperparameter tuning.",
+    technologies: ["Python", "PyTorch", "Docker", "FastAPI"],
     icon: <Cpu className="w-8 h-8" />,
     gradient: "from-primary via-accent to-primary",
     github: "#",
   },
   {
     id: 4,
-    title: "Mesh Network Protocol",
-    description: "Self-healing wireless mesh network protocol for disaster recovery communications using LoRa technology.",
-    technologies: ["C", "LoRa", "Embedded", "Protocol Design"],
+    title: "Real-time Chat Application",
+    description: "Scalable chat application with end-to-end encryption, file sharing, and video calling capabilities.",
+    technologies: ["React", "WebSocket", "PostgreSQL", "Redis"],
     icon: <Wifi className="w-8 h-8" />,
     gradient: "from-accent via-primary to-accent",
     github: "#",
@@ -159,7 +159,7 @@ export const ProjectsSection = () => {
             <span className="gradient-text">Projects</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A collection of engineering projects showcasing my expertise in robotics, AI, embedded systems, and software development.
+            A collection of software projects showcasing my expertise in web development, AI, and full-stack applications.
           </p>
         </motion.div>
 

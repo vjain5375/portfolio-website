@@ -6,19 +6,19 @@ const terminalLines = [
   { type: 'command', content: '$ whoami' },
   { type: 'output', content: 'vansh_jain' },
   { type: 'command', content: '$ cat education.txt' },
-  { type: 'output', content: 'B.Tech in Electronics Engineering' },
-  { type: 'output', content: 'Expected Graduation: 2025' },
+  { type: 'output', content: 'B.Tech in Computer Science Engineering' },
+  { type: 'output', content: 'Expected Graduation: 2028' },
   { type: 'command', content: '$ ls skills/' },
-  { type: 'output', content: 'robotics/ ai/ embedded/ web/' },
+  { type: 'output', content: 'web-dev/ ai/ programming/ databases/' },
   { type: 'command', content: '$ echo $PASSION' },
   { type: 'output', content: 'Building innovative tech solutions' },
 ];
 
 const skills = [
-  { name: 'Robotics & Control', icon: <Cpu className="w-5 h-5" />, level: 90 },
-  { name: 'Machine Learning', icon: <Layers className="w-5 h-5" />, level: 85 },
-  { name: 'Embedded Systems', icon: <Code className="w-5 h-5" />, level: 88 },
-  { name: 'Full-Stack Dev', icon: <Database className="w-5 h-5" />, level: 80 },
+  { name: 'Web Development', icon: <Code className="w-5 h-5" />, level: 85 },
+  { name: 'Machine Learning', icon: <Layers className="w-5 h-5" />, level: 80 },
+  { name: 'Programming', icon: <Cpu className="w-5 h-5" />, level: 90 },
+  { name: 'Database Systems', icon: <Database className="w-5 h-5" />, level: 82 },
 ];
 
 const Terminal = () => {
@@ -121,13 +121,13 @@ export const AboutSection = () => {
             {/* Bio */}
             <div>
               <h3 className="font-display text-2xl font-bold text-foreground mb-4">
-                Electronics Engineering Student
+                Computer Science Engineering Student
               </h3>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                I'm a final-year B.Tech student with a deep passion for robotics, artificial intelligence, and embedded systems. My journey in engineering has been driven by curiosity and a desire to create technology that makes a meaningful impact.
+                I'm a B.Tech CSE student with a deep passion for software development, artificial intelligence, and building innovative web applications. My journey in engineering has been driven by curiosity and a desire to create technology that makes a meaningful impact.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                From building autonomous drones to developing neural network accelerators, I thrive on challenging projects that push the boundaries of what's possible. I believe in learning by doing and constantly expanding my technical horizons.
+                From developing full-stack applications to exploring machine learning algorithms, I thrive on challenging projects that push the boundaries of what's possible. I believe in learning by doing and constantly expanding my technical horizons.
               </p>
             </div>
 
