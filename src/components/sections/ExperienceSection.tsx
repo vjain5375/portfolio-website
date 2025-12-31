@@ -12,18 +12,11 @@ interface TimelineItem {
 
 const experienceData: TimelineItem[] = [
   {
-    year: '2025-Present',
-    title: 'Campus Ambassador',
-    organization: 'E-Cell, IIT Bombay',
-    icon: Award,
-    description: 'Representing E-Cell IIT Bombay and promoting entrepreneurship culture',
-  },
-  {
     year: '2025',
-    title: 'Executive',
-    organization: 'E-CELL, RGIPT',
-    icon: Briefcase,
-    description: 'Driving entrepreneurial initiatives and startup ecosystem',
+    title: 'Marketing Executive',
+    organization: 'KALTARANG (RGIPT Cultural Fest)',
+    icon: Megaphone,
+    description: 'Leading marketing campaigns for the annual cultural festival',
   },
   {
     year: '2025',
@@ -34,20 +27,27 @@ const experienceData: TimelineItem[] = [
   },
   {
     year: '2025',
-    title: 'Marketing Executive',
-    organization: 'KALTARANG (RGIPT Cultural Fest)',
-    icon: Megaphone,
-    description: 'Leading marketing campaigns for the annual cultural festival',
+    title: 'Executive',
+    organization: 'E-CELL, RGIPT',
+    icon: Briefcase,
+    description: 'Driving entrepreneurial initiatives and startup ecosystem',
+  },
+  {
+    year: '2025-Present',
+    title: 'Campus Ambassador',
+    organization: 'E-Cell, IIT Bombay',
+    icon: Award,
+    description: 'Representing E-Cell IIT Bombay and promoting entrepreneurship culture',
   },
 ];
 
 const educationData: TimelineItem[] = [
   {
-    year: '2024-2028',
-    title: 'B.Tech in Computer Science & Design Engineering',
-    organization: 'RGIPT (Rajiv Gandhi Institute of Petroleum Technology)',
+    year: '2011-2021',
+    title: 'Class 10 (Secondary)',
+    organization: 'DAV Schools Network',
     icon: GraduationCap,
-    description: 'Pursuing undergraduate degree in CS & Design Engineering',
+    description: 'Completed secondary education with strong foundation',
   },
   {
     year: '2021-2023',
@@ -57,11 +57,11 @@ const educationData: TimelineItem[] = [
     description: 'Completed higher secondary education',
   },
   {
-    year: '2011-2021',
-    title: 'Class 10 (Secondary)',
-    organization: 'DAV Schools Network',
+    year: '2024-2028',
+    title: 'B.Tech in Computer Science & Design Engineering',
+    organization: 'RGIPT (Rajiv Gandhi Institute of Petroleum Technology)',
     icon: GraduationCap,
-    description: 'Completed secondary education with strong foundation',
+    description: 'Pursuing undergraduate degree in CS & Design Engineering',
   },
 ];
 
