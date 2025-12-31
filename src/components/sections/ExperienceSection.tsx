@@ -260,19 +260,19 @@ export const ExperienceSection = () => {
           </p>
         </motion.div>
         
-        {/* Two-column layout */}
-        <div className="grid md:grid-cols-2 gap-12 md:gap-16">
-          <Timeline
-            data={experienceData}
-            accentColor="primary"
-            title="Experience"
-            icon={Briefcase}
-          />
+        {/* Stacked layout - Education on top, Experience below */}
+        <div className="space-y-20">
           <Timeline
             data={educationData}
             accentColor="accent"
             title="Education"
             icon={GraduationCap}
+          />
+          <Timeline
+            data={experienceData}
+            accentColor="primary"
+            title="Experience"
+            icon={Briefcase}
           />
         </div>
       </div>
