@@ -58,7 +58,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
     >
       <div className="relative glass rounded-2xl p-6 md:p-8 card-lift border border-border/50 overflow-hidden">
         {/* Glow effect on hover */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
           <div className={`absolute inset-0 bg-gradient-to-r ${project.gradient} opacity-10 blur-xl`} />
         </div>
 
@@ -91,13 +91,14 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
         </div>
 
         {/* Links */}
-        <div className="flex gap-4">
+        <div className="flex gap-4 relative z-10">
           {project.github && (
             <a
               href={project.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+              onClick={(e) => e.stopPropagation()}
             >
               <Github className="w-4 h-4" />
               <span>Code</span>
@@ -108,7 +109,8 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors cursor-pointer"
+              onClick={(e) => e.stopPropagation()}
             >
               <ExternalLink className="w-4 h-4" />
               <span>Live Demo</span>
@@ -117,7 +119,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
         </div>
 
         {/* Corner accent */}
-        <div className="absolute top-0 right-0 w-20 h-20 opacity-20">
+        <div className="absolute top-0 right-0 w-20 h-20 opacity-20 pointer-events-none">
           <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} blur-2xl`} />
         </div>
       </div>
