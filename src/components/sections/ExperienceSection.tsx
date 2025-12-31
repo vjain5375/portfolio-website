@@ -6,177 +6,159 @@ interface TimelineItem {
   year: string;
   title: string;
   organization: string;
+  type: 'experience' | 'education';
   icon: React.ElementType;
   description?: string;
-  type: 'education' | 'experience';
 }
 
 const timelineData: TimelineItem[] = [
-  // Education items first (will appear on left)
   {
-    year: '2011-2021',
-    title: 'Class 10 (Secondary)',
-    organization: 'DAV Schools Network',
-    icon: GraduationCap,
-    description: 'Completed secondary education with strong foundation',
+    year: '2025-Present',
+    title: 'Campus Ambassador',
+    organization: 'E-Cell, IIT Bombay',
+    type: 'experience',
+    icon: Award,
+    description: 'Representing E-Cell IIT Bombay and promoting entrepreneurship culture',
+  },
+  {
+    year: '2025',
+    title: 'Executive',
+    organization: 'E-CELL, RGIPT',
+    type: 'experience',
+    icon: Briefcase,
+    description: 'Driving entrepreneurial initiatives and startup ecosystem',
+  },
+  {
+    year: '2025',
+    title: 'Executive',
+    organization: 'Science & Technical Council / ASPAC Club, RGIPT',
+    type: 'experience',
+    icon: Users,
+    description: 'Organizing technical events and fostering innovation',
+  },
+  {
+    year: '2025',
+    title: 'Marketing Executive',
+    organization: 'KALTARANG (RGIPT Cultural Fest)',
+    type: 'experience',
+    icon: Megaphone,
+    description: 'Leading marketing campaigns for the annual cultural festival',
+  },
+  {
+    year: '2024-2028',
+    title: 'B.Tech in Computer Science & Design Engineering',
+    organization: 'RGIPT (Rajiv Gandhi Institute of Petroleum Technology)',
     type: 'education',
+    icon: GraduationCap,
+    description: 'Pursuing undergraduate degree in CS & Design Engineering',
   },
   {
     year: '2021-2023',
     title: 'Class 12 (Senior Secondary)',
     organization: 'Sacred Heart Convent School',
+    type: 'education',
     icon: GraduationCap,
     description: 'Completed higher secondary education',
-    type: 'education',
   },
   {
-    year: '2024-2028',
-    title: 'B.Tech in CS & Design Engineering',
-    organization: 'RGIPT',
+    year: '2011-2021',
+    title: 'Class 10 (Secondary)',
+    organization: 'DAV Schools Network',
+    type: 'education',
     icon: GraduationCap,
-    description: 'Pursuing undergraduate degree in Computer Science & Design Engineering',
-    type: 'education',
-  },
-  // Experience items (will appear on right)
-  {
-    year: '2025',
-    title: 'Marketing Executive',
-    organization: 'KALTARANG Cultural Fest',
-    icon: Megaphone,
-    description: 'Leading marketing campaigns for the annual cultural festival',
-    type: 'experience',
-  },
-  {
-    year: '2025',
-    title: 'Executive Member',
-    organization: 'Science & Technical Council / ASPAC',
-    icon: Users,
-    description: 'Organizing technical events and fostering innovation',
-    type: 'experience',
-  },
-  {
-    year: '2025',
-    title: 'Executive Member',
-    organization: 'E-CELL, RGIPT',
-    icon: Briefcase,
-    description: 'Driving entrepreneurial initiatives and startup ecosystem',
-    type: 'experience',
-  },
-  {
-    year: '2025-Present',
-    title: 'Campus Ambassador',
-    organization: 'E-Cell, IIT Bombay',
-    icon: Award,
-    description: 'Representing E-Cell IIT Bombay and promoting entrepreneurship culture',
-    type: 'experience',
+    description: 'Completed secondary education with strong foundation',
   },
 ];
 
 const TimelineCard = ({ 
   item, 
   index, 
-  isActive,
-  side,
+  isActive 
 }: { 
   item: TimelineItem; 
   index: number; 
   isActive: boolean;
-  side: 'left' | 'right';
 }) => {
+  const isLeft = index % 2 === 0;
   const Icon = item.icon;
-  const isEducation = item.type === 'education';
   
   return (
     <motion.div
-      initial={{ 
-        opacity: 0, 
-        x: side === 'left' ? -60 : 60,
-        scale: 0.9 
-      }}
-      animate={isActive ? { 
-        opacity: 1, 
-        x: 0,
-        scale: 1 
-      } : { 
-        opacity: 0.3, 
-        x: side === 'left' ? -20 : 20,
-        scale: 0.95 
-      }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className={`
-        relative w-full max-w-md
-        ${side === 'left' ? 'mr-auto text-right' : 'ml-auto text-left'}
-      `}
+      initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
+      animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0.3, x: isLeft ? -20 : 20 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+      className={`relative flex items-center ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} flex-row`}
     >
       {/* Card */}
       <motion.div
-        animate={isActive ? { scale: 1 } : { scale: 0.98 }}
-        whileHover={{ scale: 1.02 }}
+        animate={isActive ? { scale: 1 } : { scale: 0.95 }}
         transition={{ duration: 0.3 }}
         className={`
-          relative p-6 rounded-2xl backdrop-blur-2xl border-2 transition-all duration-700
-          ${isEducation
-            ? 'bg-accent/[0.08] border-accent/30 hover:border-accent/50'
-            : 'bg-primary/[0.08] border-primary/30 hover:border-primary/50'
+          relative w-full md:w-[calc(50%-40px)] p-6 rounded-2xl
+          backdrop-blur-xl border transition-all duration-500
+          ${item.type === 'experience' 
+            ? 'bg-primary/5 border-primary/20 hover:border-primary/40' 
+            : 'bg-accent/5 border-accent/20 hover:border-accent/40'
           }
           ${isActive 
-            ? isEducation
-              ? 'shadow-[0_0_40px_rgba(147,51,234,0.25),inset_0_0_30px_rgba(147,51,234,0.05)]'
-              : 'shadow-[0_0_40px_rgba(0,255,255,0.25),inset_0_0_30px_rgba(0,255,255,0.05)]'
-            : ''
+            ? 'shadow-[0_0_30px_rgba(0,255,255,0.15)]' 
+            : 'shadow-none'
           }
         `}
       >
-        {/* Glow background */}
+        {/* Glow effect */}
         {isActive && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.15 }}
-            className={`absolute inset-0 rounded-2xl blur-2xl -z-10 ${isEducation ? 'bg-accent' : 'bg-primary'}`}
-          />
+          <div className={`
+            absolute inset-0 rounded-2xl opacity-20 blur-xl -z-10
+            ${item.type === 'experience' ? 'bg-primary' : 'bg-accent'}
+          `} />
         )}
         
         {/* Year badge */}
         <div className={`
-          inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-bold mb-4
-          ${isEducation ? 'bg-accent/20 text-accent' : 'bg-primary/20 text-primary'}
-          ${side === 'left' ? 'float-right ml-4' : 'float-left mr-4'}
+          inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-3
+          ${item.type === 'experience' 
+            ? 'bg-primary/20 text-primary' 
+            : 'bg-accent/20 text-accent'
+          }
         `}>
-          <Icon className="w-4 h-4" />
+          <Icon className="w-3 h-3" />
           {item.year}
         </div>
         
-        <div className="clear-both" />
-        
-        <h3 className="text-xl font-bold text-foreground mb-2">{item.title}</h3>
-        <p className={`text-sm font-semibold mb-3 ${isEducation ? 'text-accent' : 'text-primary'}`}>
+        {/* Content */}
+        <h3 className="text-lg font-bold text-foreground mb-1">
+          {item.title}
+        </h3>
+        <p className={`text-sm font-medium mb-2 ${
+          item.type === 'experience' ? 'text-primary' : 'text-accent'
+        }`}>
           {item.organization}
         </p>
         {item.description && (
-          <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+          <p className="text-sm text-muted-foreground">
+            {item.description}
+          </p>
         )}
         
         {/* Type indicator */}
         <div className={`
-          absolute bottom-4 ${side === 'left' ? 'left-4' : 'right-4'} 
-          px-2 py-0.5 rounded text-[10px] uppercase tracking-widest font-bold opacity-50
-          ${isEducation ? 'text-accent' : 'text-primary'}
+          absolute top-4 right-4 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider font-bold
+          ${item.type === 'experience' 
+            ? 'bg-primary/10 text-primary' 
+            : 'bg-accent/10 text-accent'
+          }
         `}>
           {item.type}
         </div>
-
-        {/* Connector line to timeline */}
-        <div className={`
-          absolute top-1/2 -translate-y-1/2 w-8 h-0.5
-          ${side === 'left' ? '-right-8' : '-left-8'}
-          ${isEducation 
-            ? 'bg-gradient-to-r from-accent/50 to-accent' 
-            : 'bg-gradient-to-l from-primary/50 to-primary'
-          }
-          ${isActive ? 'opacity-100' : 'opacity-30'}
-          transition-opacity duration-500
-        `} />
       </motion.div>
+      
+      {/* Timeline connector line */}
+      <div className={`
+        hidden md:block absolute top-1/2 w-10 h-0.5 
+        ${item.type === 'experience' ? 'bg-primary/30' : 'bg-accent/30'}
+        ${isLeft ? 'right-[calc(50%-40px)]' : 'left-[calc(50%-40px)]'}
+      `} />
     </motion.div>
   );
 };
@@ -184,36 +166,43 @@ const TimelineCard = ({
 export const ExperienceSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(-1);
+  const [activeIndex, setActiveIndex] = useState(0);
   
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
   });
   
-  const lineHeight = useTransform(scrollYProgress, [0.15, 0.85], ['0%', '100%']);
+  const lineHeight = useTransform(scrollYProgress, [0.1, 0.9], ['0%', '100%']);
   
   useEffect(() => {
     const handleScroll = () => {
       if (!sectionRef.current) return;
       
       const rect = sectionRef.current.getBoundingClientRect();
+      const sectionTop = rect.top;
+      const sectionHeight = rect.height;
       const windowHeight = window.innerHeight;
+      
+      // Calculate scroll progress within section
       const scrollProgress = Math.max(0, Math.min(1, 
-        (windowHeight * 0.6 - rect.top) / (rect.height)
+        (windowHeight - sectionTop) / (sectionHeight + windowHeight * 0.5)
       ));
       
-      const newIndex = Math.floor(scrollProgress * (timelineData.length + 0.5));
-      setActiveIndex(Math.min(timelineData.length - 1, Math.max(-1, newIndex)));
+      // Calculate active index based on scroll progress
+      const newIndex = Math.min(
+        timelineData.length - 1,
+        Math.floor(scrollProgress * timelineData.length)
+      );
+      
+      setActiveIndex(newIndex);
     };
     
     window.addEventListener('scroll', handleScroll);
     handleScroll();
+    
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const educationItems = timelineData.filter(item => item.type === 'education');
-  const experienceItems = timelineData.filter(item => item.type === 'experience');
   
   return (
     <section
@@ -222,214 +211,101 @@ export const ExperienceSection = () => {
       className="relative py-32 px-4 overflow-hidden"
     >
       {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-background" />
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[150px]" />
-      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[150px]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-primary/5 via-transparent to-transparent rounded-full" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px]" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[120px]" />
       
-      <div className="relative z-10 max-w-7xl mx-auto">
+      <div className="relative z-10 max-w-6xl mx-auto">
         {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-24"
+          transition={{ duration: 0.6 }}
+          className="text-center mb-20"
         >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted/30 border border-muted/50 mb-6"
-          >
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-sm text-muted-foreground font-medium">My Journey</span>
-          </motion.div>
-          
-          <h2 className="text-5xl md:text-6xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent bg-[length:200%_auto] animate-[gradient_3s_linear_infinite]">
-              Education & Experience
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+              Experience & Education
             </span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A timeline of my academic journey and professional growth
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            My journey through academia and professional experiences, shaping my skills and perspective.
           </p>
           
           {/* Legend */}
-          <div className="flex items-center justify-center gap-8 mt-8">
-            <div className="flex items-center gap-3">
-              <div className="w-4 h-4 rounded-full bg-accent shadow-[0_0_15px_rgba(147,51,234,0.6)]" />
-              <span className="text-sm text-muted-foreground font-medium">Education</span>
+          <div className="flex items-center justify-center gap-6 mt-6">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-primary shadow-[0_0_10px_rgba(0,255,255,0.5)]" />
+              <span className="text-sm text-muted-foreground">Experience</span>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="w-4 h-4 rounded-full bg-primary shadow-[0_0_15px_rgba(0,255,255,0.6)]" />
-              <span className="text-sm text-muted-foreground font-medium">Experience</span>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-accent shadow-[0_0_10px_rgba(147,51,234,0.5)]" />
+              <span className="text-sm text-muted-foreground">Education</span>
             </div>
           </div>
         </motion.div>
         
-        {/* Two-column timeline layout */}
+        {/* Timeline */}
         <div ref={timelineRef} className="relative">
-          {/* Central timeline */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 hidden md:block">
+          {/* Central timeline line */}
+          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 md:-translate-x-1/2">
             {/* Background line */}
-            <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-muted/20 to-muted/30 rounded-full" />
+            <div className="absolute inset-0 bg-muted/20 rounded-full" />
             
             {/* Animated progress line */}
             <motion.div
               style={{ height: lineHeight }}
-              className="absolute top-0 left-0 right-0 bg-gradient-to-b from-accent via-primary to-primary rounded-full shadow-[0_0_30px_rgba(0,255,255,0.4)]"
+              className="absolute top-0 left-0 right-0 bg-gradient-to-b from-primary via-accent to-primary rounded-full shadow-[0_0_20px_rgba(0,255,255,0.5)]"
             />
-            
-            {/* Start node */}
-            <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-accent border-4 border-background shadow-[0_0_20px_rgba(147,51,234,0.6)]" />
-            
-            {/* End node */}
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(0,255,255,0.6)]" />
           </div>
-
-          {/* Education Section */}
-          <div className="mb-20">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-4 mb-12 md:w-[calc(50%-40px)]"
-            >
-              <div className="p-4 rounded-2xl bg-accent/10 border border-accent/30">
-                <GraduationCap className="w-8 h-8 text-accent" />
-              </div>
-              <div>
-                <h3 className="text-3xl font-bold text-accent">Education</h3>
-                <p className="text-muted-foreground">Academic Background</p>
-              </div>
-            </motion.div>
-            
-            <div className="space-y-12">
-              {educationItems.map((item, index) => {
-                const globalIndex = index;
-                return (
-                  <div key={index} className="relative md:grid md:grid-cols-2 md:gap-20">
-                    {/* Left side - Education cards */}
-                    <div className="md:pr-8">
-                      <TimelineCard
-                        item={item}
-                        index={globalIndex}
-                        isActive={globalIndex <= activeIndex}
-                        side="left"
-                      />
-                    </div>
-                    
-                    {/* Right side - empty for education */}
-                    <div className="hidden md:block" />
-                    
-                    {/* Timeline node */}
+          
+          {/* Timeline items */}
+          <div className="space-y-12 md:space-y-16">
+            {timelineData.map((item, index) => (
+              <div key={index} className="relative pl-12 md:pl-0">
+                {/* Timeline node */}
+                <motion.div
+                  animate={index <= activeIndex ? { scale: 1.2 } : { scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className={`
+                    absolute left-4 md:left-1/2 top-6 w-4 h-4 md:-translate-x-1/2 rounded-full
+                    border-2 transition-all duration-500 z-10
+                    ${index <= activeIndex
+                      ? item.type === 'experience'
+                        ? 'bg-primary border-primary shadow-[0_0_20px_rgba(0,255,255,0.8)]'
+                        : 'bg-accent border-accent shadow-[0_0_20px_rgba(147,51,234,0.8)]'
+                      : 'bg-background border-muted'
+                    }
+                  `}
+                >
+                  {/* Pulse effect for active node */}
+                  {index === activeIndex && (
                     <motion.div
-                      animate={globalIndex <= activeIndex ? { scale: 1.4 } : { scale: 1 }}
-                      transition={{ duration: 0.4, type: 'spring' }}
+                      animate={{ scale: [1, 2, 1], opacity: [0.5, 0, 0.5] }}
+                      transition={{ duration: 2, repeat: Infinity }}
                       className={`
-                        hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
-                        w-5 h-5 rounded-full border-4 z-20 transition-all duration-500
-                        ${globalIndex <= activeIndex
-                          ? 'bg-accent border-accent shadow-[0_0_25px_rgba(147,51,234,0.9)]'
-                          : 'bg-background border-muted/50'
-                        }
+                        absolute inset-0 rounded-full
+                        ${item.type === 'experience' ? 'bg-primary' : 'bg-accent'}
                       `}
-                    >
-                      {globalIndex <= activeIndex && (
-                        <motion.div
-                          animate={{ scale: [1, 2.5, 1], opacity: [0.8, 0, 0.8] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                          className="absolute inset-0 rounded-full bg-accent"
-                        />
-                      )}
-                    </motion.div>
-                    
-                    {/* Year marker */}
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={globalIndex <= activeIndex ? { opacity: 1 } : { opacity: 0.3 }}
-                      className="hidden md:flex absolute left-1/2 top-1/2 translate-x-8 -translate-y-1/2 items-center"
-                    >
-                      <span className="text-lg font-bold text-accent/70">{item.year}</span>
-                    </motion.div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Experience Section */}
-          <div>
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-4 mb-12 md:w-[calc(50%-40px)] md:ml-auto md:flex-row-reverse md:text-right"
-            >
-              <div className="p-4 rounded-2xl bg-primary/10 border border-primary/30">
-                <Briefcase className="w-8 h-8 text-primary" />
+                    />
+                  )}
+                </motion.div>
+                
+                <TimelineCard item={item} index={index} isActive={index <= activeIndex} />
               </div>
-              <div>
-                <h3 className="text-3xl font-bold text-primary">Experience</h3>
-                <p className="text-muted-foreground">Professional Journey</p>
-              </div>
-            </motion.div>
-            
-            <div className="space-y-12">
-              {experienceItems.map((item, index) => {
-                const globalIndex = educationItems.length + index;
-                return (
-                  <div key={index} className="relative md:grid md:grid-cols-2 md:gap-20">
-                    {/* Left side - empty for experience */}
-                    <div className="hidden md:block" />
-                    
-                    {/* Right side - Experience cards */}
-                    <div className="md:pl-8">
-                      <TimelineCard
-                        item={item}
-                        index={globalIndex}
-                        isActive={globalIndex <= activeIndex}
-                        side="right"
-                      />
-                    </div>
-                    
-                    {/* Timeline node */}
-                    <motion.div
-                      animate={globalIndex <= activeIndex ? { scale: 1.4 } : { scale: 1 }}
-                      transition={{ duration: 0.4, type: 'spring' }}
-                      className={`
-                        hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
-                        w-5 h-5 rounded-full border-4 z-20 transition-all duration-500
-                        ${globalIndex <= activeIndex
-                          ? 'bg-primary border-primary shadow-[0_0_25px_rgba(0,255,255,0.9)]'
-                          : 'bg-background border-muted/50'
-                        }
-                      `}
-                    >
-                      {globalIndex <= activeIndex && (
-                        <motion.div
-                          animate={{ scale: [1, 2.5, 1], opacity: [0.8, 0, 0.8] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                          className="absolute inset-0 rounded-full bg-primary"
-                        />
-                      )}
-                    </motion.div>
-                    
-                    {/* Year marker */}
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={globalIndex <= activeIndex ? { opacity: 1 } : { opacity: 0.3 }}
-                      className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-16 -translate-y-1/2 items-center justify-end"
-                    >
-                      <span className="text-lg font-bold text-primary/70">{item.year}</span>
-                    </motion.div>
-                  </div>
-                );
-              })}
-            </div>
+            ))}
           </div>
+        </div>
+        
+        {/* Year markers */}
+        <div className="hidden md:flex justify-between mt-12 px-8 text-sm font-bold">
+          <span className="text-accent">2011</span>
+          <span className="text-muted-foreground">2021</span>
+          <span className="text-muted-foreground">2023</span>
+          <span className="text-muted-foreground">2024</span>
+          <span className="text-primary">2025</span>
+          <span className="text-primary/50">2028</span>
         </div>
       </div>
     </section>
