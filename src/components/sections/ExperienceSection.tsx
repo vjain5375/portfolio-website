@@ -71,7 +71,7 @@ interface TimelineCardProps {
   item: TimelineItem;
   index: number;
   isActive: boolean;
-  accentType: 'pink' | 'cyan';
+  accentType: 'purple' | 'cyan';
 }
 
 const TimelineCard = ({ item, index, isActive, accentType }: TimelineCardProps) => {
@@ -79,13 +79,13 @@ const TimelineCard = ({ item, index, isActive, accentType }: TimelineCardProps) 
   const Icon = item.icon;
   
   const accentClasses = {
-    pink: {
-      bg: 'bg-pink-500/5',
-      border: 'border-pink-500/20 hover:border-pink-500/40',
-      badge: 'bg-pink-500/20 text-pink-400',
-      text: 'text-pink-400',
-      glow: 'bg-pink-500',
-      shadow: 'shadow-[0_0_30px_rgba(236,72,153,0.2)]',
+    purple: {
+      bg: 'bg-purple-500/5',
+      border: 'border-purple-500/20 hover:border-purple-500/40',
+      badge: 'bg-purple-500/20 text-purple-400',
+      text: 'text-purple-400',
+      glow: 'bg-purple-500',
+      shadow: 'shadow-[0_0_30px_rgba(147,51,234,0.2)]',
     },
     cyan: {
       bg: 'bg-cyan-500/5',
@@ -140,7 +140,7 @@ const TimelineCard = ({ item, index, isActive, accentType }: TimelineCardProps) 
       {/* Connector line from card to timeline */}
       <div className={`
         hidden md:block absolute top-1/2 -translate-y-1/2 h-[2px] w-[60px]
-        ${accentType === 'pink' ? 'bg-gradient-to-r from-pink-500/50 to-pink-500' : 'bg-gradient-to-r from-cyan-500/50 to-cyan-500'}
+        ${accentType === 'purple' ? 'bg-gradient-to-r from-purple-500/50 to-purple-500' : 'bg-gradient-to-r from-cyan-500/50 to-cyan-500'}
         ${isLeft ? 'right-[calc(50%-60px)]' : 'left-[calc(50%-60px)]'}
       `} />
     </div>
@@ -150,7 +150,7 @@ const TimelineCard = ({ item, index, isActive, accentType }: TimelineCardProps) 
 interface TimelineSectionProps {
   title: string;
   data: TimelineItem[];
-  accentType: 'pink' | 'cyan';
+  accentType: 'purple' | 'cyan';
   id: string;
 }
 
@@ -195,22 +195,22 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
     return () => window.removeEventListener('scroll', handleScroll);
   }, [data.length]);
 
-  const gradientClass = accentType === 'pink' 
-    ? 'from-pink-500 via-pink-400 to-pink-500'
+  const gradientClass = accentType === 'purple' 
+    ? 'from-purple-500 via-purple-400 to-purple-500'
     : 'from-cyan-500 via-cyan-400 to-cyan-500';
 
-  const bgGlowClass = accentType === 'pink'
-    ? 'bg-pink-500/10'
+  const bgGlowClass = accentType === 'purple'
+    ? 'bg-purple-500/10'
     : 'bg-cyan-500/10';
 
-  const dotColorActive = accentType === 'pink'
-    ? 'bg-pink-500 border-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.8)]'
+  const dotColorActive = accentType === 'purple'
+    ? 'bg-purple-500 border-purple-500 shadow-[0_0_20px_rgba(147,51,234,0.8)]'
     : 'bg-cyan-500 border-cyan-500 shadow-[0_0_20px_rgba(6,182,212,0.8)]';
 
   const dotColorInactive = 'bg-background border-muted-foreground/30';
 
-  const titleGradient = accentType === 'pink'
-    ? 'from-pink-400 via-pink-500 to-fuchsia-500'
+  const titleGradient = accentType === 'purple'
+    ? 'from-purple-400 via-purple-500 to-violet-500'
     : 'from-cyan-400 via-cyan-500 to-teal-400';
 
   return (
@@ -273,7 +273,7 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
                     <motion.div
                       animate={{ scale: [1, 2.5, 1], opacity: [0.6, 0, 0.6] }}
                       transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                      className={`absolute inset-0 rounded-full ${accentType === 'pink' ? 'bg-pink-500' : 'bg-cyan-500'}`}
+                      className={`absolute inset-0 rounded-full ${accentType === 'purple' ? 'bg-purple-500' : 'bg-cyan-500'}`}
                     />
                   )}
                 </motion.div>
@@ -304,13 +304,13 @@ export const ExperienceSection = () => {
         <TimelineSection
           title="Education"
           data={educationData}
-          accentType="pink"
+          accentType="purple"
           id="education"
         />
         
         {/* Divider */}
         <div className="relative py-8">
-          <div className="absolute left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-pink-500/50 via-muted/20 to-cyan-500/50" />
+          <div className="absolute left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-purple-500/50 via-muted/20 to-cyan-500/50" />
         </div>
         
         {/* Experience Section */}
