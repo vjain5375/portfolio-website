@@ -71,7 +71,7 @@ interface TimelineCardProps {
   item: TimelineItem;
   index: number;
   isActive: boolean;
-  accentType: 'purple' | 'cyan';
+  accentType: 'purple' | 'blue';
 }
 
 const TimelineCard = ({ item, index, isActive, accentType }: TimelineCardProps) => {
@@ -87,13 +87,13 @@ const TimelineCard = ({ item, index, isActive, accentType }: TimelineCardProps) 
       glow: 'bg-purple-500',
       shadow: 'shadow-[0_0_30px_rgba(147,51,234,0.2)]',
     },
-    cyan: {
-      bg: 'bg-cyan-500/5',
-      border: 'border-cyan-500/20 hover:border-cyan-500/40',
-      badge: 'bg-cyan-500/20 text-cyan-400',
-      text: 'text-cyan-400',
-      glow: 'bg-cyan-500',
-      shadow: 'shadow-[0_0_30px_rgba(6,182,212,0.2)]',
+    blue: {
+      bg: 'bg-blue-500/5',
+      border: 'border-blue-500/20 hover:border-blue-500/40',
+      badge: 'bg-blue-500/20 text-blue-400',
+      text: 'text-blue-400',
+      glow: 'bg-blue-500',
+      shadow: 'shadow-[0_0_30px_rgba(59,130,246,0.2)]',
     },
   };
 
@@ -140,7 +140,7 @@ const TimelineCard = ({ item, index, isActive, accentType }: TimelineCardProps) 
       {/* Connector line from card to timeline */}
       <div className={`
         hidden md:block absolute top-1/2 -translate-y-1/2 h-[2px] w-[60px]
-        ${accentType === 'purple' ? 'bg-gradient-to-r from-purple-500/50 to-purple-500' : 'bg-gradient-to-r from-cyan-500/50 to-cyan-500'}
+        ${accentType === 'purple' ? 'bg-gradient-to-r from-purple-500/50 to-purple-500' : 'bg-gradient-to-r from-blue-500/50 to-blue-500'}
         ${isLeft ? 'right-[calc(50%-60px)]' : 'left-[calc(50%-60px)]'}
       `} />
     </div>
@@ -150,7 +150,7 @@ const TimelineCard = ({ item, index, isActive, accentType }: TimelineCardProps) 
 interface TimelineSectionProps {
   title: string;
   data: TimelineItem[];
-  accentType: 'purple' | 'cyan';
+  accentType: 'purple' | 'blue';
   id: string;
 }
 
@@ -197,21 +197,21 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
 
   const gradientClass = accentType === 'purple' 
     ? 'from-purple-500 via-purple-400 to-purple-500'
-    : 'from-cyan-500 via-cyan-400 to-cyan-500';
+    : 'from-blue-500 via-blue-400 to-blue-500';
 
   const bgGlowClass = accentType === 'purple'
     ? 'bg-purple-500/10'
-    : 'bg-cyan-500/10';
+    : 'bg-blue-500/10';
 
   const dotColorActive = accentType === 'purple'
     ? 'bg-purple-500 border-purple-500 shadow-[0_0_20px_rgba(147,51,234,0.8)]'
-    : 'bg-cyan-500 border-cyan-500 shadow-[0_0_20px_rgba(6,182,212,0.8)]';
+    : 'bg-blue-500 border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.8)]';
 
   const dotColorInactive = 'bg-background border-muted-foreground/30';
 
   const titleGradient = accentType === 'purple'
     ? 'from-purple-400 via-purple-500 to-violet-500'
-    : 'from-cyan-400 via-cyan-500 to-teal-400';
+    : 'from-blue-400 via-blue-500 to-indigo-400';
 
   return (
     <div ref={sectionRef} id={id} className="relative py-24">
@@ -273,7 +273,7 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
                     <motion.div
                       animate={{ scale: [1, 2.5, 1], opacity: [0.6, 0, 0.6] }}
                       transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                      className={`absolute inset-0 rounded-full ${accentType === 'purple' ? 'bg-purple-500' : 'bg-cyan-500'}`}
+                      className={`absolute inset-0 rounded-full ${accentType === 'purple' ? 'bg-purple-500' : 'bg-blue-500'}`}
                     />
                   )}
                 </motion.div>
@@ -310,14 +310,14 @@ export const ExperienceSection = () => {
         
         {/* Divider */}
         <div className="relative py-8">
-          <div className="absolute left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-purple-500/50 via-muted/20 to-cyan-500/50" />
+          <div className="absolute left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-purple-500/50 via-muted/20 to-blue-500/50" />
         </div>
         
         {/* Experience Section */}
         <TimelineSection
           title="Experience"
           data={experienceData}
-          accentType="cyan"
+          accentType="blue"
           id="experience"
         />
       </div>
