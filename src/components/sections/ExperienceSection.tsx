@@ -6,174 +6,164 @@ interface TimelineItem {
   year: string;
   title: string;
   organization: string;
-  type: 'experience' | 'education';
   icon: React.ElementType;
   description?: string;
+  isPresent?: boolean;
 }
 
-const timelineData: TimelineItem[] = [
+const educationData: TimelineItem[] = [
   {
-    year: '2025-Present',
-    title: 'Campus Ambassador',
-    organization: 'E-Cell, IIT Bombay',
-    type: 'experience',
-    icon: Award,
-    description: 'Representing E-Cell IIT Bombay and promoting entrepreneurship culture',
+    year: '2011–2021',
+    title: 'Class 10 (Secondary)',
+    organization: 'DAV Schools Network',
+    icon: GraduationCap,
+    description: 'Completed secondary education with strong academic foundation',
   },
   {
+    year: '2021–2023',
+    title: 'Class 12 (Senior Secondary)',
+    organization: 'Sacred Heart Convent School',
+    icon: GraduationCap,
+    description: 'Completed higher secondary education',
+  },
+  {
+    year: '2024–2028',
+    title: 'B.Tech in Computer Science & Design Engineering',
+    organization: 'RGIPT (Rajiv Gandhi Institute of Petroleum Technology)',
+    icon: GraduationCap,
+    description: 'Pursuing undergraduate degree in CS & Design Engineering',
+  },
+];
+
+const experienceData: TimelineItem[] = [
+  {
     year: '2025',
-    title: 'Executive',
-    organization: 'E-CELL, RGIPT',
-    type: 'experience',
-    icon: Briefcase,
-    description: 'Driving entrepreneurial initiatives and startup ecosystem',
+    title: 'Marketing Executive',
+    organization: 'KALTARANG (RGIPT Cultural Fest)',
+    icon: Megaphone,
+    description: 'Leading marketing campaigns for the annual cultural festival',
   },
   {
     year: '2025',
     title: 'Executive',
     organization: 'Science & Technical Council / ASPAC Club, RGIPT',
-    type: 'experience',
     icon: Users,
     description: 'Organizing technical events and fostering innovation',
   },
   {
     year: '2025',
-    title: 'Marketing Executive',
-    organization: 'KALTARANG (RGIPT Cultural Fest)',
-    type: 'experience',
-    icon: Megaphone,
-    description: 'Leading marketing campaigns for the annual cultural festival',
+    title: 'Executive',
+    organization: 'E-CELL, RGIPT',
+    icon: Briefcase,
+    description: 'Driving entrepreneurial initiatives and startup ecosystem',
   },
   {
-    year: '2024-2028',
-    title: 'B.Tech in Computer Science & Design Engineering',
-    organization: 'RGIPT (Rajiv Gandhi Institute of Petroleum Technology)',
-    type: 'education',
-    icon: GraduationCap,
-    description: 'Pursuing undergraduate degree in CS & Design Engineering',
-  },
-  {
-    year: '2021-2023',
-    title: 'Class 12 (Senior Secondary)',
-    organization: 'Sacred Heart Convent School',
-    type: 'education',
-    icon: GraduationCap,
-    description: 'Completed higher secondary education',
-  },
-  {
-    year: '2011-2021',
-    title: 'Class 10 (Secondary)',
-    organization: 'DAV Schools Network',
-    type: 'education',
-    icon: GraduationCap,
-    description: 'Completed secondary education with strong foundation',
+    year: '2025–Present',
+    title: 'Campus Ambassador',
+    organization: 'E-Cell, IIT Bombay',
+    icon: Award,
+    description: 'Representing E-Cell IIT Bombay and promoting entrepreneurship culture',
+    isPresent: true,
   },
 ];
 
-const TimelineCard = ({ 
-  item, 
-  index, 
-  isActive 
-}: { 
-  item: TimelineItem; 
-  index: number; 
+interface TimelineCardProps {
+  item: TimelineItem;
+  index: number;
   isActive: boolean;
-}) => {
+  accentType: 'pink' | 'cyan';
+}
+
+const TimelineCard = ({ item, index, isActive, accentType }: TimelineCardProps) => {
   const isLeft = index % 2 === 0;
   const Icon = item.icon;
   
+  const accentClasses = {
+    pink: {
+      bg: 'bg-pink-500/5',
+      border: 'border-pink-500/20 hover:border-pink-500/40',
+      badge: 'bg-pink-500/20 text-pink-400',
+      text: 'text-pink-400',
+      glow: 'bg-pink-500',
+      shadow: 'shadow-[0_0_30px_rgba(236,72,153,0.2)]',
+    },
+    cyan: {
+      bg: 'bg-cyan-500/5',
+      border: 'border-cyan-500/20 hover:border-cyan-500/40',
+      badge: 'bg-cyan-500/20 text-cyan-400',
+      text: 'text-cyan-400',
+      glow: 'bg-cyan-500',
+      shadow: 'shadow-[0_0_30px_rgba(6,182,212,0.2)]',
+    },
+  };
+
+  const accent = accentClasses[accentType];
+
   return (
-    <motion.div
-      initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
-      animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0.3, x: isLeft ? -20 : 20 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className={`relative flex items-center ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} flex-row`}
-    >
-      {/* Card */}
+    <div className={`relative flex items-center w-full ${isLeft ? 'md:justify-start' : 'md:justify-end'}`}>
       <motion.div
-        animate={isActive ? { scale: 1 } : { scale: 0.95 }}
-        transition={{ duration: 0.3 }}
+        initial={{ opacity: 0, x: isLeft ? -80 : 80, scale: 0.9 }}
+        whileInView={{ opacity: 1, x: 0, scale: 1 }}
+        viewport={{ once: true, margin: '-50px' }}
+        transition={{ duration: 0.6, ease: 'easeOut', delay: index * 0.1 }}
         className={`
-          relative w-full md:w-[calc(50%-40px)] p-6 rounded-2xl
+          relative w-full md:w-[calc(50%-60px)] p-6 rounded-2xl
           backdrop-blur-xl border transition-all duration-500
-          ${item.type === 'experience' 
-            ? 'bg-primary/5 border-primary/20 hover:border-primary/40' 
-            : 'bg-accent/5 border-accent/20 hover:border-accent/40'
-          }
-          ${isActive 
-            ? 'shadow-[0_0_30px_rgba(0,255,255,0.15)]' 
-            : 'shadow-none'
-          }
+          ${accent.bg} ${accent.border}
+          ${isActive ? accent.shadow : 'shadow-none'}
         `}
       >
         {/* Glow effect */}
         {isActive && (
-          <div className={`
-            absolute inset-0 rounded-2xl opacity-20 blur-xl -z-10
-            ${item.type === 'experience' ? 'bg-primary' : 'bg-accent'}
-          `} />
+          <div className={`absolute inset-0 rounded-2xl opacity-20 blur-xl -z-10 ${accent.glow}`} />
         )}
         
         {/* Year badge */}
-        <div className={`
-          inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-3
-          ${item.type === 'experience' 
-            ? 'bg-primary/20 text-primary' 
-            : 'bg-accent/20 text-accent'
-          }
-        `}>
-          <Icon className="w-3 h-3" />
+        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold mb-4 ${accent.badge}`}>
+          <Icon className="w-3.5 h-3.5" />
           {item.year}
+          {item.isPresent && (
+            <span className="ml-1 px-2 py-0.5 bg-green-500/20 text-green-400 rounded-full text-[10px] uppercase tracking-wider">
+              Current
+            </span>
+          )}
         </div>
         
         {/* Content */}
-        <h3 className="text-lg font-bold text-foreground mb-1">
-          {item.title}
-        </h3>
-        <p className={`text-sm font-medium mb-2 ${
-          item.type === 'experience' ? 'text-primary' : 'text-accent'
-        }`}>
-          {item.organization}
-        </p>
+        <h3 className="text-lg font-bold text-foreground mb-2">{item.title}</h3>
+        <p className={`text-sm font-medium mb-3 ${accent.text}`}>{item.organization}</p>
         {item.description && (
-          <p className="text-sm text-muted-foreground">
-            {item.description}
-          </p>
+          <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
         )}
-        
-        {/* Type indicator */}
-        <div className={`
-          absolute top-4 right-4 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider font-bold
-          ${item.type === 'experience' 
-            ? 'bg-primary/10 text-primary' 
-            : 'bg-accent/10 text-accent'
-          }
-        `}>
-          {item.type}
-        </div>
       </motion.div>
-      
-      {/* Timeline connector line */}
+
+      {/* Connector line from card to timeline */}
       <div className={`
-        hidden md:block absolute top-1/2 w-10 h-0.5 
-        ${item.type === 'experience' ? 'bg-primary/30' : 'bg-accent/30'}
-        ${isLeft ? 'right-[calc(50%-40px)]' : 'left-[calc(50%-40px)]'}
+        hidden md:block absolute top-1/2 -translate-y-1/2 h-[2px] w-[60px]
+        ${accentType === 'pink' ? 'bg-gradient-to-r from-pink-500/50 to-pink-500' : 'bg-gradient-to-r from-cyan-500/50 to-cyan-500'}
+        ${isLeft ? 'right-[calc(50%-60px)]' : 'left-[calc(50%-60px)]'}
       `} />
-    </motion.div>
+    </div>
   );
 };
 
-export const ExperienceSection = () => {
+interface TimelineSectionProps {
+  title: string;
+  data: TimelineItem[];
+  accentType: 'pink' | 'cyan';
+  id: string;
+}
+
+const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const timelineRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndices, setActiveIndices] = useState<Set<number>>(new Set());
   
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
   });
   
-  const lineHeight = useTransform(scrollYProgress, [0.1, 0.9], ['0%', '100%']);
+  const lineHeight = useTransform(scrollYProgress, [0.15, 0.85], ['0%', '100%']);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -184,129 +174,152 @@ export const ExperienceSection = () => {
       const sectionHeight = rect.height;
       const windowHeight = window.innerHeight;
       
-      // Calculate scroll progress within section
       const scrollProgress = Math.max(0, Math.min(1, 
-        (windowHeight - sectionTop) / (sectionHeight + windowHeight * 0.5)
+        (windowHeight - sectionTop) / (sectionHeight + windowHeight * 0.3)
       ));
       
-      // Calculate active index based on scroll progress
-      const newIndex = Math.min(
-        timelineData.length - 1,
-        Math.floor(scrollProgress * timelineData.length)
-      );
+      const newActiveIndices = new Set<number>();
+      data.forEach((_, index) => {
+        const threshold = (index + 1) / data.length;
+        if (scrollProgress >= threshold * 0.8) {
+          newActiveIndices.add(index);
+        }
+      });
       
-      setActiveIndex(newIndex);
+      setActiveIndices(newActiveIndices);
     };
     
     window.addEventListener('scroll', handleScroll);
     handleScroll();
     
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-  
+  }, [data.length]);
+
+  const gradientClass = accentType === 'pink' 
+    ? 'from-pink-500 via-pink-400 to-pink-500'
+    : 'from-cyan-500 via-cyan-400 to-cyan-500';
+
+  const bgGlowClass = accentType === 'pink'
+    ? 'bg-pink-500/10'
+    : 'bg-cyan-500/10';
+
+  const dotColorActive = accentType === 'pink'
+    ? 'bg-pink-500 border-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.8)]'
+    : 'bg-cyan-500 border-cyan-500 shadow-[0_0_20px_rgba(6,182,212,0.8)]';
+
+  const dotColorInactive = 'bg-background border-muted-foreground/30';
+
+  const titleGradient = accentType === 'pink'
+    ? 'from-pink-400 via-pink-500 to-fuchsia-500'
+    : 'from-cyan-400 via-cyan-500 to-teal-400';
+
   return (
-    <section
-      ref={sectionRef}
-      id="experience"
-      className="relative py-32 px-4 overflow-hidden"
-    >
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px]" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[120px]" />
+    <div ref={sectionRef} id={id} className="relative py-24">
+      {/* Background glow */}
+      <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] ${bgGlowClass} rounded-full blur-[150px] pointer-events-none`} />
       
-      <div className="relative z-10 max-w-6xl mx-auto">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-20"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              Experience & Education
-            </span>
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            My journey through academia and professional experiences, shaping my skills and perspective.
-          </p>
+      {/* Section header */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="text-center mb-16 relative z-10"
+      >
+        <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">
+          <span className={`bg-gradient-to-r ${titleGradient} bg-clip-text text-transparent`}>
+            {title}
+          </span>
+        </h2>
+      </motion.div>
+      
+      {/* Timeline container */}
+      <div className="relative max-w-5xl mx-auto">
+        {/* Central timeline line */}
+        <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-1 md:-translate-x-1/2">
+          {/* Background line */}
+          <div className="absolute inset-0 bg-muted/30 rounded-full" />
           
-          {/* Legend */}
-          <div className="flex items-center justify-center gap-6 mt-6">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-primary shadow-[0_0_10px_rgba(0,255,255,0.5)]" />
-              <span className="text-sm text-muted-foreground">Experience</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-accent shadow-[0_0_10px_rgba(147,51,234,0.5)]" />
-              <span className="text-sm text-muted-foreground">Education</span>
-            </div>
-          </div>
-        </motion.div>
+          {/* Animated progress line */}
+          <motion.div
+            style={{ height: lineHeight }}
+            className={`absolute top-0 left-0 right-0 bg-gradient-to-b ${gradientClass} rounded-full`}
+          />
+        </div>
         
-        {/* Timeline */}
-        <div ref={timelineRef} className="relative">
-          {/* Central timeline line */}
-          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 md:-translate-x-1/2">
-            {/* Background line */}
-            <div className="absolute inset-0 bg-muted/20 rounded-full" />
+        {/* Timeline items */}
+        <div className="space-y-16">
+          {data.map((item, index) => {
+            const isLeft = index % 2 === 0;
+            const isActive = activeIndices.has(index);
             
-            {/* Animated progress line */}
-            <motion.div
-              style={{ height: lineHeight }}
-              className="absolute top-0 left-0 right-0 bg-gradient-to-b from-primary via-accent to-primary rounded-full shadow-[0_0_20px_rgba(0,255,255,0.5)]"
-            />
-          </div>
-          
-          {/* Timeline items */}
-          <div className="space-y-12 md:space-y-16">
-            {timelineData.map((item, index) => (
-              <div key={index} className="relative pl-12 md:pl-0">
+            return (
+              <div key={index} className="relative pl-14 md:pl-0">
                 {/* Timeline node */}
                 <motion.div
-                  animate={index <= activeIndex ? { scale: 1.2 } : { scale: 1 }}
-                  transition={{ duration: 0.3 }}
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  animate={isActive ? { scale: 1.3 } : { scale: 1 }}
+                  transition={{ duration: 0.4, type: 'spring', stiffness: 200 }}
                   className={`
-                    absolute left-4 md:left-1/2 top-6 w-4 h-4 md:-translate-x-1/2 rounded-full
-                    border-2 transition-all duration-500 z-10
-                    ${index <= activeIndex
-                      ? item.type === 'experience'
-                        ? 'bg-primary border-primary shadow-[0_0_20px_rgba(0,255,255,0.8)]'
-                        : 'bg-accent border-accent shadow-[0_0_20px_rgba(147,51,234,0.8)]'
-                      : 'bg-background border-muted'
-                    }
+                    absolute left-6 md:left-1/2 top-1/2 -translate-y-1/2 w-5 h-5 -translate-x-1/2 md:-translate-x-1/2 rounded-full
+                    border-[3px] transition-all duration-500 z-20
+                    ${isActive ? dotColorActive : dotColorInactive}
                   `}
                 >
                   {/* Pulse effect for active node */}
-                  {index === activeIndex && (
+                  {isActive && (
                     <motion.div
-                      animate={{ scale: [1, 2, 1], opacity: [0.5, 0, 0.5] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className={`
-                        absolute inset-0 rounded-full
-                        ${item.type === 'experience' ? 'bg-primary' : 'bg-accent'}
-                      `}
+                      animate={{ scale: [1, 2.5, 1], opacity: [0.6, 0, 0.6] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                      className={`absolute inset-0 rounded-full ${accentType === 'pink' ? 'bg-pink-500' : 'bg-cyan-500'}`}
                     />
                   )}
                 </motion.div>
                 
-                <TimelineCard item={item} index={index} isActive={index <= activeIndex} />
+                <TimelineCard 
+                  item={item} 
+                  index={index} 
+                  isActive={isActive}
+                  accentType={accentType}
+                />
               </div>
-            ))}
-          </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const ExperienceSection = () => {
+  return (
+    <section className="relative px-4 overflow-hidden">
+      {/* Overall background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-background" />
+      
+      <div className="relative z-10 max-w-6xl mx-auto">
+        {/* Education Section */}
+        <TimelineSection
+          title="Education"
+          data={educationData}
+          accentType="pink"
+          id="education"
+        />
+        
+        {/* Divider */}
+        <div className="relative py-8">
+          <div className="absolute left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-pink-500/50 via-muted/20 to-cyan-500/50" />
         </div>
         
-        {/* Year markers */}
-        <div className="hidden md:flex justify-between mt-12 px-8 text-sm font-bold">
-          <span className="text-accent">2011</span>
-          <span className="text-muted-foreground">2021</span>
-          <span className="text-muted-foreground">2023</span>
-          <span className="text-muted-foreground">2024</span>
-          <span className="text-primary">2025</span>
-          <span className="text-primary/50">2028</span>
-        </div>
+        {/* Experience Section */}
+        <TimelineSection
+          title="Experience"
+          data={experienceData}
+          accentType="cyan"
+          id="experience"
+        />
       </div>
     </section>
   );
