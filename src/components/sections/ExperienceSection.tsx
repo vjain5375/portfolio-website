@@ -235,8 +235,8 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
       
       {/* Timeline container */}
       <div className="relative max-w-5xl mx-auto">
-        {/* Central timeline line */}
-        <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-1 md:-translate-x-1/2">
+        {/* Central timeline line - centered on the same axis as dots */}
+        <div className="absolute left-[22px] md:left-1/2 top-0 bottom-0 w-[3px] -translate-x-1/2">
           {/* Background line */}
           <div className="absolute inset-0 bg-muted/30 rounded-full" />
           
@@ -255,7 +255,7 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
             
             return (
               <div key={index} className="relative pl-14 md:pl-0">
-                {/* Timeline node */}
+                {/* Timeline node - centered on the same axis as line */}
                 <motion.div
                   initial={{ scale: 0.5, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
@@ -263,7 +263,7 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
                   animate={isActive ? { scale: 1.3 } : { scale: 1 }}
                   transition={{ duration: 0.4, type: 'spring', stiffness: 200 }}
                   className={`
-                    absolute left-6 md:left-1/2 top-1/2 -translate-y-1/2 w-5 h-5 -translate-x-1/2 md:-translate-x-1/2 rounded-full
+                    absolute left-[22px] md:left-1/2 top-1/2 w-5 h-5 -translate-x-1/2 -translate-y-1/2 rounded-full
                     border-[3px] transition-all duration-500 z-20
                     ${isActive ? dotColorActive : dotColorInactive}
                   `}
