@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { ExternalLink, Github, Cpu, Bot, Zap, Eye } from 'lucide-react';
+import { ExternalLink, Github, Cpu, Bot, Zap, Eye, X } from 'lucide-react';
 import { TiltCard } from '../effects/TiltCard';
 
 interface Project {
@@ -13,7 +13,7 @@ interface Project {
   gradient: string;
   link?: string;
   github?: string;
-  previewUrl?: string; // For iframe preview
+  previewUrl?: string;
 }
 
 const projects: Project[] = [
@@ -52,41 +52,72 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [showPreview, setShowPreview] = useState(false);
-  const [previewPosition, setPreviewPosition] = useState({ x: 0, y: 0 });
-
-  const handleMouseEnter = (e: React.MouseEvent) => {
-    if (project.previewUrl) {
-      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-      setPreviewPosition({
-        x: rect.left + rect.width / 2,
-        y: rect.top,
-      });
-      setShowPreview(true);
-    }
-  };
 
   return (
-    <>
-      <motion.div
-        ref={ref}
-        initial={{ opacity: 0, y: 60, rotateX: 10 }}
-        animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
-        transition={{
-          duration: 0.8,
-          delay: index * 0.15,
-          ease: [0.25, 0.46, 0.45, 0.94],
-        }}
-        className="perspective-1000"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={() => setShowPreview(false)}
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 60, rotateX: 10 }}
+      animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
+      transition={{
+        duration: 0.8,
+        delay: index * 0.15,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      }}
+      className="perspective-1000"
+    >
+      <TiltCard
+        glowColor="red"
+        intensity="medium"
+        className="h-full"
       >
-        <TiltCard
-          glowColor="red"
-          intensity="medium"
-          className="h-full"
-        >
-          <div className="relative glass rounded-2xl p-6 md:p-8 border border-border/50 overflow-hidden h-full group">
-            {/* Animated gradient background on hover - red theme */}
+        <div className="relative glass rounded-2xl border border-border/50 overflow-hidden h-full group">
+          {/* Preview inside the card */}
+          <AnimatePresence>
+            {showPreview && project.previewUrl && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="absolute inset-0 z-50 bg-background/95 backdrop-blur-sm"
+              >
+                {/* Close button */}
+                <button
+                  onClick={() => setShowPreview(false)}
+                  className="absolute top-3 right-3 z-50 p-2 rounded-full bg-primary/20 hover:bg-primary/40 text-primary transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+
+                {/* Preview header */}
+                <div className="flex items-center gap-2 px-4 py-2 bg-secondary/80 border-b border-primary/30">
+                  <div className="flex gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+                  </div>
+                  <span className="ml-2 text-xs font-mono text-muted-foreground truncate flex-1">
+                    {project.previewUrl}
+                  </span>
+                </div>
+
+                {/* Iframe preview - fills the card */}
+                <div className="w-full h-[calc(100%-40px)]">
+                  <iframe
+                    src={project.previewUrl}
+                    className="w-full h-full bg-white"
+                    title={`${project.title} preview`}
+                    sandbox="allow-scripts allow-same-origin"
+                    loading="lazy"
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Regular card content */}
+          <div className="p-6 md:p-8">
+            {/* Animated gradient background on hover */}
             <motion.div
               className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
               animate={{
@@ -99,7 +130,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             />
 
-            {/* Glowing orb - crimson */}
+            {/* Glowing orb */}
             <motion.div
               className="absolute -top-20 -right-20 w-40 h-40 rounded-full opacity-0 group-hover:opacity-30 transition-opacity duration-500"
               style={{
@@ -108,22 +139,17 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
               }}
             />
 
-            {/* Preview badge for projects with preview */}
+            {/* Preview button for projects with preview */}
             {project.previewUrl && (
-              <motion.div
-                className="absolute top-4 right-4 flex items-center gap-1.5 px-2 py-1 text-xs font-mono text-primary bg-primary/10 rounded-full border border-primary/30 opacity-0 group-hover:opacity-100 transition-opacity"
-                animate={{
-                  boxShadow: [
-                    '0 0 5px hsl(0 70% 45% / 0.3)',
-                    '0 0 15px hsl(0 70% 45% / 0.5)',
-                    '0 0 5px hsl(0 70% 45% / 0.3)',
-                  ],
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
+              <motion.button
+                onClick={() => setShowPreview(true)}
+                className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono text-primary bg-primary/10 rounded-full border border-primary/30 hover:bg-primary/20 hover:border-primary/50 transition-all z-10"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <Eye className="w-3 h-3" />
                 Preview
-              </motion.div>
+              </motion.button>
             )}
 
             {/* Icon with glow */}
@@ -141,9 +167,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                   background: `linear-gradient(135deg, hsl(0 70% 45%) 0%, transparent 100%)`,
                   filter: 'blur(10px)',
                 }}
-                animate={{
-                  opacity: [0.5, 0.8, 0.5],
-                }}
+                animate={{ opacity: [0.5, 0.8, 0.5] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
             </motion.div>
@@ -200,48 +224,9 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
               )}
             </div>
           </div>
-        </TiltCard>
-      </motion.div>
-
-      {/* Preview Popup */}
-      <AnimatePresence>
-        {showPreview && project.previewUrl && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-            className="fixed z-[200] pointer-events-none"
-            style={{
-              left: Math.min(previewPosition.x - 200, window.innerWidth - 420),
-              top: Math.max(previewPosition.y - 280, 20),
-            }}
-          >
-            <div className="w-[400px] h-[250px] rounded-xl overflow-hidden border-2 border-primary/50 shadow-2xl shadow-primary/30">
-              {/* Preview header */}
-              <div className="flex items-center gap-2 px-3 py-2 bg-secondary/90 border-b border-primary/30">
-                <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
-                </div>
-                <span className="ml-2 text-xs font-mono text-muted-foreground truncate">
-                  {project.previewUrl}
-                </span>
-              </div>
-              {/* Iframe preview */}
-              <iframe
-                src={project.previewUrl}
-                className="w-full h-[220px] bg-white pointer-events-none"
-                title={`${project.title} preview`}
-                sandbox="allow-scripts allow-same-origin"
-                loading="lazy"
-              />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+        </div>
+      </TiltCard>
+    </motion.div>
   );
 };
 
@@ -254,15 +239,13 @@ export const ProjectsSection = () => {
       {/* Background effects */}
       <div className="absolute inset-0 grid-pattern opacity-10 pointer-events-none" />
 
-      {/* Ambient glow - red theme */}
+      {/* Ambient glow */}
       <motion.div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-10 pointer-events-none"
         style={{
           background: 'radial-gradient(circle, hsl(0 70% 45% / 0.3) 0%, transparent 70%)',
         }}
-        animate={{
-          scale: [1, 1.1, 1],
-        }}
+        animate={{ scale: [1, 1.1, 1] }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
       />
 
@@ -292,9 +275,7 @@ export const ProjectsSection = () => {
             <span className="text-foreground">My </span>
             <motion.span
               className="gradient-text"
-              animate={{
-                filter: ['brightness(1)', 'brightness(1.2)', 'brightness(1)'],
-              }}
+              animate={{ filter: ['brightness(1)', 'brightness(1.2)', 'brightness(1)'] }}
               transition={{ duration: 4, repeat: Infinity }}
             >
               Projects
@@ -302,7 +283,7 @@ export const ProjectsSection = () => {
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             A collection of software projects showcasing my expertise in web development, AI, and full-stack applications.
-            <span className="text-primary ml-1">Hover over a project to see a live preview!</span>
+            <span className="text-primary ml-1">Click "Preview" to see a live demo!</span>
           </p>
         </motion.div>
 
