@@ -8,6 +8,7 @@ import { ContactSection } from '@/components/sections/ContactSection';
 import { FloatingParticles } from '@/components/effects/FloatingParticles';
 import { MouseGlow } from '@/components/effects/MouseGlow';
 import { RedLightPulse } from '@/components/effects/RedLightPulse';
+import { DimensionShift } from '@/components/effects/DimensionShift';
 
 const Index = () => {
   return (
@@ -16,6 +17,7 @@ const Index = () => {
       <FloatingParticles />
       <MouseGlow />
       <RedLightPulse />
+      <DimensionShift />
 
       {/* Scanline overlay for retro-sci-fi feel */}
       <div className="fixed inset-0 pointer-events-none z-[100] scanlines opacity-20" />
