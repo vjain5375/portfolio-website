@@ -97,11 +97,11 @@ const TimelineCard = ({
           relative w-full md:w-[calc(50%-40px)] p-6 rounded-2xl
           backdrop-blur-xl border transition-all duration-500
           ${item.type === 'experience' 
-            ? 'bg-primary/5 border-primary/20 hover:border-primary/40' 
-            : 'bg-accent/5 border-accent/20 hover:border-accent/40'
+            ? 'bg-red-500/5 border-red-500/20 hover:border-red-500/40' 
+            : 'bg-red-600/5 border-red-600/20 hover:border-red-600/40'
           }
           ${isActive 
-            ? 'shadow-[0_0_30px_rgba(0,255,255,0.15)]' 
+            ? 'shadow-[0_0_30px_rgba(239,68,68,0.15)]' 
             : 'shadow-none'
           }
         `}
@@ -110,7 +110,7 @@ const TimelineCard = ({
         {isActive && (
           <div className={`
             absolute inset-0 rounded-2xl opacity-20 blur-xl -z-10
-            ${item.type === 'experience' ? 'bg-primary' : 'bg-accent'}
+            ${item.type === 'experience' ? 'bg-red-500' : 'bg-red-600'}
           `} />
         )}
         
@@ -118,8 +118,8 @@ const TimelineCard = ({
         <div className={`
           inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-3
           ${item.type === 'experience' 
-            ? 'bg-primary/20 text-primary' 
-            : 'bg-accent/20 text-accent'
+            ? 'bg-red-500/20 text-red-500' 
+            : 'bg-red-600/20 text-red-600'
           }
         `}>
           <Icon className="w-3 h-3" />
@@ -131,7 +131,7 @@ const TimelineCard = ({
           {item.title}
         </h3>
         <p className={`text-sm font-medium mb-2 ${
-          item.type === 'experience' ? 'text-primary' : 'text-accent'
+          item.type === 'experience' ? 'text-red-500' : 'text-red-600'
         }`}>
           {item.organization}
         </p>
@@ -145,8 +145,8 @@ const TimelineCard = ({
         <div className={`
           absolute top-4 right-4 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider font-bold
           ${item.type === 'experience' 
-            ? 'bg-primary/10 text-primary' 
-            : 'bg-accent/10 text-accent'
+            ? 'bg-red-500/10 text-red-500' 
+            : 'bg-red-600/10 text-red-600'
           }
         `}>
           {item.type}
@@ -156,7 +156,7 @@ const TimelineCard = ({
       {/* Timeline connector line */}
       <div className={`
         hidden md:block absolute top-1/2 w-10 h-0.5 
-        ${item.type === 'experience' ? 'bg-primary/30' : 'bg-accent/30'}
+        ${item.type === 'experience' ? 'bg-red-500/30' : 'bg-red-600/30'}
         ${isLeft ? 'right-[calc(50%-40px)]' : 'left-[calc(50%-40px)]'}
       `} />
     </motion.div>
@@ -211,9 +211,9 @@ export const ExperienceSection = () => {
       className="relative py-32 px-4 overflow-hidden"
     >
       {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px]" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[120px]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-red-500/5 to-background" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-500/10 rounded-full blur-[120px]" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-600/10 rounded-full blur-[120px]" />
       
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Section header */}
@@ -225,7 +225,7 @@ export const ExperienceSection = () => {
           className="text-center mb-20"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-red-600 via-red-500 to-red-600 bg-clip-text text-transparent text-glow-red">
               Experience & Education
             </span>
           </h2>
@@ -236,11 +236,11 @@ export const ExperienceSection = () => {
           {/* Legend */}
           <div className="flex items-center justify-center gap-6 mt-6">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-primary shadow-[0_0_10px_rgba(0,255,255,0.5)]" />
+              <div className="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
               <span className="text-sm text-muted-foreground">Experience</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-accent shadow-[0_0_10px_rgba(147,51,234,0.5)]" />
+              <div className="w-3 h-3 rounded-full bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.5)]" />
               <span className="text-sm text-muted-foreground">Education</span>
             </div>
           </div>
@@ -273,8 +273,8 @@ export const ExperienceSection = () => {
                     border-2 transition-all duration-500 z-10
                     ${index <= activeIndex
                       ? item.type === 'experience'
-                        ? 'bg-primary border-primary shadow-[0_0_20px_rgba(0,255,255,0.8)]'
-                        : 'bg-accent border-accent shadow-[0_0_20px_rgba(147,51,234,0.8)]'
+                        ? 'bg-red-500 border-red-500 shadow-[0_0_20px_rgba(239,68,68,0.8)]'
+                        : 'bg-red-600 border-red-600 shadow-[0_0_20px_rgba(220,38,38,0.8)]'
                       : 'bg-background border-muted'
                     }
                   `}
@@ -286,7 +286,7 @@ export const ExperienceSection = () => {
                       transition={{ duration: 2, repeat: Infinity }}
                       className={`
                         absolute inset-0 rounded-full
-                        ${item.type === 'experience' ? 'bg-primary' : 'bg-accent'}
+                        ${item.type === 'experience' ? 'bg-red-500' : 'bg-red-600'}
                       `}
                     />
                   )}
@@ -300,12 +300,12 @@ export const ExperienceSection = () => {
         
         {/* Year markers */}
         <div className="hidden md:flex justify-between mt-12 px-8 text-sm font-bold">
-          <span className="text-accent">2011</span>
+          <span className="text-red-600">2011</span>
           <span className="text-muted-foreground">2021</span>
           <span className="text-muted-foreground">2023</span>
           <span className="text-muted-foreground">2024</span>
-          <span className="text-primary">2025</span>
-          <span className="text-primary/50">2028</span>
+          <span className="text-red-500">2025</span>
+          <span className="text-red-500/50">2028</span>
         </div>
       </div>
     </section>

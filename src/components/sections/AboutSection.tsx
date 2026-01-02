@@ -62,14 +62,14 @@ const Terminal = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3 }}
             className={`mb-2 ${
-              line.type === 'command' ? 'text-primary' : 'text-muted-foreground'
+              line.type === 'command' ? 'text-red-500' : 'text-muted-foreground'
             }`}
           >
             {line.content}
           </motion.div>
         ))}
         {visibleLines < terminalLines.length && (
-          <span className="inline-block w-2 h-4 bg-primary cursor-blink" />
+          <span className="inline-block w-2 h-4 bg-red-500 cursor-blink" />
         )}
       </div>
     </div>
@@ -91,12 +91,12 @@ export const AboutSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-primary border border-primary/30 rounded-full">
+          <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-red-500 border border-red-500/30 rounded-full glass">
             About Me
           </span>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             <span className="text-foreground">Who </span>
-            <span className="gradient-text">I Am</span>
+            <span className="gradient-text text-glow-red">I Am</span>
           </h2>
         </motion.div>
 
@@ -146,7 +146,7 @@ export const AboutSection = () => {
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2 text-foreground">
-                        <span className="text-primary">{skill.icon}</span>
+                        <span className="text-red-500">{skill.icon}</span>
                         <span className="font-medium">{skill.name}</span>
                       </div>
                       <span className="text-sm text-muted-foreground">{skill.level}%</span>
@@ -173,7 +173,7 @@ export const AboutSection = () => {
               <a
                 href="/Vansh_Jain_Resume.pdf"
                 download="Vansh_Jain_Resume.pdf"
-                className="group relative inline-flex items-center gap-3 px-8 py-4 font-display font-semibold text-primary-foreground bg-gradient-to-r from-primary to-accent rounded-lg btn-glow transition-all duration-300 hover:scale-105"
+                className="group relative inline-flex items-center gap-3 px-8 py-4 font-display font-semibold text-white bg-gradient-to-r from-red-600 to-red-500 rounded-lg btn-glow transition-all duration-300 hover:scale-105"
               >
                 <Download className="w-5 h-5 transition-transform group-hover:-translate-y-1" />
                 <span>Download Resume</span>

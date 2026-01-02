@@ -21,7 +21,7 @@ const projects: Project[] = [
     description: "An interactive AI-powered assistant built with Streamlit, featuring natural language processing capabilities for intelligent conversations and task assistance.",
     technologies: ["Python", "Streamlit", "AI/ML", "NLP"],
     icon: <Bot className="w-8 h-8" />,
-    gradient: "from-primary to-accent",
+    gradient: "from-red-600 to-red-500",
     link: "https://deadpools.streamlit.app/",
   },
   {
@@ -30,7 +30,7 @@ const projects: Project[] = [
     description: "A beautiful, heartfelt website celebrating the special bond between siblings during Raksha Bandhan, featuring interactive elements and emotional messaging.",
     technologies: ["HTML", "CSS", "JavaScript", "GitHub Pages"],
     icon: <Zap className="w-8 h-8" />,
-    gradient: "from-accent to-primary",
+    gradient: "from-red-500 to-red-600",
     github: "https://github.com/vjain5375/bond-of-rakhi",
     link: "https://vjain5375.github.io/bond-of-rakhi/",
   },
@@ -40,7 +40,7 @@ const projects: Project[] = [
     description: "Exciting new projects are in development! Stay tuned for more innovative applications and creative solutions.",
     technologies: ["React", "Node.js", "Python", "More..."],
     icon: <Cpu className="w-8 h-8" />,
-    gradient: "from-primary via-accent to-primary",
+    gradient: "from-red-600 via-red-500 to-red-600",
   },
 ];
 
@@ -64,13 +64,13 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
 
         {/* Icon */}
         <div className={`relative inline-flex p-4 rounded-xl bg-gradient-to-r ${project.gradient} mb-6`}>
-          <div className="text-primary-foreground">
+          <div className="text-white">
             {project.icon}
           </div>
         </div>
 
         {/* Content */}
-        <h3 className="font-display text-xl md:text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
+        <h3 className="font-display text-xl md:text-2xl font-bold text-foreground mb-3 group-hover:text-red-500 transition-colors">
           {project.title}
         </h3>
 
@@ -83,7 +83,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
           {project.technologies.map((tech) => (
             <span
               key={tech}
-              className="px-3 py-1 text-xs font-mono text-primary bg-primary/10 rounded-full border border-primary/20"
+              className="px-3 py-1 text-xs font-mono text-red-500 bg-red-500/10 rounded-full border border-red-500/20"
             >
               {tech}
             </span>
@@ -97,7 +97,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
               href={project.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-red-500 transition-colors cursor-pointer"
               onClick={(e) => e.stopPropagation()}
             >
               <Github className="w-4 h-4" />
@@ -109,7 +109,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors cursor-pointer"
+              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-red-500 transition-colors cursor-pointer"
               onClick={(e) => e.stopPropagation()}
             >
               <ExternalLink className="w-4 h-4" />
@@ -145,12 +145,12 @@ export const ProjectsSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-accent border border-accent/30 rounded-full">
+          <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-red-500 border border-red-500/30 rounded-full glass">
             Featured Work
           </span>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             <span className="text-foreground">My </span>
-            <span className="gradient-text">Projects</span>
+            <span className="gradient-text text-glow-red">Projects</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             A collection of software projects showcasing my expertise in web development, AI, and full-stack applications.
