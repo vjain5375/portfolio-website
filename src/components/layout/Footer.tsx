@@ -10,11 +10,11 @@ export const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-r from-red-600 to-red-500">
-              <Terminal className="w-4 h-4 text-white" />
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-r from-primary to-accent">
+              <Terminal className="w-4 h-4 text-primary-foreground" />
             </div>
             <span className="font-display font-bold text-foreground">
-              Vansh Jain<span className="text-red-500">.</span>
+              Vansh Jain<span className="text-primary">.</span>
             </span>
           </div>
 
@@ -41,7 +41,7 @@ export const Footer = () => {
             <motion.a
               href="mailto:vjain5375@gmail.com"
               whileHover={{ scale: 1.1, y: -2 }}
-              className="p-2 text-muted-foreground hover:text-red-500 transition-colors"
+              className="p-2 text-muted-foreground hover:text-primary transition-colors"
             >
               <Mail className="w-5 h-5" />
             </motion.a>
