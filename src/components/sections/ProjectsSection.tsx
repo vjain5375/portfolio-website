@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { ExternalLink, Github, Cpu, Bot, Zap, Eye, X } from 'lucide-react';
 import { TiltCard } from '../effects/TiltCard';
 
@@ -52,6 +52,27 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [showPreview, setShowPreview] = useState(false);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [iframeError, setIframeError] = useState(false);
+
+  // Timeout to detect if iframe fails to load (for sites that block iframes)
+  useEffect(() => {
+    if (showPreview && !iframeLoaded && !iframeError) {
+      const timeout = setTimeout(() => {
+        if (!iframeLoaded) {
+          setIframeError(true);
+        }
+      }, 8000); // 8 second timeout
+      return () => clearTimeout(timeout);
+    }
+  }, [showPreview, iframeLoaded, iframeError]);
+
+  // Reset states when closing preview
+  const handleClosePreview = () => {
+    setShowPreview(false);
+    setIframeLoaded(false);
+    setIframeError(false);
+  };
 
   return (
     <motion.div
@@ -102,13 +123,52 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                 </div>
 
                 {/* Iframe preview - fills the card */}
-                <div className="w-full h-[calc(100%-40px)]">
+                <div className="w-full h-[calc(100%-40px)] relative">
+                  {/* Loading indicator */}
+                  {!iframeLoaded && !iframeError && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-secondary">
+                      <div className="flex flex-col items-center gap-3">
+                        <motion.div
+                          className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                        />
+                        <span className="text-sm text-muted-foreground">Loading preview...</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Error fallback */}
+                  {iframeError && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-secondary">
+                      <div className="flex flex-col items-center gap-4 text-center px-4">
+                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                          <ExternalLink className="w-6 h-6 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-foreground font-medium mb-1">Preview not available</p>
+                          <p className="text-sm text-muted-foreground mb-4">This site blocks embedded previews</p>
+                        </div>
+                        <a
+                          href={project.previewUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium text-sm hover:bg-primary/90 transition-colors"
+                        >
+                          Open in New Tab →
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
                   <iframe
                     src={project.previewUrl}
-                    className="w-full h-full bg-white"
+                    className={`w-full h-full bg-white ${iframeLoaded ? 'opacity-100' : 'opacity-0'}`}
                     title={`${project.title} preview`}
-                    sandbox="allow-scripts allow-same-origin"
+                    sandbox="allow-scripts allow-same-origin allow-popups"
                     loading="lazy"
+                    onLoad={() => setIframeLoaded(true)}
+                    onError={() => setIframeError(true)}
                   />
                 </div>
               </motion.div>
