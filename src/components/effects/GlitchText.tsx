@@ -24,8 +24,17 @@ export const GlitchText = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Main text */}
-      <span className="relative z-10">{children}</span>
+      {/* Main text - inherit all styling from parent */}
+      <span
+        className="relative z-10"
+        style={{
+          color: 'inherit',
+          WebkitTextStroke: 'inherit',
+          textShadow: 'inherit',
+        }}
+      >
+        {children}
+      </span>
 
       {/* Glitch layers - only visible on hover */}
       {isHovered && (
