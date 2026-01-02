@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Scene3D } from '../3d/Scene3D';
 import { ChevronDown, Sparkles } from 'lucide-react';
 import { useRef } from 'react';
+import { GlitchText } from '../effects/GlitchText';
 
 export const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -73,33 +74,21 @@ export const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight"
         >
-          <motion.span 
-            className="text-foreground inline-block"
-            animate={{ 
-              textShadow: [
-                '0 0 20px hsl(0 0% 100% / 0)',
-                '0 0 40px hsl(0 0% 100% / 0.1)',
-                '0 0 20px hsl(0 0% 100% / 0)',
-              ],
-            }}
-            transition={{ duration: 4, repeat: Infinity }}
+          <GlitchText 
+            className="text-foreground"
+            glitchColor1="hsl(180, 100%, 50%)"
+            glitchColor2="hsl(270, 100%, 65%)"
           >
             Engineering
-          </motion.span>
+          </GlitchText>
           <br />
-          <motion.span 
-            className="gradient-text text-glow-cyan inline-block"
-            animate={{
-              filter: [
-                'brightness(1)',
-                'brightness(1.2)',
-                'brightness(1)',
-              ],
-            }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          <GlitchText 
+            className="gradient-text text-glow-cyan"
+            glitchColor1="hsl(0, 80%, 55%)"
+            glitchColor2="hsl(180, 100%, 50%)"
           >
             The Future
-          </motion.span>
+          </GlitchText>
         </motion.h1>
 
         <motion.p
