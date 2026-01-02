@@ -75,10 +75,10 @@ export const HeroSection = () => {
           initial={{ opacity: 0, y: 50, filter: 'blur(10px)' }}
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 1.2, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight"
+          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight"
         >
           <GlitchText
-            className="text-foreground"
+            className="stranger-things-text"
             glitchColor1="hsl(0, 70%, 45%)"
             glitchColor2="hsl(0, 80%, 35%)"
           >
@@ -86,7 +86,7 @@ export const HeroSection = () => {
           </GlitchText>
           <br />
           <GlitchText
-            className="gradient-text text-glow-red"
+            className="stranger-things-outline text-glow-red"
             glitchColor1="hsl(0, 80%, 40%)"
             glitchColor2="hsl(195, 50%, 30%)"
           >

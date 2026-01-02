@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
+/* Fonts: Cinzel for Stranger Things style, Orbitron for tech feel */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
@@ -60,6 +61,7 @@
 
     /* Fonts */
     --font-display: 'Orbitron', sans-serif;
+    --font-stranger: 'Cinzel', serif;
     --font-mono: 'JetBrains Mono', monospace;
     --font-body: 'Inter', sans-serif;
   }
@@ -332,12 +334,53 @@
     font-family: var(--font-display);
   }
 
+  .font-stranger {
+    font-family: var(--font-stranger);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
   .font-mono {
     font-family: var(--font-mono);
   }
 
   .font-body {
     font-family: var(--font-body);
+  }
+
+  /* Stranger Things style red neon text effect */
+  .stranger-things-text {
+    font-family: var(--font-stranger);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: transparent;
+    background: linear-gradient(180deg, hsl(0 80% 55%) 0%, hsl(0 70% 40%) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow:
+      0 0 10px hsl(0 80% 50% / 0.8),
+      0 0 20px hsl(0 70% 45% / 0.6),
+      0 0 40px hsl(0 60% 40% / 0.4),
+      0 0 60px hsl(0 50% 35% / 0.3),
+      2px 2px 4px hsl(0 0% 0% / 0.5);
+    position: relative;
+  }
+
+  /* Neon outline variant */
+  .stranger-things-outline {
+    font-family: var(--font-stranger);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: transparent;
+    -webkit-text-stroke: 2px hsl(0 80% 50%);
+    text-shadow:
+      0 0 10px hsl(0 80% 50% / 0.9),
+      0 0 20px hsl(0 70% 45% / 0.7),
+      0 0 40px hsl(0 60% 40% / 0.5),
+      0 0 80px hsl(0 50% 35% / 0.4);
   }
 
   .perspective-1000 {
