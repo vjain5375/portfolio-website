@@ -5,7 +5,7 @@ export const MouseGlow = () => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const springConfig = { damping: 25, stiffness: 150 };
+  const springConfig = { damping: 30, stiffness: 120 };
   const smoothX = useSpring(mouseX, springConfig);
   const smoothY = useSpring(mouseY, springConfig);
 
@@ -29,30 +29,14 @@ export const MouseGlow = () => {
         translateY: '-50%',
       }}
     >
-      {/* Primary glow */}
+      {/* Primary crimson glow */}
       <motion.div
-        className="absolute w-[300px] h-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20"
+        className="absolute w-[250px] h-[250px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-15"
         style={{
-          background: 'radial-gradient(circle, hsl(180 100% 50% / 0.4) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, hsl(0 70% 45% / 0.35) 0%, transparent 70%)',
         }}
         animate={{
           scale: [1, 1.1, 1],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
-      
-      {/* Secondary glow */}
-      <motion.div
-        className="absolute w-[200px] h-[200px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-15"
-        style={{
-          background: 'radial-gradient(circle, hsl(270 100% 65% / 0.5) 0%, transparent 60%)',
-        }}
-        animate={{
-          scale: [1.1, 0.9, 1.1],
         }}
         transition={{
           duration: 3,
@@ -61,11 +45,27 @@ export const MouseGlow = () => {
         }}
       />
 
-      {/* Core dot */}
+      {/* Secondary blood red glow */}
       <motion.div
-        className="absolute w-2 h-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/60"
+        className="absolute w-[180px] h-[180px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-12"
         style={{
-          boxShadow: '0 0 10px hsl(180 100% 50%), 0 0 20px hsl(180 100% 50% / 0.5)',
+          background: 'radial-gradient(circle, hsl(0 80% 35% / 0.4) 0%, transparent 60%)',
+        }}
+        animate={{
+          scale: [1.1, 0.9, 1.1],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+      />
+
+      {/* Core dot - subtle red */}
+      <motion.div
+        className="absolute w-1.5 h-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/50"
+        style={{
+          boxShadow: '0 0 8px hsl(0 70% 45%), 0 0 16px hsl(0 70% 45% / 0.4)',
         }}
       />
     </motion.div>

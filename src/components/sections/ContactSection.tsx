@@ -39,13 +39,13 @@ export const ContactSection = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Create mailto link with form data
     const subject = encodeURIComponent(`Portfolio Contact from ${formData.name}`);
     const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
-    
+
     window.open(`mailto:vjain5375@gmail.com?subject=${subject}&body=${body}`, '_blank');
-    
+
     toast.success('Opening your email client to send the message!');
     setFormData({ name: '', email: '', message: '' });
     setIsSubmitting(false);
@@ -55,7 +55,18 @@ export const ContactSection = () => {
     <section id="contact" className="relative py-32 px-6">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-t from-secondary/20 to-transparent pointer-events-none" />
-      
+
+      {/* Red ambient glow */}
+      <motion.div
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] opacity-10 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at center bottom, hsl(0 70% 45% / 0.4) 0%, transparent 70%)',
+          filter: 'blur(60px)',
+        }}
+        animate={{ opacity: [0.08, 0.15, 0.08] }}
+        transition={{ duration: 6, repeat: Infinity }}
+      />
+
       <div className="max-w-6xl mx-auto">
         {/* Section header */}
         <motion.div
@@ -65,9 +76,19 @@ export const ContactSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-accent border border-accent/30 rounded-full">
+          <motion.span
+            className="inline-block px-4 py-2 mb-4 text-sm font-mono text-accent border border-accent/30 rounded-full"
+            animate={{
+              boxShadow: [
+                '0 0 10px hsl(0 80% 35% / 0.2)',
+                '0 0 20px hsl(0 80% 35% / 0.3)',
+                '0 0 10px hsl(0 80% 35% / 0.2)',
+              ],
+            }}
+            transition={{ duration: 3, repeat: Infinity }}
+          >
             Get In Touch
-          </span>
+          </motion.span>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             <span className="text-foreground">Let's </span>
             <span className="gradient-text">Connect</span>
@@ -184,10 +205,12 @@ export const ContactSection = () => {
                   />
                 </div>
 
-                <button
+                <motion.button
                   type="submit"
                   disabled={isSubmitting}
                   className="group w-full flex items-center justify-center gap-3 px-8 py-4 font-display font-semibold text-primary-foreground bg-gradient-to-r from-primary to-accent rounded-lg btn-glow transition-all duration-300 hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   {isSubmitting ? (
                     <span>Sending...</span>
@@ -197,7 +220,7 @@ export const ContactSection = () => {
                       <Send className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                     </>
                   )}
-                </button>
+                </motion.button>
               </div>
             </form>
           </motion.div>

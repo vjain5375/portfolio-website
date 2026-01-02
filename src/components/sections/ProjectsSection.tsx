@@ -54,43 +54,43 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
       ref={ref}
       initial={{ opacity: 0, y: 60, rotateX: 10 }}
       animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
-      transition={{ 
-        duration: 0.8, 
+      transition={{
+        duration: 0.8,
         delay: index * 0.15,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
       className="perspective-1000"
     >
-      <TiltCard 
-        glowColor={index % 2 === 0 ? 'cyan' : 'purple'} 
+      <TiltCard
+        glowColor="red"
         intensity="medium"
         className="h-full"
       >
         <div className="relative glass rounded-2xl p-6 md:p-8 border border-border/50 overflow-hidden h-full group">
-          {/* Animated gradient background on hover */}
-          <motion.div 
+          {/* Animated gradient background on hover - red theme */}
+          <motion.div
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
             animate={{
               background: [
-                `linear-gradient(135deg, hsl(180 100% 50% / 0.05) 0%, transparent 50%)`,
-                `linear-gradient(225deg, hsl(270 100% 65% / 0.05) 0%, transparent 50%)`,
-                `linear-gradient(135deg, hsl(180 100% 50% / 0.05) 0%, transparent 50%)`,
+                `linear-gradient(135deg, hsl(0 70% 45% / 0.05) 0%, transparent 50%)`,
+                `linear-gradient(225deg, hsl(0 80% 35% / 0.05) 0%, transparent 50%)`,
+                `linear-gradient(135deg, hsl(0 70% 45% / 0.05) 0%, transparent 50%)`,
               ],
             }}
             transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           />
 
-          {/* Glowing orb */}
+          {/* Glowing orb - crimson */}
           <motion.div
             className="absolute -top-20 -right-20 w-40 h-40 rounded-full opacity-0 group-hover:opacity-30 transition-opacity duration-500"
             style={{
-              background: `radial-gradient(circle, ${index % 2 === 0 ? 'hsl(180 100% 50%)' : 'hsl(270 100% 65%)'} 0%, transparent 70%)`,
+              background: `radial-gradient(circle, hsl(0 70% 45%) 0%, transparent 70%)`,
               filter: 'blur(40px)',
             }}
           />
 
           {/* Icon with glow */}
-          <motion.div 
+          <motion.div
             className={`relative inline-flex p-4 rounded-xl bg-gradient-to-r ${project.gradient} mb-6`}
             whileHover={{ scale: 1.1, rotate: 5 }}
             transition={{ type: 'spring', stiffness: 300 }}
@@ -101,7 +101,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
             <motion.div
               className="absolute inset-0 rounded-xl"
               style={{
-                background: `linear-gradient(135deg, ${index % 2 === 0 ? 'hsl(180 100% 50%)' : 'hsl(270 100% 65%)'} 0%, transparent 100%)`,
+                background: `linear-gradient(135deg, hsl(0 70% 45%) 0%, transparent 100%)`,
                 filter: 'blur(10px)',
               }}
               animate={{
@@ -175,20 +175,20 @@ export const ProjectsSection = () => {
   return (
     <section id="projects" className="relative py-32 px-6">
       {/* Background effects */}
-      <div className="absolute inset-0 grid-pattern opacity-15 pointer-events-none" />
-      
-      {/* Ambient glow */}
+      <div className="absolute inset-0 grid-pattern opacity-10 pointer-events-none" />
+
+      {/* Ambient glow - red theme */}
       <motion.div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-10 pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, hsl(180 100% 50% / 0.3) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, hsl(0 70% 45% / 0.3) 0%, transparent 70%)',
         }}
         animate={{
           scale: [1, 1.1, 1],
         }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
       />
-      
+
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section header */}
         <motion.div
@@ -198,13 +198,13 @@ export const ProjectsSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <motion.span 
+          <motion.span
             className="inline-block px-4 py-2 mb-4 text-sm font-mono text-accent border border-accent/30 rounded-full"
             animate={{
               boxShadow: [
-                '0 0 15px hsl(270 100% 65% / 0.2)',
-                '0 0 25px hsl(270 100% 65% / 0.4)',
-                '0 0 15px hsl(270 100% 65% / 0.2)',
+                '0 0 15px hsl(0 80% 35% / 0.2)',
+                '0 0 25px hsl(0 80% 35% / 0.4)',
+                '0 0 15px hsl(0 80% 35% / 0.2)',
               ],
             }}
             transition={{ duration: 3, repeat: Infinity }}
@@ -213,7 +213,7 @@ export const ProjectsSection = () => {
           </motion.span>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             <span className="text-foreground">My </span>
-            <motion.span 
+            <motion.span
               className="gradient-text"
               animate={{
                 filter: ['brightness(1)', 'brightness(1.2)', 'brightness(1)'],

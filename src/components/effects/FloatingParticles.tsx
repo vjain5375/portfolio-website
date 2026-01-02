@@ -8,31 +8,41 @@ interface Particle {
   size: number;
   duration: number;
   delay: number;
-  color: 'cyan' | 'purple' | 'red';
-  type: 'orb' | 'spark' | 'dust';
+  color: 'crimson' | 'bloodRed' | 'dimCyan' | 'dust';
+  type: 'orb' | 'spark' | 'dust' | 'ember';
 }
 
 const generateParticles = (count: number): Particle[] => {
-  return Array.from({ length: count }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: Math.random() * 4 + 1,
-    duration: Math.random() * 8 + 4,
-    delay: Math.random() * 4,
-    color: ['cyan', 'purple', 'red'][Math.floor(Math.random() * 3)] as Particle['color'],
-    type: ['orb', 'spark', 'dust'][Math.floor(Math.random() * 3)] as Particle['type'],
-  }));
+  return Array.from({ length: count }, (_, i) => {
+    const random = Math.random();
+    // Mostly red particles with occasional dim cyan
+    let color: Particle['color'];
+    if (random < 0.4) color = 'crimson';
+    else if (random < 0.7) color = 'bloodRed';
+    else if (random < 0.85) color = 'dust';
+    else color = 'dimCyan';
+
+    return {
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 3 + 0.5,
+      duration: Math.random() * 12 + 8, // Slower movement
+      delay: Math.random() * 6,
+      color,
+      type: ['orb', 'spark', 'dust', 'ember'][Math.floor(Math.random() * 4)] as Particle['type'],
+    };
+  });
 };
 
 export const FloatingParticles = () => {
-  const [particles] = useState(() => generateParticles(50));
+  const [particles] = useState(() => generateParticles(70)); // More particles for dust effect
   const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
 
   const mouseX = useMotionValue(0.5);
   const mouseY = useMotionValue(0.5);
-  
-  const springConfig = { damping: 50, stiffness: 100 };
+
+  const springConfig = { damping: 50, stiffness: 80 };
   const smoothMouseX = useSpring(mouseX, springConfig);
   const smoothMouseY = useSpring(mouseY, springConfig);
 
@@ -50,63 +60,77 @@ export const FloatingParticles = () => {
   }, [handleMouseMove]);
 
   const colorMap = {
-    cyan: 'hsl(180, 100%, 50%)',
-    purple: 'hsl(270, 100%, 65%)',
-    red: 'hsl(0, 80%, 55%)',
+    crimson: 'hsl(0, 70%, 45%)',
+    bloodRed: 'hsl(0, 80%, 35%)',
+    dimCyan: 'hsl(195, 50%, 30%)',
+    dust: 'hsl(0, 20%, 60%)',
   };
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-[1]">
-      {/* Ambient glow orbs that react to mouse */}
+      {/* Main ambient red glow that reacts to mouse */}
       <motion.div
         style={{
           x: useTransform(smoothMouseX, [0, 1], ['-10%', '10%']),
           y: useTransform(smoothMouseY, [0, 1], ['-10%', '10%']),
         }}
-        className="absolute -top-1/4 -right-1/4 w-[600px] h-[600px] rounded-full opacity-20"
+        className="absolute -top-1/4 -right-1/4 w-[600px] h-[600px] rounded-full opacity-15"
         initial={{ scale: 0.8 }}
         animate={{
           scale: [0.8, 1.1, 0.8],
           background: [
-            'radial-gradient(circle, hsl(180 100% 50% / 0.3) 0%, transparent 70%)',
-            'radial-gradient(circle, hsl(270 100% 65% / 0.3) 0%, transparent 70%)',
-            'radial-gradient(circle, hsl(180 100% 50% / 0.3) 0%, transparent 70%)',
+            'radial-gradient(circle, hsl(0 70% 45% / 0.25) 0%, transparent 70%)',
+            'radial-gradient(circle, hsl(0 80% 35% / 0.3) 0%, transparent 70%)',
+            'radial-gradient(circle, hsl(0 70% 45% / 0.25) 0%, transparent 70%)',
           ],
         }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
       />
 
+      {/* Secondary crimson glow - left side */}
       <motion.div
         style={{
           x: useTransform(smoothMouseX, [0, 1], ['10%', '-10%']),
           y: useTransform(smoothMouseY, [0, 1], ['10%', '-10%']),
         }}
-        className="absolute top-1/3 -left-1/4 w-[500px] h-[500px] rounded-full opacity-15"
+        className="absolute top-1/3 -left-1/4 w-[500px] h-[500px] rounded-full opacity-12"
         animate={{
           scale: [1, 1.2, 1],
           background: [
-            'radial-gradient(circle, hsl(270 100% 65% / 0.3) 0%, transparent 70%)',
-            'radial-gradient(circle, hsl(0 80% 55% / 0.2) 0%, transparent 70%)',
-            'radial-gradient(circle, hsl(270 100% 65% / 0.3) 0%, transparent 70%)',
+            'radial-gradient(circle, hsl(0 80% 35% / 0.2) 0%, transparent 70%)',
+            'radial-gradient(circle, hsl(0 70% 40% / 0.25) 0%, transparent 70%)',
+            'radial-gradient(circle, hsl(0 80% 35% / 0.2) 0%, transparent 70%)',
           ],
         }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
       />
 
-      {/* Stranger Things inspired red glow at bottom */}
+      {/* Upside Down portal glow at bottom - Stranger Things signature */}
       <motion.div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] opacity-10"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] opacity-20"
         animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.1, 0.15, 0.1],
+          scale: [1, 1.05, 1],
+          opacity: [0.15, 0.25, 0.15],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        style={{
+          background: 'radial-gradient(ellipse at center bottom, hsl(0 70% 40% / 0.5) 0%, hsl(0 60% 30% / 0.3) 30%, transparent 70%)',
+        }}
+      />
+
+      {/* Subtle fog layers */}
+      <motion.div
+        className="absolute inset-0"
+        style={{
+          background: 'linear-gradient(180deg, transparent 0%, hsl(0 10% 5% / 0.2) 60%, hsl(0 20% 8% / 0.4) 100%)',
+        }}
+        animate={{
+          opacity: [0.6, 0.8, 0.6],
         }}
         transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-        style={{
-          background: 'radial-gradient(ellipse at center bottom, hsl(0 80% 50% / 0.4) 0%, transparent 70%)',
-        }}
       />
 
-      {/* Floating particles */}
+      {/* Floating particles - dust, embers, orbs */}
       {particles.map((particle) => (
         <motion.div
           key={particle.id}
@@ -116,10 +140,14 @@ export const FloatingParticles = () => {
             top: `${particle.y}%`,
           }}
           animate={{
-            y: [0, -40 - Math.random() * 60, 0],
-            x: [0, (Math.random() - 0.5) * 30, 0],
-            opacity: particle.type === 'dust' ? [0.2, 0.6, 0.2] : [0.4, 0.9, 0.4],
-            scale: particle.type === 'spark' ? [0.5, 1.5, 0.5] : [1, 1.2, 1],
+            y: [0, -30 - Math.random() * 50, 0],
+            x: [0, (Math.random() - 0.5) * 20, 0],
+            opacity: particle.type === 'dust'
+              ? [0.15, 0.4, 0.15]
+              : particle.type === 'ember'
+                ? [0.3, 0.7, 0.3]
+                : [0.2, 0.6, 0.2],
+            scale: particle.type === 'spark' ? [0.5, 1.2, 0.5] : [1, 1.1, 1],
           }}
           transition={{
             duration: particle.duration,
@@ -134,27 +162,47 @@ export const FloatingParticles = () => {
               width: particle.size,
               height: particle.size,
               background: colorMap[particle.color],
-              boxShadow: particle.type === 'orb' 
+              boxShadow: particle.type === 'orb'
                 ? `0 0 ${particle.size * 4}px ${colorMap[particle.color]}, 0 0 ${particle.size * 8}px ${colorMap[particle.color]}`
-                : particle.type === 'spark'
-                ? `0 0 ${particle.size * 2}px ${colorMap[particle.color]}`
-                : 'none',
+                : particle.type === 'ember'
+                  ? `0 0 ${particle.size * 3}px ${colorMap[particle.color]}, 0 0 ${particle.size * 6}px hsl(0 70% 45% / 0.5)`
+                  : particle.type === 'spark'
+                    ? `0 0 ${particle.size * 2}px ${colorMap[particle.color]}`
+                    : 'none',
             }}
           />
         </motion.div>
       ))}
 
-      {/* Scanning line effect - Stranger Things vibe */}
+      {/* Slow scanning red line - Stranger Things vibe */}
       <motion.div
-        className="absolute left-0 right-0 h-px opacity-10"
+        className="absolute left-0 right-0 h-[2px] opacity-8"
         style={{
-          background: 'linear-gradient(90deg, transparent 0%, hsl(0 80% 55%) 50%, transparent 100%)',
+          background: 'linear-gradient(90deg, transparent 0%, hsl(0 70% 45% / 0.6) 50%, transparent 100%)',
+          filter: 'blur(1px)',
         }}
         animate={{
           top: ['-10%', '110%'],
         }}
         transition={{
-          duration: 8,
+          duration: 12,
+          repeat: Infinity,
+          ease: 'linear',
+          repeatDelay: 6,
+        }}
+      />
+
+      {/* Secondary slower scan line */}
+      <motion.div
+        className="absolute left-0 right-0 h-px opacity-5"
+        style={{
+          background: 'linear-gradient(90deg, transparent 0%, hsl(0 80% 35% / 0.4) 50%, transparent 100%)',
+        }}
+        animate={{
+          top: ['110%', '-10%'],
+        }}
+        transition={{
+          duration: 18,
           repeat: Infinity,
           ease: 'linear',
           repeatDelay: 4,

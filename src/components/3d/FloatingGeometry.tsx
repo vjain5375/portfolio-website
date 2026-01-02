@@ -1,6 +1,6 @@
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Mesh, Color, IcosahedronGeometry, MeshStandardMaterial } from 'three';
+import { Mesh, Color } from 'three';
 import { Float, MeshDistortMaterial } from '@react-three/drei';
 
 interface FloatingGeometryProps {
@@ -12,99 +12,119 @@ export const FloatingGeometry = ({ mousePosition }: FloatingGeometryProps) => {
   const innerMeshRef = useRef<Mesh>(null);
   const ringRef = useRef<Mesh>(null);
 
-  const cyanColor = useMemo(() => new Color('#00FFFF'), []);
-  const purpleColor = useMemo(() => new Color('#8B5CF6'), []);
+  // Stranger Things red theme colors
+  const crimsonColor = useMemo(() => new Color('#b91c1c'), []); // Crimson red
+  const bloodRedColor = useMemo(() => new Color('#7f1d1d'), []); // Blood red/darker
+  const dimCyanColor = useMemo(() => new Color('#1e4d5c'), []); // Very dim cyan accent
 
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.rotation.x += 0.003;
-      meshRef.current.rotation.y += 0.005;
-      
-      // React to mouse
-      meshRef.current.rotation.x += mousePosition.y * 0.02;
-      meshRef.current.rotation.y += mousePosition.x * 0.02;
+      // Slower, more ominous rotation
+      meshRef.current.rotation.x += 0.002;
+      meshRef.current.rotation.y += 0.003;
+
+      // React to mouse - more subtle
+      meshRef.current.rotation.x += mousePosition.y * 0.015;
+      meshRef.current.rotation.y += mousePosition.x * 0.015;
     }
 
     if (innerMeshRef.current) {
-      innerMeshRef.current.rotation.x -= 0.005;
-      innerMeshRef.current.rotation.z += 0.003;
+      innerMeshRef.current.rotation.x -= 0.003;
+      innerMeshRef.current.rotation.z += 0.002;
+
+      // Subtle pulsing effect
+      const pulse = Math.sin(state.clock.elapsedTime * 0.5) * 0.05 + 1;
+      innerMeshRef.current.scale.setScalar(pulse);
     }
 
     if (ringRef.current) {
-      ringRef.current.rotation.z += 0.01;
-      ringRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.5) * 0.3;
+      ringRef.current.rotation.z += 0.006;
+      ringRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.2;
     }
   });
 
   return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
+    <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.8}>
       <group>
-        {/* Outer wireframe icosahedron */}
+        {/* Outer wireframe icosahedron - crimson red */}
         <mesh ref={meshRef}>
           <icosahedronGeometry args={[2.5, 1]} />
           <meshStandardMaterial
-            color={cyanColor}
+            color={crimsonColor}
             wireframe
-            emissive={cyanColor}
-            emissiveIntensity={0.5}
+            emissive={crimsonColor}
+            emissiveIntensity={0.6}
             transparent
-            opacity={0.8}
+            opacity={0.7}
           />
         </mesh>
 
-        {/* Inner solid geometry with distortion */}
+        {/* Inner solid geometry with distortion - dark core */}
         <mesh ref={innerMeshRef}>
           <icosahedronGeometry args={[1.5, 4]} />
           <MeshDistortMaterial
-            color="#1a1a2e"
-            emissive={purpleColor}
-            emissiveIntensity={0.3}
-            roughness={0.2}
-            metalness={0.8}
-            distort={0.3}
-            speed={2}
+            color="#1a0a0a"
+            emissive={bloodRedColor}
+            emissiveIntensity={0.4}
+            roughness={0.3}
+            metalness={0.7}
+            distort={0.25}
+            speed={1.5}
           />
         </mesh>
 
-        {/* Rotating ring */}
+        {/* Main rotating ring - blood red */}
         <mesh ref={ringRef} rotation={[Math.PI / 2, 0, 0]}>
           <torusGeometry args={[3.5, 0.05, 16, 100]} />
           <meshStandardMaterial
-            color={purpleColor}
-            emissive={purpleColor}
-            emissiveIntensity={0.8}
+            color={bloodRedColor}
+            emissive={bloodRedColor}
+            emissiveIntensity={0.9}
             transparent
-            opacity={0.6}
+            opacity={0.5}
           />
         </mesh>
 
-        {/* Secondary ring */}
+        {/* Secondary ring - crimson */}
         <mesh rotation={[Math.PI / 3, Math.PI / 4, 0]}>
           <torusGeometry args={[3.8, 0.03, 16, 100]} />
           <meshStandardMaterial
-            color={cyanColor}
-            emissive={cyanColor}
-            emissiveIntensity={0.5}
+            color={crimsonColor}
+            emissive={crimsonColor}
+            emissiveIntensity={0.6}
             transparent
-            opacity={0.4}
+            opacity={0.35}
           />
         </mesh>
 
-        {/* Glowing core */}
+        {/* Tertiary ring - dim cyan accent */}
+        <mesh rotation={[Math.PI / 5, Math.PI / 3, Math.PI / 6]}>
+          <torusGeometry args={[4.1, 0.02, 16, 100]} />
+          <meshStandardMaterial
+            color={dimCyanColor}
+            emissive={dimCyanColor}
+            emissiveIntensity={0.4}
+            transparent
+            opacity={0.2}
+          />
+        </mesh>
+
+        {/* Glowing core - pulsing crimson */}
         <mesh>
           <sphereGeometry args={[0.5, 32, 32]} />
           <meshStandardMaterial
-            color={cyanColor}
-            emissive={cyanColor}
-            emissiveIntensity={2}
+            color={crimsonColor}
+            emissive={crimsonColor}
+            emissiveIntensity={2.5}
             transparent
-            opacity={0.9}
+            opacity={0.85}
           />
         </mesh>
 
-        {/* Point lights for glow effect */}
-        <pointLight color={cyanColor} intensity={2} distance={10} />
-        <pointLight color={purpleColor} intensity={1} distance={8} position={[2, 2, 2]} />
+        {/* Point lights for glow effect - red themed */}
+        <pointLight color={crimsonColor} intensity={2.5} distance={12} />
+        <pointLight color={bloodRedColor} intensity={1.5} distance={10} position={[2, 2, 2]} />
+        <pointLight color={bloodRedColor} intensity={1} distance={8} position={[-2, -1, -2]} />
       </group>
     </Float>
   );
