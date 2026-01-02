@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
-import { ExternalLink, Github, Cpu, Bot, Zap, Eye, X } from 'lucide-react';
+import { ExternalLink, Github, Cpu, Bot, Zap, Eye, X, Terminal } from 'lucide-react';
 import { TiltCard } from '../effects/TiltCard';
 
 interface Project {
@@ -40,6 +40,17 @@ const projects: Project[] = [
   },
   {
     id: 3,
+    title: "Portfolio Website",
+    description: "This immersive 3D portfolio website featuring a Stranger Things-inspired dark theme with atmospheric effects, red neon typography, and interactive previews.",
+    technologies: ["React", "TypeScript", "Three.js", "Framer Motion", "TailwindCSS"],
+    icon: <Terminal className="w-8 h-8" />,
+    gradient: "from-primary via-accent to-primary",
+    github: "https://github.com/vjain5375/portfolio-website",
+    link: window.location.origin,
+    previewUrl: window.location.origin,
+  },
+  {
+    id: 4,
     title: "Coming Soon",
     description: "Exciting new projects are in development! Stay tuned for more innovative applications and creative solutions.",
     technologies: ["React", "Node.js", "Python", "More..."],
