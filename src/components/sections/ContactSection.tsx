@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 const socialLinks = [
   { name: 'GitHub', icon: <Github className="w-6 h-6" />, href: 'https://github.com/vjain5375', color: 'hover:text-foreground' },
   { name: 'LinkedIn', icon: <Linkedin className="w-6 h-6" />, href: 'https://www.linkedin.com/in/vansh-jain-8b3704273/', color: 'hover:text-blue-400' },
-  { name: 'Email', icon: <Mail className="w-6 h-6" />, href: 'mailto:vjain5375@gmail.com', color: 'hover:text-red-500' },
+  { name: 'Email', icon: <Mail className="w-6 h-6" />, href: 'mailto:vjain5375@gmail.com', color: 'hover:text-primary' },
 ];
 
 const FloatingSocialIcon = ({ link, index }: { link: typeof socialLinks[0]; index: number }) => {
@@ -20,7 +20,7 @@ const FloatingSocialIcon = ({ link, index }: { link: typeof socialLinks[0]; inde
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       whileHover={{ scale: 1.1, y: -5 }}
-      className={`group relative flex items-center justify-center w-16 h-16 glass rounded-2xl border border-border/50 text-muted-foreground transition-all duration-300 ${link.color} hover:border-red-500/50 hover:shadow-lg hover:shadow-red-500/20`}
+      className={`group relative flex items-center justify-center w-16 h-16 glass rounded-2xl border border-border/50 text-muted-foreground transition-all duration-300 ${link.color} hover:border-primary/50 hover:shadow-lg hover:shadow-primary/20`}
     >
       {link.icon}
       <span className="absolute -bottom-8 text-xs font-mono text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
@@ -65,12 +65,12 @@ export const ContactSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-red-500 border border-red-500/30 rounded-full glass">
+          <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-accent border border-accent/30 rounded-full">
             Get In Touch
           </span>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             <span className="text-foreground">Let's </span>
-            <span className="gradient-text text-glow-red">Connect</span>
+            <span className="gradient-text">Connect</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-xl mx-auto">
             Interested in collaborating or just want to say hi? I'd love to hear from you.
@@ -149,7 +149,7 @@ export const ContactSection = () => {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
-                    className="w-full px-4 py-3 bg-secondary/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-all"
+                    className="w-full px-4 py-3 bg-secondary/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all"
                     placeholder="John Doe"
                   />
                 </div>
@@ -164,7 +164,7 @@ export const ContactSection = () => {
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     required
-                    className="w-full px-4 py-3 bg-secondary/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-all"
+                    className="w-full px-4 py-3 bg-secondary/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -179,7 +179,7 @@ export const ContactSection = () => {
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     required
                     rows={5}
-                    className="w-full px-4 py-3 bg-secondary/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-all resize-none"
+                    className="w-full px-4 py-3 bg-secondary/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all resize-none"
                     placeholder="Tell me about your project..."
                   />
                 </div>
@@ -187,7 +187,7 @@ export const ContactSection = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="group w-full flex items-center justify-center gap-3 px-8 py-4 font-display font-semibold text-white bg-gradient-to-r from-red-600 to-red-500 rounded-lg btn-glow transition-all duration-300 hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="group w-full flex items-center justify-center gap-3 px-8 py-4 font-display font-semibold text-primary-foreground bg-gradient-to-r from-primary to-accent rounded-lg btn-glow transition-all duration-300 hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <span>Sending...</span>

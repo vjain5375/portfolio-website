@@ -6,51 +6,52 @@
 
 @layer base {
   :root {
-    /* Stranger Things Dark Theme - Deep Black */
-    --background: 0 0% 0%;
-    --foreground: 0 0% 95%;
+    /* Futuristic Dark Theme */
+    --background: 240 15% 3%;
+    --foreground: 200 20% 95%;
 
-    --card: 0 0% 4%;
-    --card-foreground: 0 0% 95%;
+    --card: 240 15% 6%;
+    --card-foreground: 200 20% 95%;
 
-    --popover: 0 0% 4%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 240 15% 6%;
+    --popover-foreground: 200 20% 95%;
 
-    /* Stranger Things Red Primary */
-    --primary: 0 100% 50%;
-    --primary-foreground: 0 0% 100%;
-    --primary-glow: 0 100% 60%;
+    /* Neon Cyan Primary */
+    --primary: 180 100% 50%;
+    --primary-foreground: 240 15% 3%;
+    --primary-glow: 180 100% 60%;
 
-    /* Dark Crimson Accent */
-    --accent: 0 85% 45%;
-    --accent-foreground: 0 0% 100%;
-    --accent-glow: 0 85% 55%;
+    /* Electric Purple Accent */
+    --accent: 270 100% 65%;
+    --accent-foreground: 200 20% 95%;
+    --accent-glow: 270 100% 75%;
 
-    --secondary: 0 0% 8%;
-    --secondary-foreground: 0 0% 85%;
 
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 55%;
+    --secondary: 240 15% 12%;
+    --secondary-foreground: 200 15% 85%;
+
+    --muted: 240 15% 15%;
+    --muted-foreground: 200 15% 55%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 15%;
-    --input: 0 0% 8%;
-    --ring: 0 100% 50%;
+    --border: 240 15% 18%;
+    --input: 240 15% 12%;
+    --ring: 180 100% 50%;
 
     --radius: 0.75rem;
 
-    /* Stranger Things gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(0 100% 50%) 0%, hsl(0 85% 45%) 100%);
-    --gradient-glow: linear-gradient(135deg, hsl(0 100% 50% / 0.3) 0%, hsl(0 85% 45% / 0.3) 100%);
-    --gradient-dark: linear-gradient(180deg, hsl(0 0% 0%) 0%, hsl(0 0% 4%) 100%);
-    --gradient-glass: linear-gradient(135deg, hsl(0 0% 10% / 0.4) 0%, hsl(0 0% 5% / 0.2) 100%);
+    /* Custom gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(180 100% 50%) 0%, hsl(270 100% 65%) 100%);
+    --gradient-glow: linear-gradient(135deg, hsl(180 100% 50% / 0.3) 0%, hsl(270 100% 65% / 0.3) 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(240 15% 3%) 0%, hsl(240 20% 8%) 100%);
+    --gradient-glass: linear-gradient(135deg, hsl(240 15% 15% / 0.4) 0%, hsl(240 15% 10% / 0.2) 100%);
 
-    /* Stranger Things shadows */
-    --shadow-neon-red: 0 0 20px hsl(0 100% 50% / 0.5), 0 0 40px hsl(0 100% 50% / 0.3), 0 0 60px hsl(0 100% 50% / 0.1);
-    --shadow-neon-crimson: 0 0 20px hsl(0 85% 45% / 0.5), 0 0 40px hsl(0 85% 45% / 0.3);
-    --shadow-glow: 0 0 30px hsl(0 100% 50% / 0.2);
+    /* Shadows */
+    --shadow-neon-cyan: 0 0 20px hsl(180 100% 50% / 0.5), 0 0 40px hsl(180 100% 50% / 0.3);
+    --shadow-neon-purple: 0 0 20px hsl(270 100% 65% / 0.5), 0 0 40px hsl(270 100% 65% / 0.3);
+    --shadow-glow: 0 0 30px hsl(180 100% 50% / 0.2);
 
     /* Fonts */
     --font-display: 'Orbitron', sans-serif;
@@ -70,44 +71,9 @@
 
   body {
     @apply bg-background text-foreground font-body antialiased;
-    background: #000000;
+    background: linear-gradient(180deg, hsl(240 15% 3%) 0%, hsl(240 20% 6%) 50%, hsl(250 20% 4%) 100%);
     min-height: 100vh;
-    position: relative;
     overflow-x: hidden;
-  }
-
-  /* Scan lines effect */
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: repeating-linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.15) 0px,
-      rgba(0, 0, 0, 0.15) 1px,
-      transparent 1px,
-      transparent 2px
-    );
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.3;
-  }
-
-  /* Light noise texture */
-  body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9998;
-    opacity: 0.4;
   }
 
   ::selection {
@@ -124,86 +90,61 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: hsl(0 100% 50% / 0.5);
+    background: hsl(var(--primary) / 0.5);
     border-radius: 3px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(0 100% 50%);
-    box-shadow: 0 0 10px hsl(0 100% 50% / 0.5);
+    background: hsl(var(--primary));
   }
 }
 
 @layer components {
-  /* Glassmorphism */
+  /* Glassmorphism - Enhanced */
   .glass {
-    background: linear-gradient(135deg, hsl(240 15% 15% / 0.4) 0%, hsl(240 15% 10% / 0.2) 100%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: linear-gradient(135deg, hsl(240 15% 15% / 0.5) 0%, hsl(240 15% 10% / 0.3) 100%);
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
     border: 1px solid hsl(var(--border) / 0.5);
   }
 
   .glass-hover:hover {
-    background: linear-gradient(135deg, hsl(240 15% 18% / 0.5) 0%, hsl(240 15% 12% / 0.3) 100%);
-    border-color: hsl(var(--primary) / 0.3);
+    background: linear-gradient(135deg, hsl(240 15% 18% / 0.6) 0%, hsl(240 15% 12% / 0.4) 100%);
+    border-color: hsl(var(--primary) / 0.4);
+    box-shadow: 0 0 30px hsl(180 100% 50% / 0.1);
   }
 
-  /* Stranger Things red text glow effects */
+  /* Neon text effects */
+  .text-glow-cyan {
+    text-shadow: 0 0 10px hsl(180 100% 50% / 0.8), 0 0 30px hsl(180 100% 50% / 0.5), 0 0 50px hsl(180 100% 50% / 0.3);
+  }
+
+  .text-glow-purple {
+    text-shadow: 0 0 10px hsl(270 100% 65% / 0.8), 0 0 30px hsl(270 100% 65% / 0.5), 0 0 50px hsl(270 100% 65% / 0.3);
+  }
+
   .text-glow-red {
-    text-shadow: 0 0 10px hsl(0 100% 50% / 0.8), 0 0 30px hsl(0 100% 50% / 0.5), 0 0 50px hsl(0 100% 50% / 0.3);
+    text-shadow: 0 0 10px hsl(0 80% 55% / 0.8), 0 0 30px hsl(0 80% 55% / 0.5), 0 0 50px hsl(0 80% 55% / 0.3);
   }
 
-  .text-glow-crimson {
-    text-shadow: 0 0 10px hsl(0 85% 45% / 0.8), 0 0 30px hsl(0 85% 45% / 0.5), 0 0 50px hsl(0 85% 45% / 0.3);
+  /* Neon border effects */
+  .border-glow-cyan {
+    box-shadow: 0 0 15px hsl(180 100% 50% / 0.4), inset 0 0 15px hsl(180 100% 50% / 0.1);
   }
 
-  /* Stranger Things red border glow effects */
+  .border-glow-purple {
+    box-shadow: 0 0 15px hsl(270 100% 65% / 0.4), inset 0 0 15px hsl(270 100% 65% / 0.1);
+  }
+
   .border-glow-red {
-    box-shadow: 0 0 15px hsl(0 100% 50% / 0.4), inset 0 0 15px hsl(0 100% 50% / 0.1);
+    box-shadow: 0 0 15px hsl(0 80% 55% / 0.4), inset 0 0 15px hsl(0 80% 55% / 0.1);
   }
 
-  .border-glow-crimson {
-    box-shadow: 0 0 15px hsl(0 85% 45% / 0.4), inset 0 0 15px hsl(0 85% 45% / 0.1);
-  }
-
-  /* Glitch text effect */
-  .glitch-text {
-    position: relative;
-    animation: glitch 0.3s infinite;
-  }
-
-  .glitch-text::before,
-  .glitch-text::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .glitch-text::before {
-    left: 2px;
-    text-shadow: -2px 0 hsl(0 100% 50%);
-    clip: rect(44px, 450px, 56px, 0);
-    animation: glitch-anim 5s infinite linear alternate-reverse;
-  }
-
-  .glitch-text::after {
-    left: -2px;
-    text-shadow: 2px 0 hsl(0 85% 45%);
-    clip: rect(44px, 450px, 56px, 0);
-    animation: glitch-anim2 1s infinite linear alternate-reverse;
-  }
-
-  .glitch-text:hover {
-    animation: glitch 0.3s infinite;
-  }
-
-  /* Button glow animation */
+  /* Button glow animation - Enhanced */
   .btn-glow {
     position: relative;
     overflow: hidden;
+    transition: all 0.3s ease;
   }
 
   .btn-glow::before {
@@ -222,12 +163,35 @@
     opacity: 0.7;
   }
 
+  .btn-glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 40%, hsl(0 0% 100% / 0.1) 50%, transparent 60%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+
+  .btn-glow:hover::after {
+    transform: translateX(100%);
+  }
+
   /* Grid pattern background */
   .grid-pattern {
     background-image: 
       linear-gradient(hsl(var(--border) / 0.1) 1px, transparent 1px),
       linear-gradient(90deg, hsl(var(--border) / 0.1) 1px, transparent 1px);
     background-size: 50px 50px;
+  }
+
+  /* Enhanced grid with perspective */
+  .grid-3d {
+    background-image: 
+      linear-gradient(hsl(var(--primary) / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--primary) / 0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    transform: perspective(500px) rotateX(60deg);
+    transform-origin: center top;
   }
 
   /* Floating animation */
@@ -240,48 +204,98 @@
     animation: pulseGlow 2s ease-in-out infinite;
   }
 
+  .pulse-glow-red {
+    animation: pulseGlowRed 3s ease-in-out infinite;
+  }
+
   /* Terminal cursor blink */
   .cursor-blink {
     animation: blink 1s step-end infinite;
   }
 
-  /* Gradient text - Stranger Things red */
+  /* Gradient text */
   .gradient-text {
-    background: linear-gradient(135deg, hsl(0 100% 50%) 0%, hsl(0 85% 45%) 100%);
+    background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  /* Card hover lift with red glow */
+  /* Card hover lift - Enhanced 3D */
   .card-lift {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+    transform-style: preserve-3d;
   }
 
   .card-lift:hover {
-    transform: translateY(-8px) translateZ(20px);
-    box-shadow: 0 20px 40px hsl(0 100% 50% / 0.15), 0 0 60px hsl(0 85% 45% / 0.1);
+    transform: translateY(-12px) translateZ(30px) rotateX(2deg);
+    box-shadow: 
+      0 25px 50px hsl(180 100% 50% / 0.15), 
+      0 0 80px hsl(270 100% 65% / 0.1),
+      0 0 0 1px hsl(180 100% 50% / 0.2);
   }
 
-  /* Rim lighting effect */
-  .rim-light {
+  /* Cinematic vignette */
+  .vignette {
+    box-shadow: inset 0 0 150px 50px hsl(240 15% 3% / 0.8);
+  }
+
+  /* Scanline effect */
+  .scanlines::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      hsl(0 0% 0% / 0.03) 2px,
+      hsl(0 0% 0% / 0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Noise texture overlay */
+  .noise::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* Chromatic aberration text */
+  .chromatic {
     position: relative;
   }
 
-  .rim-light::before {
-    content: '';
+  .chromatic::before,
+  .chromatic::after {
+    content: attr(data-text);
     position: absolute;
-    inset: -2px;
-    background: linear-gradient(135deg, hsl(0 100% 50% / 0.3), hsl(0 85% 45% / 0.3));
-    border-radius: inherit;
-    filter: blur(10px);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
 
-  .rim-light:hover::before {
-    opacity: 1;
+  .chromatic::before {
+    color: hsl(180 100% 50%);
+    animation: glitch 2s infinite;
+    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+    transform: translateX(-2px);
+    opacity: 0.7;
+  }
+
+  .chromatic::after {
+    color: hsl(0 80% 55%);
+    animation: glitch 2s infinite reverse;
+    clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+    transform: translateX(2px);
+    opacity: 0.7;
   }
 }
 
@@ -302,12 +316,28 @@
     perspective: 1000px;
   }
 
+  .perspective-2000 {
+    perspective: 2000px;
+  }
+
   .preserve-3d {
     transform-style: preserve-3d;
   }
 
   .backface-hidden {
     backface-visibility: hidden;
+  }
+
+  .translate-z-10 {
+    transform: translateZ(10px);
+  }
+
+  .translate-z-20 {
+    transform: translateZ(20px);
+  }
+
+  .translate-z-30 {
+    transform: translateZ(30px);
   }
 }
 
@@ -320,87 +350,36 @@
   }
 }
 
-@keyframes pulseGlow {
+@keyframes floatSlow {
   0%, 100% {
-    box-shadow: 0 0 20px hsl(0 100% 50% / 0.3);
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) translateX(5px) rotate(1deg);
   }
   50% {
-    box-shadow: 0 0 40px hsl(0 100% 50% / 0.6), 0 0 60px hsl(0 85% 45% / 0.3);
+    transform: translateY(-20px) translateX(0) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-10px) translateX(-5px) rotate(-1deg);
   }
 }
 
-@keyframes glitch-anim {
-  0% {
-    clip: rect(31px, 9999px, 94px, 0);
-  }
-  20% {
-    clip: rect(54px, 9999px, 66px, 0);
-  }
-  40% {
-    clip: rect(28px, 9999px, 84px, 0);
-  }
-  60% {
-    clip: rect(42px, 9999px, 78px, 0);
-  }
-  80% {
-    clip: rect(35px, 9999px, 87px, 0);
-  }
-  100% {
-    clip: rect(58px, 9999px, 98px, 0);
-  }
-}
-
-@keyframes glitch-anim2 {
-  0% {
-    clip: rect(65px, 9999px, 100px, 0);
-  }
-  20% {
-    clip: rect(41px, 9999px, 74px, 0);
-  }
-  40% {
-    clip: rect(88px, 9999px, 59px, 0);
-  }
-  60% {
-    clip: rect(91px, 9999px, 29px, 0);
-  }
-  80% {
-    clip: rect(10px, 9999px, 83px, 0);
-  }
-  100% {
-    clip: rect(31px, 9999px, 14px, 0);
-  }
-}
-
-@keyframes flicker {
+@keyframes pulseGlow {
   0%, 100% {
-    opacity: 1;
+    box-shadow: 0 0 20px hsl(180 100% 50% / 0.3);
   }
-  41.99% {
-    opacity: 1;
+  50% {
+    box-shadow: 0 0 40px hsl(180 100% 50% / 0.6), 0 0 60px hsl(270 100% 65% / 0.3);
   }
-  42% {
-    opacity: 0;
+}
+
+@keyframes pulseGlowRed {
+  0%, 100% {
+    box-shadow: 0 0 20px hsl(0 80% 55% / 0.2);
   }
-  43% {
-    opacity: 0;
-  }
-  43.01% {
-    opacity: 1;
-  }
-  45.99% {
-    opacity: 1;
-  }
-  46% {
-    opacity: 0;
-  }
-  46.9% {
-    opacity: 0;
-  }
-  47% {
-    opacity: 1;
-  }
-  99.99% {
-    opacity: 1;
+  50% {
+    box-shadow: 0 0 40px hsl(0 80% 55% / 0.4), 0 0 60px hsl(0 80% 55% / 0.2);
   }
 }
 
@@ -434,5 +413,33 @@
   }
   80% {
     transform: translate(2px, -2px);
+  }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+  52% { opacity: 1; }
+  54% { opacity: 0.9; }
+  56% { opacity: 1; }
+}
+
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
   }
 }

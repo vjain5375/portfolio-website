@@ -35,11 +35,11 @@ export const Navbar = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <a href="#" className="flex items-center gap-2 group">
-            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-r from-red-600 to-red-500">
-              <Terminal className="w-5 h-5 text-white" />
+            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-r from-primary to-accent">
+              <Terminal className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="font-display font-bold text-lg text-foreground group-hover:text-red-500 transition-colors">
-              VJ<span className="text-red-500">.</span>
+            <span className="font-display font-bold text-lg text-foreground group-hover:text-primary transition-colors">
+              VJ<span className="text-primary">.</span>
             </span>
           </a>
 
@@ -52,7 +52,7 @@ export const Navbar = () => {
                 className="relative text-muted-foreground hover:text-foreground transition-colors font-medium group"
               >
                 {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-red-600 to-red-500 group-hover:w-full transition-all duration-300" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-300" />
               </a>
             ))}
           </div>
@@ -61,7 +61,7 @@ export const Navbar = () => {
           <div className="hidden md:block">
             <a
               href="#contact"
-              className="px-5 py-2.5 font-display font-semibold text-sm text-white bg-gradient-to-r from-red-600 to-red-500 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-red-500/25"
+              className="px-5 py-2.5 font-display font-semibold text-sm text-primary-foreground bg-gradient-to-r from-primary to-accent rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/25"
             >
               Hire Me
             </a>
@@ -98,7 +98,7 @@ export const Navbar = () => {
               <a
                 href="#contact"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="w-full text-center px-5 py-2.5 font-display font-semibold text-sm text-white bg-gradient-to-r from-red-600 to-red-500 rounded-lg"
+                className="w-full text-center px-5 py-2.5 font-display font-semibold text-sm text-primary-foreground bg-gradient-to-r from-primary to-accent rounded-lg"
               >
                 Hire Me
               </a>
