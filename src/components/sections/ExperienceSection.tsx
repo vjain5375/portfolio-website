@@ -71,29 +71,29 @@ interface TimelineCardProps {
   item: TimelineItem;
   index: number;
   isActive: boolean;
-  accentType: 'purple' | 'blue';
+  accentType: 'crimson' | 'bloodRed';
 }
 
 const TimelineCard = ({ item, index, isActive, accentType }: TimelineCardProps) => {
   const isLeft = index % 2 === 0;
   const Icon = item.icon;
-  
+
   const accentClasses = {
-    purple: {
-      bg: 'bg-purple-500/5',
-      border: 'border-purple-500/20 hover:border-purple-500/40',
-      badge: 'bg-purple-500/20 text-purple-400',
-      text: 'text-purple-400',
-      glow: 'bg-purple-500',
-      shadow: 'shadow-[0_0_30px_rgba(147,51,234,0.2)]',
+    crimson: {
+      bg: 'bg-red-500/5',
+      border: 'border-red-500/20 hover:border-red-500/40',
+      badge: 'bg-red-500/20 text-red-400',
+      text: 'text-red-400',
+      glow: 'bg-red-500',
+      shadow: 'shadow-[0_0_30px_rgba(185,28,28,0.2)]',
     },
-    blue: {
-      bg: 'bg-blue-500/5',
-      border: 'border-blue-500/20 hover:border-blue-500/40',
-      badge: 'bg-blue-500/20 text-blue-400',
-      text: 'text-blue-400',
-      glow: 'bg-blue-500',
-      shadow: 'shadow-[0_0_30px_rgba(59,130,246,0.2)]',
+    bloodRed: {
+      bg: 'bg-rose-900/5',
+      border: 'border-rose-900/20 hover:border-rose-900/40',
+      badge: 'bg-rose-900/20 text-rose-400',
+      text: 'text-rose-400',
+      glow: 'bg-rose-700',
+      shadow: 'shadow-[0_0_30px_rgba(127,29,29,0.2)]',
     },
   };
 
@@ -117,7 +117,7 @@ const TimelineCard = ({ item, index, isActive, accentType }: TimelineCardProps) 
         {isActive && (
           <div className={`absolute inset-0 rounded-2xl opacity-20 blur-xl -z-10 ${accent.glow}`} />
         )}
-        
+
         {/* Year badge */}
         <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold mb-4 ${accent.badge}`}>
           <Icon className="w-3.5 h-3.5" />
@@ -128,7 +128,7 @@ const TimelineCard = ({ item, index, isActive, accentType }: TimelineCardProps) 
             </span>
           )}
         </div>
-        
+
         {/* Content */}
         <h3 className="text-lg font-bold text-foreground mb-2">{item.title}</h3>
         <p className={`text-sm font-medium mb-3 ${accent.text}`}>{item.organization}</p>
@@ -140,7 +140,7 @@ const TimelineCard = ({ item, index, isActive, accentType }: TimelineCardProps) 
       {/* Connector line from card to timeline */}
       <div className={`
         hidden md:block absolute top-1/2 -translate-y-1/2 h-[2px] w-[60px]
-        ${accentType === 'purple' ? 'bg-gradient-to-r from-purple-500/50 to-purple-500' : 'bg-gradient-to-r from-blue-500/50 to-blue-500'}
+        ${accentType === 'crimson' ? 'bg-gradient-to-r from-red-500/50 to-red-500' : 'bg-gradient-to-r from-rose-700/50 to-rose-700'}
         ${isLeft ? 'right-[calc(50%-60px)]' : 'left-[calc(50%-60px)]'}
       `} />
     </div>
@@ -150,34 +150,34 @@ const TimelineCard = ({ item, index, isActive, accentType }: TimelineCardProps) 
 interface TimelineSectionProps {
   title: string;
   data: TimelineItem[];
-  accentType: 'purple' | 'blue';
+  accentType: 'crimson' | 'bloodRed';
   id: string;
 }
 
 const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeIndices, setActiveIndices] = useState<Set<number>>(new Set());
-  
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
   });
-  
+
   const lineHeight = useTransform(scrollYProgress, [0.15, 0.85], ['0%', '100%']);
-  
+
   useEffect(() => {
     const handleScroll = () => {
       if (!sectionRef.current) return;
-      
+
       const rect = sectionRef.current.getBoundingClientRect();
       const sectionTop = rect.top;
       const sectionHeight = rect.height;
       const windowHeight = window.innerHeight;
-      
-      const scrollProgress = Math.max(0, Math.min(1, 
+
+      const scrollProgress = Math.max(0, Math.min(1,
         (windowHeight - sectionTop) / (sectionHeight + windowHeight * 0.3)
       ));
-      
+
       const newActiveIndices = new Set<number>();
       data.forEach((_, index) => {
         const threshold = (index + 1) / data.length;
@@ -185,39 +185,39 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
           newActiveIndices.add(index);
         }
       });
-      
+
       setActiveIndices(newActiveIndices);
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     handleScroll();
-    
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, [data.length]);
 
-  const gradientClass = accentType === 'purple' 
-    ? 'from-purple-500 via-purple-400 to-purple-500'
-    : 'from-blue-500 via-blue-400 to-blue-500';
+  const gradientClass = accentType === 'crimson'
+    ? 'from-red-500 via-red-400 to-red-500'
+    : 'from-rose-700 via-rose-600 to-rose-700';
 
-  const bgGlowClass = accentType === 'purple'
-    ? 'bg-purple-500/10'
-    : 'bg-blue-500/10';
+  const bgGlowClass = accentType === 'crimson'
+    ? 'bg-red-500/10'
+    : 'bg-rose-700/10';
 
-  const dotColorActive = accentType === 'purple'
-    ? 'bg-purple-500 border-purple-500 shadow-[0_0_20px_rgba(147,51,234,0.8)]'
-    : 'bg-blue-500 border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.8)]';
+  const dotColorActive = accentType === 'crimson'
+    ? 'bg-red-500 border-red-500 shadow-[0_0_20px_rgba(185,28,28,0.8)]'
+    : 'bg-rose-700 border-rose-700 shadow-[0_0_20px_rgba(127,29,29,0.8)]';
 
   const dotColorInactive = 'bg-background border-muted-foreground/30';
 
-  const titleGradient = accentType === 'purple'
-    ? 'from-purple-400 via-purple-500 to-violet-500'
-    : 'from-blue-400 via-blue-500 to-indigo-400';
+  const titleGradient = accentType === 'crimson'
+    ? 'from-red-400 via-red-500 to-rose-500'
+    : 'from-rose-500 via-rose-600 to-rose-700';
 
   return (
     <div ref={sectionRef} id={id} className="relative py-24">
       {/* Background glow */}
       <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] ${bgGlowClass} rounded-full blur-[150px] pointer-events-none`} />
-      
+
       {/* Section header */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -232,30 +232,29 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
           </span>
         </h2>
       </motion.div>
-      
+
       {/* Timeline container */}
       <div className="relative max-w-5xl mx-auto">
-        {/* Central timeline line - centered on the same axis as dots */}
+        {/* Central timeline line */}
         <div className="absolute left-[22px] md:left-1/2 top-0 bottom-0 w-[3px] -translate-x-1/2">
           {/* Background line */}
           <div className="absolute inset-0 bg-muted/30 rounded-full" />
-          
+
           {/* Animated progress line */}
           <motion.div
             style={{ height: lineHeight }}
             className={`absolute top-0 left-0 right-0 bg-gradient-to-b ${gradientClass} rounded-full`}
           />
         </div>
-        
+
         {/* Timeline items */}
         <div className="space-y-16">
           {data.map((item, index) => {
-            const isLeft = index % 2 === 0;
             const isActive = activeIndices.has(index);
-            
+
             return (
               <div key={index} className="relative pl-14 md:pl-0">
-                {/* Timeline node - centered on the same axis as line */}
+                {/* Timeline node */}
                 <motion.div
                   initial={{ scale: 0.5, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
@@ -273,14 +272,14 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
                     <motion.div
                       animate={{ scale: [1, 2.5, 1], opacity: [0.6, 0, 0.6] }}
                       transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                      className={`absolute inset-0 rounded-full ${accentType === 'purple' ? 'bg-purple-500' : 'bg-blue-500'}`}
+                      className={`absolute inset-0 rounded-full ${accentType === 'crimson' ? 'bg-red-500' : 'bg-rose-700'}`}
                     />
                   )}
                 </motion.div>
-                
-                <TimelineCard 
-                  item={item} 
-                  index={index} 
+
+                <TimelineCard
+                  item={item}
+                  index={index}
                   isActive={isActive}
                   accentType={accentType}
                 />
@@ -298,26 +297,26 @@ export const ExperienceSection = () => {
     <section className="relative px-4 overflow-hidden">
       {/* Overall background */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-background" />
-      
+
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Education Section */}
         <TimelineSection
           title="Education"
           data={educationData}
-          accentType="purple"
+          accentType="crimson"
           id="education"
         />
-        
+
         {/* Divider */}
         <div className="relative py-8">
-          <div className="absolute left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-purple-500/50 via-muted/20 to-blue-500/50" />
+          <div className="absolute left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-red-500/50 via-muted/20 to-rose-700/50" />
         </div>
-        
+
         {/* Experience Section */}
         <TimelineSection
           title="Experience"
           data={experienceData}
-          accentType="blue"
+          accentType="bloodRed"
           id="experience"
         />
       </div>

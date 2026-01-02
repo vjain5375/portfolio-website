@@ -43,7 +43,7 @@ const Terminal = () => {
   }, [isInView]);
 
   return (
-    <TiltCard glowColor="cyan" intensity="subtle">
+    <TiltCard glowColor="red" intensity="subtle">
       <div ref={ref} className="glass rounded-2xl overflow-hidden border border-border/50">
         <div className="flex items-center gap-2 px-4 py-3 bg-secondary/50 border-b border-border/50">
           <div className="flex gap-2">
@@ -66,7 +66,7 @@ const Terminal = () => {
             </motion.div>
           ))}
           {visibleLines < terminalLines.length && (
-            <motion.span 
+            <motion.span
               className="inline-block w-2 h-4 bg-primary"
               animate={{ opacity: [1, 0, 1] }}
               transition={{ duration: 1, repeat: Infinity }}
@@ -84,13 +84,14 @@ export const AboutSection = () => {
 
   return (
     <section id="about" className="relative py-32 px-6">
+      {/* Ambient red glow */}
       <motion.div
         className="absolute top-1/2 right-0 w-[500px] h-[500px] rounded-full opacity-10 pointer-events-none"
-        style={{ background: 'radial-gradient(circle, hsl(270 100% 65%) 0%, transparent 70%)', filter: 'blur(80px)' }}
+        style={{ background: 'radial-gradient(circle, hsl(0 70% 45%) 0%, transparent 70%)', filter: 'blur(80px)' }}
         animate={{ scale: [1, 1.1, 1] }}
         transition={{ duration: 6, repeat: Infinity }}
       />
-      
+
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           ref={sectionRef}

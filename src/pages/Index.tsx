@@ -7,6 +7,7 @@ import { AboutSection } from '@/components/sections/AboutSection';
 import { ContactSection } from '@/components/sections/ContactSection';
 import { FloatingParticles } from '@/components/effects/FloatingParticles';
 import { MouseGlow } from '@/components/effects/MouseGlow';
+import { RedLightPulse } from '@/components/effects/RedLightPulse';
 
 const Index = () => {
   return (
@@ -14,16 +15,20 @@ const Index = () => {
       {/* Cinematic effects layer */}
       <FloatingParticles />
       <MouseGlow />
-      
+      <RedLightPulse />
+
       {/* Scanline overlay for retro-sci-fi feel */}
-      <div className="fixed inset-0 pointer-events-none z-[100] scanlines opacity-30" />
-      
-      {/* Vignette effect */}
+      <div className="fixed inset-0 pointer-events-none z-[100] scanlines opacity-20" />
+
+      {/* Enhanced vignette effect for Stranger Things atmosphere */}
       <div className="fixed inset-0 pointer-events-none z-[99] vignette" />
-      
+
       {/* Noise texture */}
       <div className="fixed inset-0 pointer-events-none z-[98] noise" />
-      
+
+      {/* Upside Down glow at bottom */}
+      <div className="fixed bottom-0 left-0 right-0 h-[300px] pointer-events-none z-[97] upside-down-glow" />
+
       <Navbar />
       <main className="relative z-10">
         <HeroSection />
