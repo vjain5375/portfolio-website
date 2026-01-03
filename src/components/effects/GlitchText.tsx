@@ -7,7 +7,6 @@ interface GlitchTextProps {
   glitchColor1?: string;
   glitchColor2?: string;
   enableFlicker?: boolean;
-  'data-text'?: string;
 }
 
 export const GlitchText = ({
@@ -16,7 +15,6 @@ export const GlitchText = ({
   glitchColor1 = 'hsl(0, 70%, 45%)',
   glitchColor2 = 'hsl(0, 80%, 35%)',
   enableFlicker = false,
-  'data-text': dataText,
 }: GlitchTextProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -25,7 +23,6 @@ export const GlitchText = ({
       className={`relative inline-block ${className} ${enableFlicker ? 'flicker' : ''}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      data-text={dataText || children}
     >
       {/* Main text - rendered directly without wrapper to preserve CSS styling */}
       {children}
