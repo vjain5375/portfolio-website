@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { Briefcase, GraduationCap, Award, Users, Megaphone } from 'lucide-react';
+import { TiltCard } from '../effects/TiltCard';
 
 interface TimelineItem {
   year: string;
@@ -71,78 +72,154 @@ interface TimelineCardProps {
   item: TimelineItem;
   index: number;
   isActive: boolean;
-  accentType: 'crimson' | 'bloodRed';
+  accentType: 'crimson' | 'maroon';
+  onHover: (isHovered: boolean) => void;
 }
 
-const TimelineCard = ({ item, index, isActive, accentType }: TimelineCardProps) => {
+const TimelineCard = ({ item, index, isActive, accentType, onHover }: TimelineCardProps) => {
   const isLeft = index % 2 === 0;
   const Icon = item.icon;
+  const cardRef = useRef(null);
+  const isInView = useInView(cardRef, { once: true, margin: '-50px' });
 
-  const accentClasses = {
+  const accentConfig = {
     crimson: {
-      bg: 'bg-red-500/5',
-      border: 'border-red-500/20 hover:border-red-500/40',
-      badge: 'bg-red-500/20 text-red-400',
+      bg: 'bg-red-950/20',
+      border: 'border-red-900/30',
+      hoverBorder: 'hover:border-red-700/50',
+      badge: 'bg-red-900/30 text-red-400 border-red-800/40',
       text: 'text-red-400',
-      glow: 'bg-red-500',
-      shadow: 'shadow-[0_0_30px_rgba(185,28,28,0.2)]',
+      glow: 'bg-red-600',
+      shadow: 'shadow-[0_0_40px_rgba(185,28,28,0.25)]',
+      glowColor: 'crimson' as const,
     },
-    bloodRed: {
-      bg: 'bg-rose-900/5',
-      border: 'border-rose-900/20 hover:border-rose-900/40',
-      badge: 'bg-rose-900/20 text-rose-400',
+    maroon: {
+      bg: 'bg-rose-950/20',
+      border: 'border-rose-900/30',
+      hoverBorder: 'hover:border-rose-700/50',
+      badge: 'bg-rose-900/30 text-rose-400 border-rose-800/40',
       text: 'text-rose-400',
       glow: 'bg-rose-700',
-      shadow: 'shadow-[0_0_30px_rgba(127,29,29,0.2)]',
+      shadow: 'shadow-[0_0_40px_rgba(136,19,55,0.25)]',
+      glowColor: 'maroon' as const,
     },
   };
 
-  const accent = accentClasses[accentType];
+  const accent = accentConfig[accentType];
 
   return (
-    <div className={`relative flex items-center w-full ${isLeft ? 'md:justify-start' : 'md:justify-end'}`}>
+    <div
+      ref={cardRef}
+      className={`relative flex items-center w-full ${isLeft ? 'md:justify-start' : 'md:justify-end'}`}
+    >
       <motion.div
-        initial={{ opacity: 0, x: isLeft ? -80 : 80, scale: 0.9 }}
-        whileInView={{ opacity: 1, x: 0, scale: 1 }}
-        viewport={{ once: true, margin: '-50px' }}
-        transition={{ duration: 0.6, ease: 'easeOut', delay: index * 0.1 }}
-        className={`
-          relative w-full md:w-[calc(50%-60px)] p-6 rounded-2xl
-          backdrop-blur-xl border transition-all duration-500
-          ${accent.bg} ${accent.border}
-          ${isActive ? accent.shadow : 'shadow-none'}
-        `}
+        initial={{ opacity: 0, x: isLeft ? -100 : 100, y: 20 }}
+        animate={isInView ? { opacity: 1, x: 0, y: 0 } : {}}
+        transition={{
+          duration: 0.8,
+          delay: index * 0.15,
+          ease: [0.25, 0.46, 0.45, 0.94],
+        }}
+        className="w-full md:w-[calc(50%-80px)] perspective-1000"
       >
-        {/* Glow effect */}
-        {isActive && (
-          <div className={`absolute inset-0 rounded-2xl opacity-20 blur-xl -z-10 ${accent.glow}`} />
-        )}
+        <TiltCard
+          glowColor={accent.glowColor}
+          intensity="medium"
+          onHoverChange={onHover}
+          className="h-full"
+        >
+          <motion.div
+            className={`
+              relative p-6 rounded-2xl backdrop-blur-xl border transition-all duration-500
+              ${accent.bg} ${accent.border} ${accent.hoverBorder}
+              ${isActive ? accent.shadow : 'shadow-none'}
+              group
+            `}
+            whileHover={{
+              y: -8,
+              transition: { duration: 0.3, ease: 'easeOut' }
+            }}
+            animate={{
+              y: [0, -2, 0],
+            }}
+            transition={{
+              y: {
+                duration: 4 + index * 0.5,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }
+            }}
+          >
+            {/* Animated glow effect */}
+            <motion.div
+              className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-30 blur-xl -z-10 ${accent.glow}`}
+              animate={isActive ? { opacity: [0.1, 0.2, 0.1] } : {}}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
 
-        {/* Year badge */}
-        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold mb-4 ${accent.badge}`}>
-          <Icon className="w-3.5 h-3.5" />
-          {item.year}
-          {item.isPresent && (
-            <span className="ml-1 px-2 py-0.5 bg-green-500/20 text-green-400 rounded-full text-[10px] uppercase tracking-wider">
-              Current
-            </span>
-          )}
-        </div>
+            {/* Background gradient animation */}
+            <motion.div
+              className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+              animate={{
+                background: accentType === 'crimson'
+                  ? [
+                    'linear-gradient(135deg, hsl(0 70% 35% / 0.05) 0%, transparent 50%)',
+                    'linear-gradient(225deg, hsl(0 80% 30% / 0.05) 0%, transparent 50%)',
+                    'linear-gradient(135deg, hsl(0 70% 35% / 0.05) 0%, transparent 50%)',
+                  ]
+                  : [
+                    'linear-gradient(135deg, hsl(350 70% 25% / 0.05) 0%, transparent 50%)',
+                    'linear-gradient(225deg, hsl(340 60% 28% / 0.05) 0%, transparent 50%)',
+                    'linear-gradient(135deg, hsl(350 70% 25% / 0.05) 0%, transparent 50%)',
+                  ],
+              }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+            />
 
-        {/* Content */}
-        <h3 className="text-lg font-bold text-foreground mb-2">{item.title}</h3>
-        <p className={`text-sm font-medium mb-3 ${accent.text}`}>{item.organization}</p>
-        {item.description && (
-          <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
-        )}
+            {/* Year badge */}
+            <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold mb-4 border ${accent.badge}`}>
+              <Icon className="w-3.5 h-3.5" />
+              {item.year}
+              {item.isPresent && (
+                <span className="ml-1 px-2 py-0.5 bg-green-500/20 text-green-400 rounded-full text-[10px] uppercase tracking-wider border border-green-500/30">
+                  Current
+                </span>
+              )}
+            </div>
+
+            {/* Content */}
+            <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
+              {item.title}
+            </h3>
+            <p className={`text-sm font-medium mb-3 ${accent.text}`}>{item.organization}</p>
+            {item.description && (
+              <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+            )}
+          </motion.div>
+        </TiltCard>
       </motion.div>
 
-      {/* Connector line from card to timeline */}
-      <div className={`
-        hidden md:block absolute top-1/2 -translate-y-1/2 h-[2px] w-[60px]
-        ${accentType === 'crimson' ? 'bg-gradient-to-r from-red-500/50 to-red-500' : 'bg-gradient-to-r from-rose-700/50 to-rose-700'}
-        ${isLeft ? 'right-[calc(50%-60px)]' : 'left-[calc(50%-60px)]'}
-      `} />
+      {/* Connector line from card to timeline - perfectly centered */}
+      <motion.div
+        className={`
+          hidden md:block absolute top-1/2 h-[2px] w-[80px]
+          ${isLeft ? 'left-[calc(50%-80px)]' : 'right-[calc(50%-80px)]'}
+        `}
+        style={{ transform: 'translateY(-50%)' }}
+        initial={{ scaleX: 0, opacity: 0 }}
+        animate={isInView ? { scaleX: 1, opacity: 1 } : {}}
+        transition={{ duration: 0.5, delay: index * 0.15 + 0.3 }}
+      >
+        <div
+          className={`w-full h-full ${accentType === 'crimson'
+              ? 'bg-gradient-to-r from-red-700/40 to-red-600/80'
+              : 'bg-gradient-to-r from-rose-800/40 to-rose-700/80'
+            }`}
+          style={{
+            transformOrigin: isLeft ? 'right' : 'left',
+          }}
+        />
+      </motion.div>
     </div>
   );
 };
@@ -150,20 +227,21 @@ const TimelineCard = ({ item, index, isActive, accentType }: TimelineCardProps) 
 interface TimelineSectionProps {
   title: string;
   data: TimelineItem[];
-  accentType: 'crimson' | 'bloodRed';
+  accentType: 'crimson' | 'maroon';
   id: string;
 }
 
 const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeIndices, setActiveIndices] = useState<Set<number>>(new Set());
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
   });
 
-  const lineHeight = useTransform(scrollYProgress, [0.15, 0.85], ['0%', '100%']);
+  const lineHeight = useTransform(scrollYProgress, [0.1, 0.9], ['0%', '100%']);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -181,7 +259,7 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
       const newActiveIndices = new Set<number>();
       data.forEach((_, index) => {
         const threshold = (index + 1) / data.length;
-        if (scrollProgress >= threshold * 0.8) {
+        if (scrollProgress >= threshold * 0.7) {
           newActiveIndices.add(index);
         }
       });
@@ -195,28 +273,52 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
     return () => window.removeEventListener('scroll', handleScroll);
   }, [data.length]);
 
-  const gradientClass = accentType === 'crimson'
-    ? 'from-red-500 via-red-400 to-red-500'
-    : 'from-rose-700 via-rose-600 to-rose-700';
+  const colors = {
+    crimson: {
+      gradient: 'from-red-600 via-red-500 to-red-600',
+      bgGlow: 'bg-red-600/10',
+      dotActive: 'bg-red-500 border-red-400 shadow-[0_0_25px_rgba(185,28,28,0.9)]',
+      dotInactive: 'bg-background border-red-900/40',
+      titleGradient: 'from-red-400 via-red-500 to-red-600',
+      pulseColor: 'bg-red-500',
+    },
+    maroon: {
+      gradient: 'from-rose-700 via-rose-600 to-rose-700',
+      bgGlow: 'bg-rose-700/10',
+      dotActive: 'bg-rose-600 border-rose-500 shadow-[0_0_25px_rgba(136,19,55,0.9)]',
+      dotInactive: 'bg-background border-rose-900/40',
+      titleGradient: 'from-rose-400 via-rose-500 to-rose-600',
+      pulseColor: 'bg-rose-600',
+    },
+  };
 
-  const bgGlowClass = accentType === 'crimson'
-    ? 'bg-red-500/10'
-    : 'bg-rose-700/10';
-
-  const dotColorActive = accentType === 'crimson'
-    ? 'bg-red-500 border-red-500 shadow-[0_0_20px_rgba(185,28,28,0.8)]'
-    : 'bg-rose-700 border-rose-700 shadow-[0_0_20px_rgba(127,29,29,0.8)]';
-
-  const dotColorInactive = 'bg-background border-muted-foreground/30';
-
-  const titleGradient = accentType === 'crimson'
-    ? 'from-red-400 via-red-500 to-rose-500'
-    : 'from-rose-500 via-rose-600 to-rose-700';
+  const color = colors[accentType];
 
   return (
     <div ref={sectionRef} id={id} className="relative py-24">
-      {/* Background glow */}
-      <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] ${bgGlowClass} rounded-full blur-[150px] pointer-events-none`} />
+      {/* Background glow with parallax effect */}
+      <motion.div
+        className={`absolute top-1/2 left-1/2 w-[700px] h-[700px] ${color.bgGlow} rounded-full blur-[180px] pointer-events-none`}
+        style={{
+          x: '-50%',
+          y: '-50%',
+        }}
+        animate={{
+          scale: [1, 1.1, 1],
+          opacity: [0.5, 0.7, 0.5],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+      />
+
+      {/* Secondary parallax layer */}
+      <motion.div
+        className={`absolute top-1/4 right-1/4 w-[300px] h-[300px] ${color.bgGlow} rounded-full blur-[100px] pointer-events-none opacity-30`}
+        animate={{
+          x: [0, 30, 0],
+          y: [0, -20, 0],
+        }}
+        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+      />
 
       {/* Section header */}
       <motion.div
@@ -224,57 +326,93 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="text-center mb-16 relative z-10"
+        className="text-center mb-20 relative z-10"
       >
+        <motion.span
+          className={`inline-block px-4 py-2 mb-4 text-sm font-mono border rounded-full ${accentType === 'crimson'
+              ? 'text-red-400 border-red-500/30'
+              : 'text-rose-400 border-rose-500/30'
+            }`}
+          animate={{
+            boxShadow: accentType === 'crimson'
+              ? [
+                '0 0 15px hsl(0 70% 40% / 0.2)',
+                '0 0 30px hsl(0 70% 40% / 0.4)',
+                '0 0 15px hsl(0 70% 40% / 0.2)',
+              ]
+              : [
+                '0 0 15px hsl(350 70% 35% / 0.2)',
+                '0 0 30px hsl(350 70% 35% / 0.4)',
+                '0 0 15px hsl(350 70% 35% / 0.2)',
+              ],
+          }}
+          transition={{ duration: 3, repeat: Infinity }}
+        >
+          {accentType === 'crimson' ? '📚 Academic Journey' : '💼 Professional Path'}
+        </motion.span>
         <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">
-          <span className={`bg-gradient-to-r ${titleGradient} bg-clip-text text-transparent`}>
+          <motion.span
+            className={`bg-gradient-to-r ${color.titleGradient} bg-clip-text text-transparent`}
+            animate={{ filter: ['brightness(1)', 'brightness(1.2)', 'brightness(1)'] }}
+            transition={{ duration: 4, repeat: Infinity }}
+          >
             {title}
-          </span>
+          </motion.span>
         </h2>
       </motion.div>
 
       {/* Timeline container */}
       <div className="relative max-w-5xl mx-auto">
-        {/* Central timeline line */}
-        <div className="absolute left-[22px] md:left-1/2 top-0 bottom-0 w-[3px] -translate-x-1/2">
+        {/* Central timeline line - perfectly centered */}
+        <div className="absolute left-[22px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[3px]">
           {/* Background line */}
-          <div className="absolute inset-0 bg-muted/30 rounded-full" />
+          <div className="absolute inset-0 bg-muted/20 rounded-full" />
 
           {/* Animated progress line */}
           <motion.div
             style={{ height: lineHeight }}
-            className={`absolute top-0 left-0 right-0 bg-gradient-to-b ${gradientClass} rounded-full`}
+            className={`absolute top-0 left-0 right-0 bg-gradient-to-b ${color.gradient} rounded-full`}
           />
         </div>
 
         {/* Timeline items */}
-        <div className="space-y-16">
+        <div className="space-y-20">
           {data.map((item, index) => {
             const isActive = activeIndices.has(index);
+            const isHovered = hoveredIndex === index;
 
             return (
               <div key={index} className="relative pl-14 md:pl-0">
-                {/* Timeline node */}
+                {/* Timeline node - perfectly centered */}
                 <motion.div
-                  initial={{ scale: 0.5, opacity: 0 }}
+                  initial={{ scale: 0, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
-                  animate={isActive ? { scale: 1.3 } : { scale: 1 }}
-                  transition={{ duration: 0.4, type: 'spring', stiffness: 200 }}
-                  className={`
-                    absolute left-[22px] md:left-1/2 top-1/2 w-5 h-5 -translate-x-1/2 -translate-y-1/2 rounded-full
-                    border-[3px] transition-all duration-500 z-20
-                    ${isActive ? dotColorActive : dotColorInactive}
-                  `}
+                  className="absolute left-[22px] md:left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
                 >
-                  {/* Pulse effect for active node */}
-                  {isActive && (
-                    <motion.div
-                      animate={{ scale: [1, 2.5, 1], opacity: [0.6, 0, 0.6] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                      className={`absolute inset-0 rounded-full ${accentType === 'crimson' ? 'bg-red-500' : 'bg-rose-700'}`}
-                    />
-                  )}
+                  <motion.div
+                    animate={
+                      isHovered
+                        ? { scale: 1.4 }
+                        : isActive
+                          ? { scale: 1.2 }
+                          : { scale: 1 }
+                    }
+                    transition={{ duration: 0.3, type: 'spring', stiffness: 300 }}
+                    className={`
+                      w-5 h-5 rounded-full border-[3px] transition-all duration-500
+                      ${isActive || isHovered ? color.dotActive : color.dotInactive}
+                    `}
+                  >
+                    {/* Pulse effect for active/hovered node */}
+                    {(isActive || isHovered) && (
+                      <motion.div
+                        animate={{ scale: [1, 2.5, 1], opacity: [0.8, 0, 0.8] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                        className={`absolute inset-0 rounded-full ${color.pulseColor}`}
+                      />
+                    )}
+                  </motion.div>
                 </motion.div>
 
                 <TimelineCard
@@ -282,6 +420,7 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
                   index={index}
                   isActive={isActive}
                   accentType={accentType}
+                  onHover={(isHovered) => setHoveredIndex(isHovered ? index : null)}
                 />
               </div>
             );
@@ -295,8 +434,35 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
 export const ExperienceSection = () => {
   return (
     <section className="relative px-4 overflow-hidden">
-      {/* Overall background */}
+      {/* Overall background with noise texture */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-background" />
+
+      {/* Subtle grid pattern */}
+      <div className="absolute inset-0 grid-pattern opacity-5 pointer-events-none" />
+
+      {/* Floating particles effect */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 rounded-full bg-red-500/30"
+            style={{
+              left: `${15 + i * 15}%`,
+              top: `${20 + i * 10}%`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.3, 0.6, 0.3],
+            }}
+            transition={{
+              duration: 4 + i,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: i * 0.5,
+            }}
+          />
+        ))}
+      </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Education Section */}
@@ -307,16 +473,20 @@ export const ExperienceSection = () => {
           id="education"
         />
 
-        {/* Divider */}
-        <div className="relative py-8">
-          <div className="absolute left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-red-500/50 via-muted/20 to-rose-700/50" />
+        {/* Divider with animated gradient */}
+        <div className="relative py-12">
+          <motion.div
+            className="absolute left-1/2 -translate-x-1/2 w-px h-32 bg-gradient-to-b from-red-600/50 via-muted/10 to-rose-700/50"
+            animate={{ opacity: [0.5, 0.8, 0.5] }}
+            transition={{ duration: 3, repeat: Infinity }}
+          />
         </div>
 
         {/* Experience Section */}
         <TimelineSection
           title="Experience"
           data={experienceData}
-          accentType="bloodRed"
+          accentType="maroon"
           id="experience"
         />
       </div>
