@@ -120,7 +120,7 @@ const TimelineCard = ({ item, index, isActive, accentType, onHover }: TimelineCa
           delay: index * 0.15,
           ease: [0.25, 0.46, 0.45, 0.94],
         }}
-        className="w-full md:w-[calc(50%-80px)] perspective-1000"
+        className="w-full md:w-[calc(50%-80px)]"
       >
         <TiltCard
           glowColor={accent.glowColor}
@@ -128,74 +128,70 @@ const TimelineCard = ({ item, index, isActive, accentType, onHover }: TimelineCa
           onHoverChange={onHover}
           className="h-full"
         >
-          <motion.div
+          <div
             className={`
-              relative p-6 rounded-2xl backdrop-blur-xl border transition-all duration-500
+              relative glass rounded-2xl border border-border/50 overflow-hidden h-full group
               ${accent.bg} ${accent.border} ${accent.hoverBorder}
               ${isActive ? accent.shadow : 'shadow-none'}
-              group
+              transition-all duration-500 cursor-pointer
             `}
-            whileHover={{
-              y: -8,
-              transition: { duration: 0.3, ease: 'easeOut' }
-            }}
-            animate={{
-              y: [0, -2, 0],
-            }}
-            transition={{
-              y: {
-                duration: 4 + index * 0.5,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }
-            }}
           >
-            {/* Animated glow effect */}
+            {/* Glowing orb effect - like project cards */}
             <motion.div
-              className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-30 blur-xl -z-10 ${accent.glow}`}
-              animate={isActive ? { opacity: [0.1, 0.2, 0.1] } : {}}
-              transition={{ duration: 2, repeat: Infinity }}
+              className="absolute -top-20 -right-20 w-40 h-40 rounded-full opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none"
+              style={{
+                background: accentType === 'crimson'
+                  ? 'radial-gradient(circle, hsl(0 70% 45%) 0%, transparent 70%)'
+                  : 'radial-gradient(circle, hsl(350 60% 40%) 0%, transparent 70%)',
+                filter: 'blur(40px)',
+              }}
             />
 
-            {/* Background gradient animation */}
+            {/* Animated gradient background on hover */}
             <motion.div
-              className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
               animate={{
                 background: accentType === 'crimson'
                   ? [
-                    'linear-gradient(135deg, hsl(0 70% 35% / 0.05) 0%, transparent 50%)',
-                    'linear-gradient(225deg, hsl(0 80% 30% / 0.05) 0%, transparent 50%)',
-                    'linear-gradient(135deg, hsl(0 70% 35% / 0.05) 0%, transparent 50%)',
+                    'linear-gradient(135deg, hsl(0 70% 35% / 0.08) 0%, transparent 50%)',
+                    'linear-gradient(225deg, hsl(0 80% 30% / 0.08) 0%, transparent 50%)',
+                    'linear-gradient(135deg, hsl(0 70% 35% / 0.08) 0%, transparent 50%)',
                   ]
                   : [
-                    'linear-gradient(135deg, hsl(350 70% 25% / 0.05) 0%, transparent 50%)',
-                    'linear-gradient(225deg, hsl(340 60% 28% / 0.05) 0%, transparent 50%)',
-                    'linear-gradient(135deg, hsl(350 70% 25% / 0.05) 0%, transparent 50%)',
+                    'linear-gradient(135deg, hsl(350 70% 25% / 0.08) 0%, transparent 50%)',
+                    'linear-gradient(225deg, hsl(340 60% 28% / 0.08) 0%, transparent 50%)',
+                    'linear-gradient(135deg, hsl(350 70% 25% / 0.08) 0%, transparent 50%)',
                   ],
               }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             />
 
-            {/* Year badge */}
-            <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold mb-4 border ${accent.badge}`}>
-              <Icon className="w-3.5 h-3.5" />
-              {item.year}
-              {item.isPresent && (
-                <span className="ml-1 px-2 py-0.5 bg-green-500/20 text-green-400 rounded-full text-[10px] uppercase tracking-wider border border-green-500/30">
-                  Current
-                </span>
+            <div className="relative p-6 md:p-8">
+              {/* Year badge with glow animation */}
+              <motion.div
+                className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold mb-4 border ${accent.badge}`}
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                {item.year}
+                {item.isPresent && (
+                  <span className="ml-1 px-2 py-0.5 bg-green-500/20 text-green-400 rounded-full text-[10px] uppercase tracking-wider border border-green-500/30">
+                    Current
+                  </span>
+                )}
+              </motion.div>
+
+              {/* Content */}
+              <h3 className="text-lg md:text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
+                {item.title}
+              </h3>
+              <p className={`text-sm font-medium mb-3 ${accent.text}`}>{item.organization}</p>
+              {item.description && (
+                <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
               )}
             </div>
-
-            {/* Content */}
-            <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
-              {item.title}
-            </h3>
-            <p className={`text-sm font-medium mb-3 ${accent.text}`}>{item.organization}</p>
-            {item.description && (
-              <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
-            )}
-          </motion.div>
+          </div>
         </TiltCard>
       </motion.div>
 
@@ -212,8 +208,8 @@ const TimelineCard = ({ item, index, isActive, accentType, onHover }: TimelineCa
       >
         <div
           className={`w-full h-full ${accentType === 'crimson'
-              ? 'bg-gradient-to-r from-red-700/40 to-red-600/80'
-              : 'bg-gradient-to-r from-rose-800/40 to-rose-700/80'
+            ? 'bg-gradient-to-r from-red-700/40 to-red-600/80'
+            : 'bg-gradient-to-r from-rose-800/40 to-rose-700/80'
             }`}
           style={{
             transformOrigin: isLeft ? 'right' : 'left',
@@ -330,8 +326,8 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
       >
         <motion.span
           className={`inline-block px-4 py-2 mb-4 text-sm font-mono border rounded-full ${accentType === 'crimson'
-              ? 'text-red-400 border-red-500/30'
-              : 'text-rose-400 border-rose-500/30'
+            ? 'text-red-400 border-red-500/30'
+            : 'text-rose-400 border-rose-500/30'
             }`}
           animate={{
             boxShadow: accentType === 'crimson'
