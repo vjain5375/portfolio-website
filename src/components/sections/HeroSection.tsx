@@ -3,9 +3,12 @@ import { Scene3D } from '../3d/Scene3D';
 import { ChevronDown, Sparkles } from 'lucide-react';
 import { useRef } from 'react';
 import { GlitchText } from '../effects/GlitchText';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 export const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const { shouldReduceMotion } = useReducedMotion();
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end start'],
@@ -21,37 +24,26 @@ export const HeroSection = () => {
 
   return (
     <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* 3D Background */}
-      <Scene3D />
+      {/* 3D Background - DISABLED on mobile for performance */}
+      {!shouldReduceMotion && <Scene3D />}
 
       {/* Grid overlay with 3D perspective */}
       <div className="absolute inset-0 grid-pattern opacity-15 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 right-0 h-[300px] grid-3d opacity-20 pointer-events-none" />
+      {!shouldReduceMotion && (
+        <div className="absolute bottom-0 left-0 right-0 h-[300px] grid-3d opacity-20 pointer-events-none" />
+      )}
 
       {/* Gradient overlays */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-background/80 pointer-events-none" />
 
-      {/* Dramatic red glow behind title - Stranger Things signature */}
-      <motion.div
-        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full opacity-25 blur-[100px] pointer-events-none"
-        style={{ background: 'hsl(0 70% 40%)' }}
-        animate={{
-          scale: [1, 1.15, 1],
-          opacity: [0.2, 0.35, 0.2],
+      {/* Static red glow behind title - NO ANIMATION for performance */}
+      <div
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] rounded-full opacity-20 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse, hsl(0 70% 40%) 0%, transparent 70%)',
+          filter: 'blur(60px)',
         }}
-        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
-      {/* Secondary crimson glow */}
-      <motion.div
-        className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] rounded-full opacity-15 blur-[80px] pointer-events-none"
-        style={{ background: 'hsl(0 80% 35%)' }}
-        animate={{
-          scale: [1.1, 0.9, 1.1],
-          opacity: [0.1, 0.2, 0.1],
-        }}
-        transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
       />
 
       {/* Content with parallax */}

@@ -53,7 +53,8 @@ export const RedFogLayers = ({ intensity = 0.5 }: RedFogLayersProps) => {
             hsl(0 60% 20% / 0.25) 0%, 
             hsl(0 40% 15% / 0.15) 40%, 
             transparent 70%)`,
-                    filter: 'blur(60px)',
+                    filter: 'blur(30px)',
+                    willChange: 'transform, opacity',
                 }}
                 animate={{
                     scaleX: [1, 1.1, 1],
@@ -94,7 +95,8 @@ export const RedFogLayers = ({ intensity = 0.5 }: RedFogLayersProps) => {
                 className="absolute top-1/4 left-1/4 w-[400px] h-[400px] rounded-full"
                 style={{
                     background: 'radial-gradient(circle, hsl(0 70% 30% / 0.15) 0%, transparent 70%)',
-                    filter: 'blur(80px)',
+                    filter: 'blur(40px)',
+                    willChange: 'transform, opacity',
                 }}
                 animate={{
                     scale: [1, 1.3, 1],
@@ -113,7 +115,8 @@ export const RedFogLayers = ({ intensity = 0.5 }: RedFogLayersProps) => {
                 className="absolute bottom-1/3 right-1/4 w-[350px] h-[350px] rounded-full"
                 style={{
                     background: 'radial-gradient(circle, hsl(0 80% 25% / 0.15) 0%, transparent 70%)',
-                    filter: 'blur(70px)',
+                    filter: 'blur(35px)',
+                    willChange: 'transform, opacity',
                 }}
                 animate={{
                     scale: [1, 1.2, 1],

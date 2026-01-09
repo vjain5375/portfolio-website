@@ -1,5 +1,5 @@
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 
 interface Spore {
     id: number;
@@ -17,18 +17,11 @@ interface UpsideDownSporesProps {
 
 export const UpsideDownSpores = ({ intensity = 0.5 }: UpsideDownSporesProps) => {
     const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
-    const [scrollY, setScrollY] = useState(0);
+    const lastMouseUpdate = useRef(0);
 
-    const mouseX = useMotionValue(0.5);
-    const mouseY = useMotionValue(0.5);
-
-    const springConfig = { damping: 40, stiffness: 60 };
-    const smoothMouseX = useSpring(mouseX, springConfig);
-    const smoothMouseY = useSpring(mouseY, springConfig);
-
-    // Generate spores based on intensity
+    // Generate spores based on intensity - reduced count for performance
     const spores = useMemo(() => {
-        const count = Math.floor(30 + intensity * 40); // 30-70 spores
+        const count = Math.floor(15 + intensity * 10); // Reduced from 30-70 to 15-25
         return Array.from({ length: count }, (_, i): Spore => ({
             id: i,
             x: Math.random() * 100,
@@ -41,38 +34,31 @@ export const UpsideDownSpores = ({ intensity = 0.5 }: UpsideDownSporesProps) => 
     }, [intensity]);
 
     const handleMouseMove = useCallback((e: MouseEvent) => {
+        // Throttle to 60fps max
+        const now = Date.now();
+        if (now - lastMouseUpdate.current < 16) return;
+        lastMouseUpdate.current = now;
+
         const x = e.clientX / window.innerWidth;
         const y = e.clientY / window.innerHeight;
-        mouseX.set(x);
-        mouseY.set(y);
         setMousePosition({ x, y });
-    }, [mouseX, mouseY]);
-
-    const handleScroll = useCallback(() => {
-        setScrollY(window.scrollY);
     }, []);
 
     useEffect(() => {
-        window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener('mousemove', handleMouseMove, { passive: true });
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('scroll', handleScroll);
         };
-    }, [handleMouseMove, handleScroll]);
-
-    // Parallax offset based on scroll
-    const scrollOffset = scrollY * 0.05;
+    }, [handleMouseMove]);
 
     return (
         <div
             className="fixed inset-0 pointer-events-none overflow-hidden z-[2]"
-            style={{ opacity: 0.3 + intensity * 0.5 }}
+            style={{ opacity: 0.3 + intensity * 0.5, willChange: 'opacity' }}
         >
             {spores.map((spore) => {
                 // Calculate mouse influence (attraction towards cursor)
                 const distX = (mousePosition.x * 100 - spore.x) * 0.02;
-                const distY = (mousePosition.y * 100 - spore.y) * 0.02;
 
                 return (
                     <motion.div
@@ -81,9 +67,10 @@ export const UpsideDownSpores = ({ intensity = 0.5 }: UpsideDownSporesProps) => 
                         style={{
                             left: `${spore.x}%`,
                             top: `${spore.y}%`,
+                            willChange: 'transform, opacity',
                         }}
                         animate={{
-                            y: [-scrollOffset, -40 - scrollOffset - Math.random() * 30, -scrollOffset],
+                            y: [0, -40 - Math.random() * 30, 0],
                             x: [distX, distX + (Math.random() - 0.5) * 15, distX],
                             opacity: [
                                 spore.opacity * intensity,
@@ -112,19 +99,20 @@ export const UpsideDownSpores = ({ intensity = 0.5 }: UpsideDownSporesProps) => 
                 );
             })}
 
-            {/* Larger floating ember particles */}
-            {[...Array(Math.floor(8 * intensity))].map((_, i) => (
+            {/* Larger floating ember particles - reduced count */}
+            {[...Array(Math.floor(4 * intensity))].map((_, i) => (
                 <motion.div
                     key={`ember-${i}`}
                     className="absolute w-1 h-1 rounded-full"
                     style={{
-                        left: `${10 + i * 12}%`,
+                        left: `${10 + i * 20}%`,
                         top: `${20 + (i % 3) * 25}%`,
                         background: 'hsl(0 80% 50%)',
-                        boxShadow: '0 0 8px hsl(0 70% 50%), 0 0 16px hsl(0 80% 40%)',
+                        boxShadow: '0 0 8px hsl(0 70% 50%)',
+                        willChange: 'transform, opacity',
                     }}
                     animate={{
-                        y: [-scrollOffset * 0.5, -60 - scrollOffset * 0.5, -scrollOffset * 0.5],
+                        y: [0, -60, 0],
                         x: [(mousePosition.x - 0.5) * 20, (mousePosition.x - 0.5) * 25, (mousePosition.x - 0.5) * 20],
                         opacity: [0.3 * intensity, 0.7 * intensity, 0.3 * intensity],
                         scale: [0.8, 1.5, 0.8],

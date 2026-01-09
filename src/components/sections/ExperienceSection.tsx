@@ -124,54 +124,22 @@ const TimelineCard = ({ item, index, isActive, accentType, onHover }: TimelineCa
       >
         <TiltCard
           glowColor={accent.glowColor}
-          intensity="medium"
+          intensity="subtle"
           onHoverChange={onHover}
           className="h-full"
+          enableRipple={false}
         >
           <div
             className={`
-              relative glass rounded-2xl border border-border/50 overflow-hidden h-full group
+              relative rounded-2xl border overflow-hidden h-full group
               ${accent.bg} ${accent.border} ${accent.hoverBorder}
-              ${isActive ? accent.shadow : 'shadow-none'}
               transition-all duration-500 cursor-pointer
             `}
           >
-            {/* Glowing orb effect - like project cards */}
-            <motion.div
-              className="absolute -top-20 -right-20 w-40 h-40 rounded-full opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none"
-              style={{
-                background: accentType === 'crimson'
-                  ? 'radial-gradient(circle, hsl(0 70% 45%) 0%, transparent 70%)'
-                  : 'radial-gradient(circle, hsl(350 60% 40%) 0%, transparent 70%)',
-                filter: 'blur(40px)',
-              }}
-            />
-
-            {/* Animated gradient background on hover */}
-            <motion.div
-              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-              animate={{
-                background: accentType === 'crimson'
-                  ? [
-                    'linear-gradient(135deg, hsl(0 70% 35% / 0.08) 0%, transparent 50%)',
-                    'linear-gradient(225deg, hsl(0 80% 30% / 0.08) 0%, transparent 50%)',
-                    'linear-gradient(135deg, hsl(0 70% 35% / 0.08) 0%, transparent 50%)',
-                  ]
-                  : [
-                    'linear-gradient(135deg, hsl(350 70% 25% / 0.08) 0%, transparent 50%)',
-                    'linear-gradient(225deg, hsl(340 60% 28% / 0.08) 0%, transparent 50%)',
-                    'linear-gradient(135deg, hsl(350 70% 25% / 0.08) 0%, transparent 50%)',
-                  ],
-              }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-            />
-
-            <div className="relative p-6 md:p-8">
-              {/* Year badge with glow animation */}
-              <motion.div
+            <div className="relative p-6">
+              {/* Year badge */}
+              <div
                 className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold mb-4 border ${accent.badge}`}
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: 'spring', stiffness: 300 }}
               >
                 <Icon className="w-3.5 h-3.5" />
                 {item.year}
@@ -180,10 +148,10 @@ const TimelineCard = ({ item, index, isActive, accentType, onHover }: TimelineCa
                     Current
                   </span>
                 )}
-              </motion.div>
+              </div>
 
               {/* Content */}
-              <h3 className="text-lg md:text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
+              <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
                 {item.title}
               </h3>
               <p className={`text-sm font-medium mb-3 ${accent.text}`}>{item.organization}</p>

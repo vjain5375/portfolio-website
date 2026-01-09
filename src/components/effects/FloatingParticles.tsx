@@ -1,5 +1,5 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 
 interface Particle {
   id: number;
@@ -36,8 +36,8 @@ const generateParticles = (count: number): Particle[] => {
 };
 
 export const FloatingParticles = () => {
-  const [particles] = useState(() => generateParticles(70)); // More particles for dust effect
-  const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
+  const [particles] = useState(() => generateParticles(20)); // Reduced from 70 for performance
+  const lastMouseUpdate = useRef(0);
 
   const mouseX = useMotionValue(0.5);
   const mouseY = useMotionValue(0.5);
@@ -47,15 +47,19 @@ export const FloatingParticles = () => {
   const smoothMouseY = useSpring(mouseY, springConfig);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
+    // Throttle to 60fps max
+    const now = Date.now();
+    if (now - lastMouseUpdate.current < 16) return;
+    lastMouseUpdate.current = now;
+
     const x = e.clientX / window.innerWidth;
     const y = e.clientY / window.innerHeight;
     mouseX.set(x);
     mouseY.set(y);
-    setMousePosition({ x, y });
   }, [mouseX, mouseY]);
 
   useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [handleMouseMove]);
 
