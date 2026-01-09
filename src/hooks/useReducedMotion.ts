@@ -3,21 +3,19 @@ import { useState, useEffect } from 'react';
 const MOBILE_BREAKPOINT = 768;
 
 export function useReducedMotion() {
-    const [shouldReduceMotion, setShouldReduceMotion] = useState(true); // Default to reduced for SSR safety
-    const [isMobile, setIsMobile] = useState(true); // Default to mobile for SSR safety
+    // Default to false (show effects) - will update on mount if needed
+    const [shouldReduceMotion, setShouldReduceMotion] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
         // Check for reduced motion preference
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        // Check if mobile
+        // Check if mobile by screen width only (not touch capability)
         const mobile = window.innerWidth < MOBILE_BREAKPOINT;
 
-        // Check for low-power indicators (touch device without mouse often = mobile)
-        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
         setIsMobile(mobile);
-        setShouldReduceMotion(prefersReducedMotion || mobile || isTouchDevice);
+        setShouldReduceMotion(prefersReducedMotion || mobile);
 
         const handleResize = () => {
             const nowMobile = window.innerWidth < MOBILE_BREAKPOINT;
