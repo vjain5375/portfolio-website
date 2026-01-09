@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface ShadowVinesProps {
     intensity?: number; // 0-1
@@ -8,6 +8,7 @@ interface ShadowVinesProps {
 export const ShadowVines = ({ intensity = 0.5 }: ShadowVinesProps) => {
     const { scrollYProgress } = useScroll();
     const [mouseNear, setMouseNear] = useState<'left' | 'right' | null>(null);
+    const lastUpdate = useRef(0);
 
     // Vines only visible in Acts 2-3 (middle sections)
     const vinesOpacity = useTransform(
@@ -16,9 +17,13 @@ export const ShadowVines = ({ intensity = 0.5 }: ShadowVinesProps) => {
         [0, 0.1, 0.4, 0.4, 0.1, 0]
     );
 
-    // Detect if mouse is near edges (vines "retreat" when approached)
+    // Detect if mouse is near edges (vines "retreat" when approached) - throttled
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
+            const now = Date.now();
+            if (now - lastUpdate.current < 50) return; // 50ms throttle for edge detection
+            lastUpdate.current = now;
+
             const x = e.clientX / window.innerWidth;
             if (x < 0.15) {
                 setMouseNear('left');
@@ -29,7 +34,7 @@ export const ShadowVines = ({ intensity = 0.5 }: ShadowVinesProps) => {
             }
         };
 
-        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mousemove', handleMouseMove, { passive: true });
         return () => window.removeEventListener('mousemove', handleMouseMove);
     }, []);
 
@@ -38,38 +43,37 @@ export const ShadowVines = ({ intensity = 0.5 }: ShadowVinesProps) => {
             className="fixed inset-0 pointer-events-none z-[1] overflow-hidden"
             style={{ opacity: intensity }}
         >
-            {/* Left side vines */}
+            {/* Left side vines - reduced count */}
             <motion.div
                 className="absolute top-0 left-0 w-[120px] h-full"
-                style={{ opacity: vinesOpacity }}
+                style={{ opacity: vinesOpacity, willChange: 'opacity, transform' }}
                 animate={{
                     x: mouseNear === 'left' ? -60 : 0,
                     opacity: mouseNear === 'left' ? 0.1 : 1,
                 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
             >
-                {[...Array(6)].map((_, i) => (
+                {[...Array(3)].map((_, i) => (
                     <motion.div
                         key={`left-vine-${i}`}
                         className="absolute left-0"
                         style={{
-                            top: `${10 + i * 15}%`,
+                            top: `${15 + i * 25}%`,
                             width: '80px',
                             height: '2px',
                             background: `linear-gradient(90deg, hsl(0 50% 20% / 0.6) 0%, hsl(0 40% 15% / 0.3) 60%, transparent 100%)`,
                             transformOrigin: 'left center',
-                            filter: 'blur(0.5px)',
+                            willChange: 'transform, opacity',
                         }}
                         animate={{
                             scaleX: [0.3, 0.8, 0.3],
                             opacity: [0.3, 0.6, 0.3],
-                            rotate: [0, 2, 0],
                         }}
                         transition={{
-                            duration: 6 + i,
+                            duration: 8 + i * 2,
                             repeat: Infinity,
                             ease: 'easeInOut',
-                            delay: i * 0.8,
+                            delay: i * 1.5,
                         }}
                     />
                 ))}
@@ -98,38 +102,37 @@ export const ShadowVines = ({ intensity = 0.5 }: ShadowVinesProps) => {
                 />
             </motion.div>
 
-            {/* Right side vines */}
+            {/* Right side vines - reduced count */}
             <motion.div
                 className="absolute top-0 right-0 w-[120px] h-full"
-                style={{ opacity: vinesOpacity }}
+                style={{ opacity: vinesOpacity, willChange: 'opacity, transform' }}
                 animate={{
                     x: mouseNear === 'right' ? 60 : 0,
                     opacity: mouseNear === 'right' ? 0.1 : 1,
                 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
             >
-                {[...Array(6)].map((_, i) => (
+                {[...Array(3)].map((_, i) => (
                     <motion.div
                         key={`right-vine-${i}`}
                         className="absolute right-0"
                         style={{
-                            top: `${15 + i * 14}%`,
+                            top: `${20 + i * 25}%`,
                             width: '70px',
                             height: '2px',
                             background: `linear-gradient(270deg, hsl(0 50% 20% / 0.6) 0%, hsl(0 40% 15% / 0.3) 60%, transparent 100%)`,
                             transformOrigin: 'right center',
-                            filter: 'blur(0.5px)',
+                            willChange: 'transform, opacity',
                         }}
                         animate={{
                             scaleX: [0.4, 0.9, 0.4],
                             opacity: [0.25, 0.55, 0.25],
-                            rotate: [0, -2, 0],
                         }}
                         transition={{
-                            duration: 7 + i,
+                            duration: 9 + i * 2,
                             repeat: Infinity,
                             ease: 'easeInOut',
-                            delay: i * 0.6,
+                            delay: i * 1.2,
                         }}
                     />
                 ))}

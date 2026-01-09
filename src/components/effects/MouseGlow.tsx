@@ -1,9 +1,10 @@
 import { motion, useMotionValue, useSpring } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 export const MouseGlow = () => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const lastUpdate = useRef(0);
 
   const springConfig = { damping: 30, stiffness: 120 };
   const smoothX = useSpring(mouseX, springConfig);
@@ -11,11 +12,16 @@ export const MouseGlow = () => {
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
+      // Throttle to 60fps max
+      const now = Date.now();
+      if (now - lastUpdate.current < 16) return;
+      lastUpdate.current = now;
+
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [mouseX, mouseY]);
 
