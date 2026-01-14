@@ -1,6 +1,6 @@
 # Vansh Jain - Portfolio Website
 
-🌐 **Live Website**: [vansh-jain-portfolio-website.vercel.app](https://vansh-jain-portfolio-website.vercel.app/)
+🌐 **Live Website**: https://vansh-jain-portfolio-website.vercel.app/
 
 ## About
 
