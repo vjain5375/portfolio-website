@@ -1,29 +1,37 @@
 import { Canvas } from '@react-three/fiber';
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState, useEffect, useRef, useCallback } from 'react';
 import { FloatingGeometry } from './FloatingGeometry';
-import { Environment, Stars } from '@react-three/drei';
+import { Stars } from '@react-three/drei';
 
 export const Scene3D = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const lastUpdate = useRef(0);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    // Throttle to 30fps for performance
+    const now = Date.now();
+    if (now - lastUpdate.current < 33) return;
+    lastUpdate.current = now;
+
+    setMousePosition({
+      x: (e.clientX / window.innerWidth) * 2 - 1,
+      y: -(e.clientY / window.innerHeight) * 2 + 1,
+    });
+  }, []);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth) * 2 - 1,
-        y: -(e.clientY / window.innerHeight) * 2 + 1,
-      });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  }, [handleMouseMove]);
 
   return (
     <div className="absolute inset-0 z-0">
       <Canvas
         camera={{ position: [0, 0, 8], fov: 60 }}
-        gl={{ antialias: true, alpha: true }}
+        gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
         style={{ background: 'transparent' }}
+        dpr={[1, 1.5]} // Limit pixel ratio for performance
+        frameloop="demand" // Only render when needed
       >
         <Suspense fallback={null}>
           {/* Darker ambient for Stranger Things vibe */}
@@ -44,18 +52,18 @@ export const Scene3D = () => {
           />
 
           <Stars
-            radius={100}
-            depth={50}
-            count={1500}
-            factor={3}
+            radius={80}
+            depth={40}
+            count={300}
+            factor={2}
             saturation={0}
             fade
-            speed={0.5}
+            speed={0.3}
           />
 
           <FloatingGeometry mousePosition={mousePosition} />
 
-          <Environment preset="night" />
+          {/* Environment removed for performance */}
         </Suspense>
       </Canvas>
     </div>

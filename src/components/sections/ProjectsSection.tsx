@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { ExternalLink, Github, Cpu, Bot, Zap, Eye, X, Terminal } from 'lucide-react';
 import { TiltCard } from '../effects/TiltCard';
 
@@ -66,21 +66,16 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [iframeError, setIframeError] = useState(false);
 
-  // Timeout to detect if iframe fails to load (for sites that block iframes)
-  useEffect(() => {
-    if (showPreview && !iframeLoaded && !iframeError) {
-      const timeout = setTimeout(() => {
-        if (!iframeLoaded) {
-          setIframeError(true);
-        }
-      }, 8000); // 8 second timeout
-      return () => clearTimeout(timeout);
-    }
-  }, [showPreview, iframeLoaded, iframeError]);
-
   // Reset states when closing preview
   const handleClosePreview = () => {
     setShowPreview(false);
+    setIframeLoaded(false);
+    setIframeError(false);
+  };
+
+  // Open preview handler
+  const handleOpenPreview = () => {
+    setShowPreview(true);
     setIframeLoaded(false);
     setIframeError(false);
   };
@@ -103,7 +98,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
         className="h-full"
       >
         <div className="relative glass rounded-2xl border border-border/50 overflow-hidden h-full group">
-          {/* Preview inside the card */}
+          {/* Screenshot Preview inside the card */}
           <AnimatePresence>
             {showPreview && project.previewUrl && (
               <motion.div
@@ -111,11 +106,11 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="absolute inset-0 z-50 bg-background/95 backdrop-blur-sm"
+                className="absolute inset-0 z-50 bg-background/98 backdrop-blur-sm flex flex-col"
               >
                 {/* Close button */}
                 <button
-                  onClick={() => setShowPreview(false)}
+                  onClick={handleClosePreview}
                   className="absolute top-3 right-3 z-50 p-2 rounded-full bg-primary/20 hover:bg-primary/40 text-primary transition-colors"
                 >
                   <X className="w-4 h-4" />
@@ -133,8 +128,8 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                   </span>
                 </div>
 
-                {/* Iframe preview - fills the card */}
-                <div className="w-full h-[calc(100%-40px)] relative">
+                {/* Live iframe preview */}
+                <div className="flex-1 relative overflow-hidden bg-white">
                   {/* Loading indicator */}
                   {!iframeLoaded && !iframeError && (
                     <div className="absolute inset-0 flex items-center justify-center bg-secondary">
@@ -144,7 +139,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                           animate={{ rotate: 360 }}
                           transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                         />
-                        <span className="text-sm text-muted-foreground">Loading preview...</span>
+                        <span className="text-sm text-muted-foreground">Loading live preview...</span>
                       </div>
                     </div>
                   )}
@@ -157,7 +152,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                           <ExternalLink className="w-6 h-6 text-primary" />
                         </div>
                         <div>
-                          <p className="text-foreground font-medium mb-1">Preview not available</p>
+                          <p className="text-foreground font-medium mb-1">Preview unavailable</p>
                           <p className="text-sm text-muted-foreground mb-4">This site blocks embedded previews</p>
                         </div>
                         <a
@@ -172,15 +167,36 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                     </div>
                   )}
 
+                  {/* Live iframe */}
                   <iframe
                     src={project.previewUrl}
-                    className={`w-full h-full bg-white ${iframeLoaded ? 'opacity-100' : 'opacity-0'}`}
-                    title={`${project.title} preview`}
-                    sandbox="allow-scripts allow-same-origin allow-popups"
-                    loading="lazy"
+                    title={`${project.title} live preview`}
+                    className={`w-full h-full border-0 transition-opacity duration-300 ${iframeLoaded ? 'opacity-100' : 'opacity-0'}`}
+                    sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                    loading="eager"
                     onLoad={() => setIframeLoaded(true)}
                     onError={() => setIframeError(true)}
                   />
+
+                  {/* Overlay with visit button - shows after iframe loads */}
+                  {iframeLoaded && (
+                    <motion.div
+                      className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent flex justify-center py-4"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <a
+                        href={project.previewUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-5 py-2 bg-primary text-primary-foreground rounded-lg font-medium text-sm hover:bg-primary/90 transition-all hover:scale-105 flex items-center gap-2 shadow-lg"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                        Open Full Site
+                      </a>
+                    </motion.div>
+                  )}
                 </div>
               </motion.div>
             )}
@@ -213,7 +229,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
             {/* Preview button for projects with preview */}
             {project.previewUrl && (
               <motion.button
-                onClick={() => setShowPreview(true)}
+                onClick={handleOpenPreview}
                 className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono text-primary bg-primary/10 rounded-full border border-primary/30 hover:bg-primary/20 hover:border-primary/50 transition-all z-10"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
