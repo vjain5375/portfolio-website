@@ -1,5 +1,5 @@
 import { useRef, useMemo } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, invalidate } from '@react-three/fiber';
 import { Mesh, Color } from 'three';
 import { Float, MeshDistortMaterial } from '@react-three/drei';
 
@@ -41,6 +41,9 @@ export const FloatingGeometry = ({ mousePosition }: FloatingGeometryProps) => {
       ringRef.current.rotation.z += 0.006;
       ringRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.2;
     }
+
+    // Request next frame for demand mode
+    invalidate();
   });
 
   return (
