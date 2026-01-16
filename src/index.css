@@ -71,59 +71,64 @@
      Premium, calm, professional, real-world
      Distinct identity from the dark mode
      ======================================== */
+  /* ========================================
+     LIGHT MODE - "Daylight World"
+     Atmosphere: Real World, Daytime in Hawkins, Control
+     Aesthetic: Warm, Foggy, Cinematic, Trustworthy
+     ======================================== */
   .light {
-    /* Warm Ivory/Off-White - soft, not harsh */
-    --background: 40 33% 98%;
-    --foreground: 220 20% 18%;
+    /* Background: Warm Foggy Ivory - not pure white */
+    --background: 35 15% 94%;
+    --foreground: 220 15% 15%;
 
-    /* Floating cards with warmth */
-    --card: 45 40% 99%;
-    --card-foreground: 220 20% 18%;
+    /* Cards: Frosted White Glass */
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 15%;
 
-    --popover: 45 40% 99%;
-    --popover-foreground: 220 20% 18%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 15%;
 
-    /* Deep Rose - elegant & Stranger Things inspired */
-    --primary: 355 75% 45%;
+    /* Primary: Deep Crimson / Rose (Daytime Stranger Things) */
+    --primary: 350 70% 45%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 355 80% 52%;
+    --primary-glow: 350 70% 55%;
 
-    /* Rich Burgundy Accent - sophisticated */
-    --accent: 350 65% 38%;
-    --accent-foreground: 0 0% 100%;
-    --accent-glow: 350 70% 45%;
+    /* Accent: Muted Maroon & Charcoal */
+    --accent: 345 50% 35%;
+    --accent-foreground: 0 0% 98%;
+    --accent-glow: 345 50% 45%;
 
-    /* Removed cyan - using warm slate instead */
-    --accent-cyan: 350 30% 55%;
-    --accent-cyan-glow: 350 40% 60%;
+    /* Secondary Support: Slate / Fog Gray */
+    --accent-cyan: 210 15% 50%;
+    --accent-cyan-glow: 210 20% 60%;
 
-    /* Warm Grays - charcoal tones */
-    --secondary: 40 15% 95%;
-    --secondary-foreground: 220 15% 28%;
+    /* UI Surfaces: Foggy Grays */
+    --secondary: 35 10% 90%;
+    --secondary-foreground: 220 10% 25%;
 
-    --muted: 40 12% 92%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 35 8% 88%;
+    --muted-foreground: 220 8% 45%;
 
     --destructive: 0 75% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Warm subtle borders */
-    --border: 40 15% 88%;
-    --input: 40 15% 95%;
-    --ring: 355 75% 45%;
+    /* Borders: Translucent & Subtle */
+    --border: 35 10% 85%;
+    --input: 35 10% 92%;
+    --ring: 350 70% 45%;
 
-    /* Unique light mode gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(355 75% 45%) 0%, hsl(350 65% 38%) 100%);
-    --gradient-glow: linear-gradient(135deg, hsl(355 75% 45% / 0.12) 0%, hsl(350 65% 38% / 0.12) 100%);
-    --gradient-dark: linear-gradient(180deg, hsl(40 33% 98%) 0%, hsl(40 20% 96%) 100%);
-    --gradient-glass: linear-gradient(135deg, hsl(45 40% 99% / 0.85) 0%, hsl(40 30% 98% / 0.75) 100%);
-    --gradient-upside-down: linear-gradient(180deg, transparent 0%, hsl(355 25% 95% / 0.4) 50%, hsl(355 30% 93% / 0.5) 100%);
+    /* Gradients: Soft Fog & Light */
+    --gradient-primary: linear-gradient(135deg, hsl(350 70% 45%) 0%, hsl(345 50% 35%) 100%);
+    --gradient-glow: linear-gradient(135deg, hsl(350 70% 45% / 0.1) 0%, hsl(345 50% 35% / 0.1) 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(35 15% 94%) 0%, hsl(35 10% 92%) 100%);
+    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.8) 0%, hsl(35 20% 96% / 0.6) 100%);
+    --gradient-upside-down: linear-gradient(180deg, transparent 0%, hsl(350 30% 90% / 0.4) 100%);
 
-    /* Soft, elegant shadows - no harsh edges */
-    --shadow-neon-red: 0 4px 20px hsl(355 50% 45% / 0.12), 0 8px 40px hsl(355 50% 45% / 0.08);
-    --shadow-neon-crimson: 0 4px 20px hsl(350 45% 38% / 0.12), 0 8px 40px hsl(350 45% 38% / 0.08);
-    --shadow-glow: 0 2px 15px hsl(40 20% 50% / 0.08), 0 8px 30px hsl(40 20% 50% / 0.05);
-    --shadow-neon-cyan: 0 4px 15px hsl(350 30% 55% / 0.1), 0 6px 25px hsl(350 30% 55% / 0.06);
+    /* Shadows: Soft, Diffused, Realistic */
+    --shadow-neon-red: 0 8px 24px hsl(350 60% 40% / 0.12), 0 2px 6px hsl(350 60% 40% / 0.08);
+    --shadow-neon-crimson: 0 8px 24px hsl(345 50% 35% / 0.12), 0 2px 6px hsl(345 50% 35% / 0.08);
+    --shadow-glow: 0 10px 30px hsl(35 10% 10% / 0.05);
+    --shadow-neon-cyan: 0 4px 12px hsl(210 15% 50% / 0.15);
   }
 }
 
@@ -858,4 +863,145 @@
 
 .light ::-webkit-scrollbar-thumb:hover {
   background: hsl(355 75% 45%);
+}
+
+/* =========================================================================================
+   STRANGER THINGS: DAYLIGHT WORLD (FINAL OVERRIDE)
+   Aesthetic: Warm, Foggy, Cinematic Daytime
+   Identity:  Real World, Control, Safety (vs Upside Down)
+   ========================================================================================= */
+
+.light {
+  /* BACKGROUND: Warm Foggy Ivory base */
+  --background: 35 15% 94%;
+  --foreground: 220 15% 15%;
+
+  /* CARDS: Frosted White Glass */
+  --card: 0 0% 100%;
+  --card-foreground: 220 15% 15%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 15% 15%;
+
+  /* PRIMARY: Deep Crimson / Rose (Daytime Stranger Things) */
+  --primary: 350 70% 45%;
+  --primary-foreground: 0 0% 100%;
+  --primary-glow: 350 70% 55%;
+
+  /* ACCENT: Muted Maroon & Charcoal */
+  --accent: 345 50% 35%;
+  --accent-foreground: 0 0% 98%;
+  --accent-glow: 345 50% 45%;
+
+  /* SECONDARY: Slate / Fog Gray */
+  --accent-cyan: 210 15% 50%;
+  --accent-cyan-glow: 210 20% 60%;
+
+  /* SURFACES: Foggy Grays */
+  --secondary: 35 10% 90%;
+  --secondary-foreground: 220 10% 25%;
+  --muted: 35 8% 88%;
+  --muted-foreground: 220 8% 45%;
+  --destructive: 0 75% 50%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* BORDERS: Translucent & Subtle */
+  --border: 35 10% 85%;
+  --input: 35 10% 92%;
+  --ring: 350 70% 45%;
+
+  /* GRADIENTS: Soft Fog & Light */
+  --gradient-primary: linear-gradient(135deg, hsl(350 70% 45%) 0%, hsl(345 50% 35%) 100%);
+  --gradient-glow: linear-gradient(135deg, hsl(350 70% 45% / 0.1) 0%, hsl(345 50% 35% / 0.1) 100%);
+  --gradient-dark: linear-gradient(180deg, hsl(35 15% 94%) 0%, hsl(35 10% 92%) 100%);
+  --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.8) 0%, hsl(35 20% 96% / 0.6) 100%);
+  --gradient-upside-down: linear-gradient(180deg, transparent 0%, hsl(350 30% 90% / 0.4) 100%);
+
+  /* SHADOWS: Soft, Diffused, Realistic (No Neon) */
+  --shadow-neon-red: 0 8px 24px hsl(350 60% 40% / 0.12), 0 2px 6px hsl(350 60% 40% / 0.08);
+  --shadow-neon-crimson: 0 8px 24px hsl(345 50% 35% / 0.12), 0 2px 6px hsl(345 50% 35% / 0.08);
+  --shadow-glow: 0 10px 30px hsl(35 10% 10% / 0.05);
+  --shadow-neon-cyan: 0 4px 12px hsl(210 15% 50% / 0.15);
+}
+
+/* COMPLEX BACKGROUND: Fog, Grain, Atmosphere */
+.light body {
+  background-color: hsl(35 15% 94%);
+  background-image:
+    /* Soft red fog rising from bottom */
+    linear-gradient(0deg, hsl(350 70% 90% / 0.4) 0%, transparent 40%),
+    /* Ambient warm fog */
+    radial-gradient(circle at 60% 30%, hsl(35 20% 98% / 0.8) 0%, transparent 50%),
+    /* Subtle Grain Noise (simulated with repeating gradient) */
+    repeating-linear-gradient(45deg, hsl(0 0% 50% / 0.03) 0px, transparent 1px, transparent 3px),
+    /* Base */
+    linear-gradient(180deg, hsl(35 15% 96%) 0%, hsl(35 10% 92%) 100%);
+  background-attachment: fixed;
+}
+
+/* COMPONENT OVERRIDES */
+
+/* Glass Cards: Frosted, high blur, soft shadow */
+.light .glass {
+  backdrop-filter: blur(20px) saturate(1.1);
+  -webkit-backdrop-filter: blur(20px) saturate(1.1);
+  background: linear-gradient(135deg, hsl(0 0% 100% / 0.9) 0%, hsl(35 20% 97% / 0.8) 100%);
+  border: 1px solid hsl(0 0% 100% / 0.8);
+  box-shadow:
+    0 10px 40px -10px hsl(35 10% 20% / 0.08),
+    0 2px 10px -2px hsl(35 10% 20% / 0.04),
+    inset 0 0 20px hsl(0 0% 100% / 0.6);
+  border-radius: var(--radius);
+}
+
+/* Text Effects: No Neon, distinct shadows */
+.light .stranger-things-text {
+  color: hsl(350 70% 45%);
+  text-shadow: 0 4px 12px hsl(350 70% 45% / 0.15);
+  filter: none;
+  -webkit-text-stroke: 0;
+}
+
+.light .stranger-things-outline {
+  color: hsl(345 50% 35%);
+  text-shadow: none;
+  filter: none;
+  -webkit-text-stroke: 1px hsl(345 50% 35% / 0.3);
+}
+
+/* Button Depth */
+.light .btn-glow {
+  box-shadow: 0 4px 12px -2px hsl(350 70% 45% / 0.25);
+  transition: all 0.3s ease;
+}
+
+.light .btn-glow:hover {
+  filter: brightness(0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px -4px hsl(350 70% 45% / 0.3);
+}
+
+.light .btn-glow::before {
+  display: none;
+}
+
+/* Remove vignettes */
+.light .vignette {
+  display: none;
+}
+
+/* Scrollbar */
+.light ::-webkit-scrollbar-thumb {
+  background: hsl(350 60% 70% / 0.5);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 99px;
+}
+
+.light ::-webkit-scrollbar-thumb:hover {
+  background: hsl(350 70% 50% / 0.8);
+  background-clip: content-box;
+}
+
+.light ::-webkit-scrollbar-track {
+  background: transparent;
 }
