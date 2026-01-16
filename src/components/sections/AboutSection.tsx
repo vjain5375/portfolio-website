@@ -75,7 +75,7 @@ const Terminal = () => {
             return (
               <div
                 key={index}
-                className={`mb-2 break-all text-left w-full ${line.type === 'command' ? 'text-primary' : 'text-muted-foreground'}`}
+                className={`mb-2 break-all text-left w-full ${line.type === 'command' ? 'text-red-500' : 'text-zinc-400'}`}
               >
                 {/* Visual marker for command lines */}
                 {line.type === 'command' && <span className="mr-2 opacity-50">$</span>}
@@ -91,7 +91,7 @@ const Terminal = () => {
                 {/* Show cursor only on the active line */}
                 {index === lineIndex && (
                   <motion.span
-                    className="inline-block w-2 h-4 bg-primary ml-1 align-middle"
+                    className="inline-block w-2 h-4 bg-red-500 ml-1 align-middle"
                     animate={{ opacity: [1, 0, 1] }}
                     transition={{ duration: 0.8, repeat: Infinity }}
                   />

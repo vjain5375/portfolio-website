@@ -8,12 +8,14 @@ import { ContactSection } from '@/components/sections/ContactSection';
 import { FloatingParticles } from '@/components/effects/FloatingParticles';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { CinematicBackground } from '@/components/layout/CinematicBackground';
+import { WorldTransitionOverlay } from '@/components/effects/WorldTransitionOverlay';
 
 const Index = () => {
   const { shouldReduceMotion } = useReducedMotion();
 
   return (
     <div className="relative min-h-screen overflow-x-hidden">
+      <WorldTransitionOverlay />
       <CinematicBackground />
 
       {/* Only load minimal effects - heavy effects completely removed */}
