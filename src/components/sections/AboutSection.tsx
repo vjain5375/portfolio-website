@@ -54,7 +54,7 @@ const Terminal = () => {
   return (
     <TiltCard glowColor="red" intensity="subtle">
       <div ref={ref} className="glass rounded-2xl overflow-hidden border border-border/50 shadow-2xl">
-        <div className="flex items-center gap-2 px-4 py-3 bg-secondary/50 border-b border-border/50">
+        <div className="flex items-center gap-2 px-4 py-3 bg-primary/5 border-b border-border/50">
           <div className="flex gap-2">
             <motion.div className="w-3 h-3 rounded-full bg-destructive/80" whileHover={{ scale: 1.2 }} />
             <motion.div className="w-3 h-3 rounded-full bg-yellow-500/80" whileHover={{ scale: 1.2 }} />

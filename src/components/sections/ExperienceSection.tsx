@@ -84,21 +84,19 @@ const TimelineCard = ({ item, index, isActive, accentType, onHover }: TimelineCa
 
   const accentConfig = {
     crimson: {
-      bg: 'bg-red-950/20',
-      border: 'border-red-900/30',
-      hoverBorder: 'hover:border-red-700/50',
-      badge: 'bg-red-900/30 text-red-400 border-red-800/40',
-      text: 'text-red-400',
+      // bg and border removed to rely on global .glass
+      hoverBorder: 'hover:border-red-500/50', // Lighter hover for visibility
+      badge: 'bg-red-500/10 text-red-500 border-red-500/20', // Updated for light mode compatibility
+      text: 'text-red-500',
       glow: 'bg-red-600',
       shadow: 'shadow-[0_0_40px_rgba(185,28,28,0.25)]',
       glowColor: 'crimson' as const,
     },
     maroon: {
-      bg: 'bg-rose-950/20',
-      border: 'border-rose-900/30',
-      hoverBorder: 'hover:border-rose-700/50',
-      badge: 'bg-rose-900/30 text-rose-400 border-rose-800/40',
-      text: 'text-rose-400',
+      // bg and border removed to rely on global .glass
+      hoverBorder: 'hover:border-rose-500/50',
+      badge: 'bg-rose-500/10 text-rose-500 border-rose-500/20',
+      text: 'text-rose-500',
       glow: 'bg-rose-700',
       shadow: 'shadow-[0_0_40px_rgba(136,19,55,0.25)]',
       glowColor: 'maroon' as const,
@@ -131,8 +129,8 @@ const TimelineCard = ({ item, index, isActive, accentType, onHover }: TimelineCa
         >
           <div
             className={`
-              relative rounded-2xl border overflow-hidden h-full group
-              ${accent.bg} ${accent.border} ${accent.hoverBorder}
+              relative glass rounded-2xl overflow-hidden h-full group
+              ${accent.hoverBorder}
               transition-all duration-500 cursor-pointer
             `}
           >
@@ -144,7 +142,7 @@ const TimelineCard = ({ item, index, isActive, accentType, onHover }: TimelineCa
                 <Icon className="w-3.5 h-3.5" />
                 {item.year}
                 {item.isPresent && (
-                  <span className="ml-1 px-2 py-0.5 bg-green-500/20 text-green-400 rounded-full text-[10px] uppercase tracking-wider border border-green-500/30">
+                  <span className="ml-1 px-2 py-0.5 bg-green-500/20 text-green-600 rounded-full text-[10px] uppercase tracking-wider border border-green-500/30 animate-pulse">
                     Current
                   </span>
                 )}
