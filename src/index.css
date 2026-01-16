@@ -65,6 +65,59 @@
     --font-mono: 'JetBrains Mono', monospace;
     --font-body: 'Inter', sans-serif;
   }
+
+  /* Light Theme - Stranger Things Inspired with Strong Contrast */
+  .light {
+    /* Warm cream/off-white background for softer look */
+    --background: 30 20% 96%;
+    --foreground: 0 10% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 10% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 10% 10%;
+
+    /* Deeper Crimson for better contrast on light */
+    --primary: 0 75% 40%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 0 80% 50%;
+
+    /* Blood Red Accent - darker for contrast */
+    --accent: 0 85% 32%;
+    --accent-foreground: 0 0% 100%;
+    --accent-glow: 0 85% 42%;
+
+    /* Subtle Cyan for occasional highlights */
+    --accent-cyan: 195 70% 35%;
+    --accent-cyan-glow: 195 80% 45%;
+
+    --secondary: 30 10% 92%;
+    --secondary-foreground: 0 5% 30%;
+
+    --muted: 30 10% 88%;
+    --muted-foreground: 0 5% 40%;
+
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 15% 85%;
+    --input: 30 10% 94%;
+    --ring: 0 75% 40%;
+
+    /* Custom gradients - Light Theme */
+    --gradient-primary: linear-gradient(135deg, hsl(0 75% 40%) 0%, hsl(0 85% 32%) 100%);
+    --gradient-glow: linear-gradient(135deg, hsl(0 75% 40% / 0.2) 0%, hsl(0 85% 32% / 0.2) 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(30 20% 96%) 0%, hsl(30 15% 94%) 100%);
+    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.8) 0%, hsl(30 10% 98% / 0.6) 100%);
+    --gradient-upside-down: linear-gradient(180deg, transparent 0%, hsl(0 60% 80% / 0.1) 50%, hsl(0 70% 75% / 0.15) 100%);
+
+    /* Shadows - Softer for light mode */
+    --shadow-neon-red: 0 0 15px hsl(0 75% 40% / 0.3), 0 0 30px hsl(0 75% 40% / 0.15);
+    --shadow-neon-crimson: 0 0 15px hsl(0 85% 32% / 0.3), 0 0 30px hsl(0 85% 32% / 0.15);
+    --shadow-glow: 0 0 20px hsl(0 75% 40% / 0.15);
+    --shadow-neon-cyan: 0 0 12px hsl(195 70% 35% / 0.2), 0 0 25px hsl(195 70% 35% / 0.1);
+  }
 }
 
 @layer base {
@@ -78,9 +131,14 @@
 
   body {
     @apply bg-background text-foreground font-body antialiased;
-    background: linear-gradient(180deg, hsl(0 5% 4%) 0%, hsl(0 8% 5%) 50%, hsl(0 10% 4%) 100%);
+    background: var(--gradient-dark);
     min-height: 100vh;
     overflow-x: hidden;
+  }
+
+  /* Light mode body styling */
+  .light body {
+    background: linear-gradient(180deg, hsl(30 20% 96%) 0%, hsl(30 15% 94%) 50%, hsl(30 20% 96%) 100%);
   }
 
   ::selection {
