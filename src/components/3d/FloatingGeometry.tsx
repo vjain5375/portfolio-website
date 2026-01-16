@@ -11,6 +11,8 @@ export const FloatingGeometry = ({ mousePosition }: FloatingGeometryProps) => {
   const meshRef = useRef<Mesh>(null);
   const innerMeshRef = useRef<Mesh>(null);
   const ringRef = useRef<Mesh>(null);
+  const ring2Ref = useRef<Mesh>(null);
+  const ring3Ref = useRef<Mesh>(null);
 
   // Stranger Things red theme colors
   const crimsonColor = useMemo(() => new Color('#b91c1c'), []); // Crimson red
@@ -40,6 +42,18 @@ export const FloatingGeometry = ({ mousePosition }: FloatingGeometryProps) => {
     if (ringRef.current) {
       ringRef.current.rotation.z += 0.006;
       ringRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.2;
+    }
+
+    // Secondary ring - slower rotation in opposite direction
+    if (ring2Ref.current) {
+      ring2Ref.current.rotation.z -= 0.004;
+      ring2Ref.current.rotation.y += 0.003;
+    }
+
+    // Tertiary ring - different axis rotation
+    if (ring3Ref.current) {
+      ring3Ref.current.rotation.x += 0.005;
+      ring3Ref.current.rotation.z += 0.002;
     }
 
     // Request next frame for demand mode
@@ -89,7 +103,7 @@ export const FloatingGeometry = ({ mousePosition }: FloatingGeometryProps) => {
         </mesh>
 
         {/* Secondary ring - crimson */}
-        <mesh rotation={[Math.PI / 3, Math.PI / 4, 0]}>
+        <mesh ref={ring2Ref} rotation={[Math.PI / 3, Math.PI / 4, 0]}>
           <torusGeometry args={[3.8, 0.03, 16, 100]} />
           <meshStandardMaterial
             color={crimsonColor}
@@ -101,7 +115,7 @@ export const FloatingGeometry = ({ mousePosition }: FloatingGeometryProps) => {
         </mesh>
 
         {/* Tertiary ring - dim cyan accent */}
-        <mesh rotation={[Math.PI / 5, Math.PI / 3, Math.PI / 6]}>
+        <mesh ref={ring3Ref} rotation={[Math.PI / 5, Math.PI / 3, Math.PI / 6]}>
           <torusGeometry args={[4.1, 0.02, 16, 100]} />
           <meshStandardMaterial
             color={dimCyanColor}
