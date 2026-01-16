@@ -1053,6 +1053,186 @@
   border-radius: 99px;
 }
 
+/* =========================================================================================
+   STRANGER THINGS: UNIFIED RED SYSTEM (FINAL)
+   Aesthetic: Red Glass, Cinematic, Cohesive
+   Identity:  All cards are red "windows" (no neutral/grey)
+   ========================================================================================= */
+
+.light {
+  /* BACKGROUND: Warm Foggy Ivory base (kept from refined palette) */
+  --background: 24 20% 95%;
+  /* #F6F1EE */
+  --foreground: 0 0% 12%;
+  /* #1E1E1E */
+
+  /* CARDS: UNIFIED RED TINT (No more white/grey) */
+  --card: 351 80% 38%;
+  /* Base red for alpha tinting */
+  --card-foreground: 0 0% 20%;
+  /* Dark text for contrast on light background */
+  --popover: 24 20% 95%;
+  --popover-foreground: 0 0% 12%;
+
+  /* PRIMARY: Stranger Things Red */
+  --primary: 351 85% 40%;
+  /* #BD0F26 */
+  --primary-foreground: 0 0% 100%;
+  --primary-glow: 351 90% 60%;
+
+  /* ACCENT: Highlights */
+  --accent: 355 80% 55%;
+  --accent-foreground: 0 0% 100%;
+  --accent-glow: 355 80% 65%;
+
+  /* SECONDARY: Warm Grey */
+  --secondary: 11 20% 90%;
+  --secondary-foreground: 0 0% 20%;
+
+  --muted: 11 10% 88%;
+  --muted-foreground: 0 0% 40%;
+
+  --destructive: 0 85% 50%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* BORDERS: Red Tint */
+  --border: 351 85% 40%;
+  --input: 351 50% 90%;
+  --ring: 351 85% 40%;
+
+  /* GRADIENTS: Cinematic Red Fog */
+  --gradient-primary: linear-gradient(135deg, hsl(351 85% 40%) 0%, hsl(345 90% 35%) 100%);
+  --gradient-glow: linear-gradient(135deg, hsl(351 85% 40% / 0.15) 0%, hsl(345 90% 35% / 0.15) 100%);
+  --gradient-dark: linear-gradient(180deg, hsl(24 20% 95%) 0%, hsl(24 20% 92%) 100%);
+  --gradient-glass: linear-gradient(135deg, hsl(345 90% 35% / 0.08) 0%, hsl(351 85% 40% / 0.05) 100%);
+  --gradient-upside-down: linear-gradient(180deg, transparent 0%, hsl(351 85% 40% / 0.1) 100%);
+
+  /* SHADOWS: Red Tinted Shadows */
+  --shadow-neon-red: 0 8px 30px hsl(351 85% 40% / 0.2), 0 2px 8px hsl(351 85% 40% / 0.1);
+  --shadow-neon-crimson: 0 8px 30px hsl(345 90% 35% / 0.2), 0 2px 8px hsl(345 90% 35% / 0.1);
+  --shadow-glow: 0 15px 40px hsl(351 85% 40% / 0.08);
+  --shadow-neon-cyan: 0 4px 15px hsl(210 20% 40% / 0.15);
+  /* Legacy fallback */
+}
+
+/* COMPLEX BACKGROUND: Fog, Grain, Atmosphere */
+.light body {
+  background-color: hsl(24 20% 95%);
+  background-image:
+    /* Ambient Red Fog */
+    radial-gradient(circle at 50% 30%, hsl(351 85% 40% / 0.08), transparent 60%),
+    /* Grain Noise */
+    repeating-linear-gradient(45deg, hsl(0 0% 0% / 0.03) 0px, transparent 1px, transparent 3px),
+    /* Base Gradient */
+    linear-gradient(180deg, hsl(24 20% 96%) 0%, hsl(24 20% 92%) 100%);
+  background-attachment: fixed;
+  color: hsl(0 0% 15%);
+}
+
+/* COMPONENT OVERRIDES */
+
+/* Glass Cards: UNIFIED RED THEME (Light Mode) */
+/* Replacing neutral/white cards with red-tinted glass */
+.light .glass {
+  backdrop-filter: blur(12px) saturate(1.05);
+  -webkit-backdrop-filter: blur(12px) saturate(1.05);
+  background: hsl(351 85% 40% / 0.08);
+  /* Red Tint Background */
+  border: 1px solid hsl(351 85% 40% / 0.25);
+  /* Red Tint Border */
+  box-shadow:
+    0 4px 15px -3px hsl(351 85% 40% / 0.1),
+    0 0 0 1px hsl(351 85% 40% / 0.05);
+  border-radius: var(--radius);
+}
+
+.light .glass:hover {
+  background: hsl(351 85% 40% / 0.12);
+  /* Stronger Red on Hover */
+  border-color: hsl(351 85% 40% / 0.4);
+  box-shadow:
+    0 20px 40px -5px hsl(351 85% 40% / 0.15),
+    0 0 20px hsl(351 85% 40% / 0.1);
+  transform: translateY(-4px);
+}
+
+/* Text Effects */
+.light .stranger-things-text {
+  color: hsl(351 85% 40%);
+  text-shadow: 0 2px 10px hsl(351 85% 40% / 0.2);
+  font-weight: 800;
+  -webkit-text-stroke: 0;
+}
+
+.light .stranger-things-outline {
+  -webkit-text-stroke: 1.5px hsl(351 85% 40%);
+  color: transparent;
+  filter: drop-shadow(0 2px 4px hsl(351 85% 40% / 0.1));
+  font-weight: 800;
+}
+
+/* Timeline & Accents */
+.light .timeline-dot {
+  background-color: hsl(351 85% 40%);
+  box-shadow: 0 0 0 4px hsl(351 85% 40% / 0.25);
+}
+
+.light .timeline-line {
+  background-color: hsl(351 85% 40% / 0.3);
+  width: 2px;
+}
+
+/* Button Depth */
+.light .btn-glow {
+  background: hsl(351 85% 40%);
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 12px hsl(351 85% 40% / 0.3);
+  border: none;
+}
+
+.light .btn-glow:hover {
+  background: hsl(345 90% 35%);
+  box-shadow: 0 8px 20px hsl(351 85% 40% / 0.45);
+  transform: translateY(-2px);
+}
+
+.light .btn-glow::before {
+  display: none;
+}
+
+/* FOOTER FIX (High Visibility) */
+.light footer {
+  background-color: hsl(24 10% 90%);
+  border-top: 1px solid hsl(351 85% 40% / 0.15);
+}
+
+.light footer p,
+.light footer span,
+.light footer a {
+  color: hsl(0 0% 25%) !important;
+}
+
+.light footer svg {
+  color: hsl(351 85% 40%);
+}
+
+/* Remove vignettes */
+.light .vignette {
+  display: none;
+}
+
+/* Scrollbar */
+.light ::-webkit-scrollbar-track {
+  background: hsl(24 20% 96%);
+}
+
+.light ::-webkit-scrollbar-thumb {
+  background: hsl(351 85% 40% / 0.6);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 99px;
+}
+
 .light ::-webkit-scrollbar-thumb:hover {
   background: hsl(351 85% 40%);
   background-clip: content-box;
