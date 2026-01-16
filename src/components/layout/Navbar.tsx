@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Menu, X, Terminal } from 'lucide-react';
+import { ThemeToggle } from '../ui/ThemeToggle';
 
 const navLinks = [
   { name: 'Home', href: '#' },
@@ -56,8 +57,9 @@ export const Navbar = () => {
             ))}
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* CTA Button and Theme Toggle */}
+          <div className="hidden md:flex items-center gap-3">
+            <ThemeToggle />
             <motion.a
               href="#contact"
               className="px-5 py-2.5 font-display font-semibold text-sm text-primary-foreground bg-gradient-to-r from-primary to-accent rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/25"
@@ -103,6 +105,9 @@ export const Navbar = () => {
               >
                 Hire Me
               </a>
+              <div className="flex items-center justify-center pt-2">
+                <ThemeToggle />
+              </div>
             </div>
           </motion.div>
         )}
