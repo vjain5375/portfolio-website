@@ -66,57 +66,60 @@
     --font-body: 'Inter', sans-serif;
   }
 
-  /* Light Theme - Stranger Things Inspired with Strong Contrast */
+  /* Light Theme - Modern & Elegant with Vibrant Accents */
   .light {
-    /* Warm cream/off-white background for softer look */
-    --background: 30 20% 96%;
-    --foreground: 0 10% 10%;
+    /* Clean white with subtle warmth */
+    --background: 0 0% 98%;
+    --foreground: 0 0% 12%;
 
+    /* Pure white cards with soft shadows */
     --card: 0 0% 100%;
-    --card-foreground: 0 10% 10%;
+    --card-foreground: 0 0% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 10% 10%;
+    --popover-foreground: 0 0% 12%;
 
-    /* Deeper Crimson for better contrast on light */
-    --primary: 0 75% 40%;
+    /* Vibrant Rose Red - eye-catching but elegant */
+    --primary: 350 80% 48%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 0 80% 50%;
+    --primary-glow: 350 85% 55%;
 
-    /* Blood Red Accent - darker for contrast */
-    --accent: 0 85% 32%;
+    /* Rich Burgundy Accent */
+    --accent: 345 75% 38%;
     --accent-foreground: 0 0% 100%;
-    --accent-glow: 0 85% 42%;
+    --accent-glow: 345 80% 48%;
 
-    /* Subtle Cyan for occasional highlights */
-    --accent-cyan: 195 70% 35%;
-    --accent-cyan-glow: 195 80% 45%;
+    /* Teal accent for variety */
+    --accent-cyan: 185 65% 40%;
+    --accent-cyan-glow: 185 75% 50%;
 
-    --secondary: 30 10% 92%;
-    --secondary-foreground: 0 5% 30%;
+    /* Soft grays with slight warmth */
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 5% 35%;
 
-    --muted: 30 10% 88%;
-    --muted-foreground: 0 5% 40%;
+    --muted: 240 5% 92%;
+    --muted-foreground: 240 4% 46%;
 
-    --destructive: 0 84% 50%;
+    --destructive: 0 84% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 15% 85%;
-    --input: 30 10% 94%;
-    --ring: 0 75% 40%;
+    /* Clean borders */
+    --border: 240 6% 90%;
+    --input: 240 5% 96%;
+    --ring: 350 80% 48%;
 
-    /* Custom gradients - Light Theme */
-    --gradient-primary: linear-gradient(135deg, hsl(0 75% 40%) 0%, hsl(0 85% 32%) 100%);
-    --gradient-glow: linear-gradient(135deg, hsl(0 75% 40% / 0.2) 0%, hsl(0 85% 32% / 0.2) 100%);
-    --gradient-dark: linear-gradient(180deg, hsl(30 20% 96%) 0%, hsl(30 15% 94%) 100%);
-    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.8) 0%, hsl(30 10% 98% / 0.6) 100%);
-    --gradient-upside-down: linear-gradient(180deg, transparent 0%, hsl(0 60% 80% / 0.1) 50%, hsl(0 70% 75% / 0.15) 100%);
+    /* Elegant gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(350 80% 48%) 0%, hsl(345 75% 38%) 100%);
+    --gradient-glow: linear-gradient(135deg, hsl(350 80% 48% / 0.15) 0%, hsl(345 75% 38% / 0.15) 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(0 0% 98%) 0%, hsl(240 5% 96%) 100%);
+    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.9) 0%, hsl(240 5% 98% / 0.8) 100%);
+    --gradient-upside-down: linear-gradient(180deg, transparent 0%, hsl(350 30% 92% / 0.3) 50%, hsl(350 40% 88% / 0.4) 100%);
 
-    /* Shadows - Softer for light mode */
-    --shadow-neon-red: 0 0 15px hsl(0 75% 40% / 0.3), 0 0 30px hsl(0 75% 40% / 0.15);
-    --shadow-neon-crimson: 0 0 15px hsl(0 85% 32% / 0.3), 0 0 30px hsl(0 85% 32% / 0.15);
-    --shadow-glow: 0 0 20px hsl(0 75% 40% / 0.15);
-    --shadow-neon-cyan: 0 0 12px hsl(195 70% 35% / 0.2), 0 0 25px hsl(195 70% 35% / 0.1);
+    /* Refined shadows */
+    --shadow-neon-red: 0 4px 20px hsl(350 80% 48% / 0.2), 0 0 40px hsl(350 80% 48% / 0.1);
+    --shadow-neon-crimson: 0 4px 20px hsl(345 75% 38% / 0.2), 0 0 40px hsl(345 75% 38% / 0.1);
+    --shadow-glow: 0 4px 30px hsl(350 80% 48% / 0.12);
+    --shadow-neon-cyan: 0 4px 15px hsl(185 65% 40% / 0.15), 0 0 30px hsl(185 65% 40% / 0.08);
   }
 }
 
@@ -138,7 +141,7 @@
 
   /* Light mode body styling */
   .light body {
-    background: linear-gradient(180deg, hsl(30 20% 96%) 0%, hsl(30 15% 94%) 50%, hsl(30 20% 96%) 100%);
+    background: linear-gradient(180deg, hsl(0 0% 98%) 0%, hsl(240 5% 96%) 50%, hsl(0 0% 98%) 100%);
   }
 
   ::selection {
