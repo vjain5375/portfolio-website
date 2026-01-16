@@ -125,7 +125,6 @@ const TimelineCard = ({ item, index, isActive, accentType, onHover }: TimelineCa
           intensity="subtle"
           onHoverChange={onHover}
           className="h-full"
-          enableRipple={false}
         >
           <div
             className={`
