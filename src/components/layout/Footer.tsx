@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Terminal, Github, Linkedin, Mail, Heart } from 'lucide-react';
+import { Terminal, Github, Linkedin, Mail } from 'lucide-react';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -48,10 +48,8 @@ export const Footer = () => {
           </div>
 
           {/* Copyright */}
-          <p className="text-sm text-red-300 flex items-center gap-1">
-            <span>© {currentYear} Made with</span>
-            <Heart className="w-4 h-4 text-red-500 fill-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
-            <span>by Vansh Jain</span>
+          <p className="text-sm text-red-300/80">
+            © {currentYear} Developed by Vansh Jain. All Rights Reserved.
           </p>
         </div>
       </div>
