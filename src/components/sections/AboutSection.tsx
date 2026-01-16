@@ -4,14 +4,14 @@ import { Download, Code, Database, Cpu, Layers } from 'lucide-react';
 import { TiltCard } from '../effects/TiltCard';
 
 const terminalLines = [
-  { type: 'command', content: '$ whoami' },
+  { type: 'command', content: 'whoami' },
   { type: 'output', content: 'vansh_jain' },
-  { type: 'command', content: '$ cat education.txt' },
+  { type: 'command', content: 'cat education.txt' },
   { type: 'output', content: 'B.Tech in Computer Science Engineering' },
   { type: 'output', content: 'Expected Graduation: 2028' },
-  { type: 'command', content: '$ ls skills/' },
+  { type: 'command', content: 'ls skills/' },
   { type: 'output', content: 'web-dev/ ai/ programming/ databases/' },
-  { type: 'command', content: '$ echo $PASSION' },
+  { type: 'command', content: 'echo $PASSION' },
   { type: 'output', content: 'Building innovative tech solutions' },
 ];
 
@@ -23,28 +23,37 @@ const skills = [
 ];
 
 const Terminal = () => {
-  const [visibleLines, setVisibleLines] = useState(0);
+  const [lineIndex, setLineIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   useEffect(() => {
-    if (isInView) {
-      const timer = setInterval(() => {
-        setVisibleLines((prev) => {
-          if (prev >= terminalLines.length) {
-            clearInterval(timer);
-            return prev;
-          }
-          return prev + 1;
-        });
-      }, 400);
-      return () => clearInterval(timer);
+    if (!isInView) return;
+
+    if (lineIndex >= terminalLines.length) return;
+
+    const currentLineContent = terminalLines[lineIndex].content;
+
+    if (charIndex < currentLineContent.length) {
+      // Typing characters
+      const timeout = setTimeout(() => {
+        setCharIndex((prev) => prev + 1);
+      }, 40); // Fast typing speed
+      return () => clearTimeout(timeout);
+    } else {
+      // Line completed, simple delay before next line
+      const timeout = setTimeout(() => {
+        setLineIndex((prev) => prev + 1);
+        setCharIndex(0);
+      }, 300); // Pause between lines
+      return () => clearTimeout(timeout);
     }
-  }, [isInView]);
+  }, [isInView, lineIndex, charIndex]);
 
   return (
     <TiltCard glowColor="red" intensity="subtle">
-      <div ref={ref} className="glass rounded-2xl overflow-hidden border border-border/50">
+      <div ref={ref} className="glass rounded-2xl overflow-hidden border border-border/50 shadow-2xl">
         <div className="flex items-center gap-2 px-4 py-3 bg-secondary/50 border-b border-border/50">
           <div className="flex gap-2">
             <motion.div className="w-3 h-3 rounded-full bg-destructive/80" whileHover={{ scale: 1.2 }} />
@@ -53,25 +62,43 @@ const Terminal = () => {
           </div>
           <span className="ml-2 text-xs font-mono text-muted-foreground">terminal — vansh@portfolio</span>
         </div>
-        <div className="p-6 font-mono text-sm min-h-[300px]">
-          {terminalLines.slice(0, visibleLines).map((line, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3 }}
-              className={`mb-2 ${line.type === 'command' ? 'text-primary' : 'text-muted-foreground'}`}
-            >
-              {line.content}
-            </motion.div>
-          ))}
-          {visibleLines < terminalLines.length && (
-            <motion.span
-              className="inline-block w-2 h-4 bg-primary"
-              animate={{ opacity: [1, 0, 1] }}
-              transition={{ duration: 1, repeat: Infinity }}
-            />
-          )}
+        <div className="p-6 font-mono text-sm min-h-[300px] flex flex-col items-start bg-black/40 backdrop-blur-md">
+          {terminalLines.map((line, index) => {
+            // Only show lines that have started typing
+            if (index > lineIndex) return null;
+
+            // For the current line, slice the content. For completed lines, show full content.
+            const displayContent = index === lineIndex
+              ? line.content.slice(0, charIndex)
+              : line.content;
+
+            return (
+              <div
+                key={index}
+                className={`mb-2 break-all text-left w-full ${line.type === 'command' ? 'text-primary' : 'text-muted-foreground'}`}
+              >
+                {/* Visual marker for command lines */}
+                {line.type === 'command' && <span className="mr-2 opacity-50">$</span>}
+
+                {/* The text content (slicing out the '$ ' if it was part of content, but terminalLines content includes it? No, content includes '$ ' in the data above. Let's fix that data presentation.) */}
+                {/* Looking at lines 6-16, content includes '$ whoami'. 
+                    So I should remove the '$ ' from content if I'm adding it manually, OR just display content as is. 
+                    The original data has '$ whoami'.
+                    Let's just display content as is to be safe, but the flashing cursor needs to be at the end.
+                */}
+                <span>{displayContent.startsWith('$ ') ? displayContent.slice(2) : displayContent}</span>
+
+                {/* Show cursor only on the active line */}
+                {index === lineIndex && (
+                  <motion.span
+                    className="inline-block w-2 h-4 bg-primary ml-1 align-middle"
+                    animate={{ opacity: [1, 0, 1] }}
+                    transition={{ duration: 0.8, repeat: Infinity }}
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </TiltCard>

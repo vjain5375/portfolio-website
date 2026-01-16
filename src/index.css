@@ -866,122 +866,174 @@
 }
 
 /* =========================================================================================
-   STRANGER THINGS: DAYLIGHT WORLD (FINAL OVERRIDE)
-   Aesthetic: Warm, Foggy, Cinematic Daytime
-   Identity:  Real World, Control, Safety (vs Upside Down)
+   STRANGER THINGS: CINEMATIC WHITE (FINAL REVISION)
+   Aesthetic: Bright, Clean, Vibrant, Opaque
+   Identity:  Real World, Clarity, Optimism (vs Upside Down)
    ========================================================================================= */
 
 .light {
-  /* BACKGROUND: Warm Foggy Ivory base */
-  --background: 35 15% 94%;
-  --foreground: 220 15% 15%;
+  /* BACKGROUND: Clean White with Red Ambient Tint */
+  --background: 0 0% 98%;
+  /* Almost pure white */
+  --foreground: 0 0% 10%;
+  /* Strong Black text */
 
-  /* CARDS: Frosted White Glass */
+  /* CARDS: Opaque White - Crisp & Pop */
   --card: 0 0% 100%;
-  --card-foreground: 220 15% 15%;
+  /* Pure White */
+  --card-foreground: 0 0% 15%;
   --popover: 0 0% 100%;
-  --popover-foreground: 220 15% 15%;
+  --popover-foreground: 0 0% 15%;
 
-  /* PRIMARY: Deep Crimson / Rose (Daytime Stranger Things) */
-  --primary: 350 70% 45%;
+  /* PRIMARY: Vibrant Stranger Things Red */
+  --primary: 351 85% 40%;
+  /* #BD0F26 - Vibrant Red */
   --primary-foreground: 0 0% 100%;
-  --primary-glow: 350 70% 55%;
+  --primary-glow: 351 90% 60%;
 
-  /* ACCENT: Muted Maroon & Charcoal */
-  --accent: 345 50% 35%;
-  --accent-foreground: 0 0% 98%;
-  --accent-glow: 345 50% 45%;
+  /* ACCENT: Bright Highlights */
+  --accent: 355 80% 55%;
+  /* Lighter Red */
+  --accent-foreground: 0 0% 100%;
+  --accent-glow: 355 80% 65%;
 
-  /* SECONDARY: Slate / Fog Gray */
-  --accent-cyan: 210 15% 50%;
-  --accent-cyan-glow: 210 20% 60%;
+  /* SECONDARY: Cool Grays (Not muddy beige) */
+  --accent-cyan: 210 20% 40%;
+  --accent-cyan-glow: 210 30% 50%;
 
-  /* SURFACES: Foggy Grays */
-  --secondary: 35 10% 90%;
-  --secondary-foreground: 220 10% 25%;
-  --muted: 35 8% 88%;
-  --muted-foreground: 220 8% 45%;
-  --destructive: 0 75% 50%;
+  /* SURFACES: Light Gray Sub-sections */
+  --secondary: 0 0% 96%;
+  /* Very light gray */
+  --secondary-foreground: 0 0% 20%;
+
+  --muted: 0 0% 92%;
+  --muted-foreground: 0 0% 40%;
+
+  --destructive: 0 85% 50%;
   --destructive-foreground: 0 0% 100%;
 
-  /* BORDERS: Translucent & Subtle */
-  --border: 35 10% 85%;
-  --input: 35 10% 92%;
-  --ring: 350 70% 45%;
+  /* BORDERS: Crisp Light Gray with Red Tint */
+  --border: 0 0% 90%;
+  --input: 0 0% 95%;
+  --ring: 351 85% 40%;
 
-  /* GRADIENTS: Soft Fog & Light */
-  --gradient-primary: linear-gradient(135deg, hsl(350 70% 45%) 0%, hsl(345 50% 35%) 100%);
-  --gradient-glow: linear-gradient(135deg, hsl(350 70% 45% / 0.1) 0%, hsl(345 50% 35% / 0.1) 100%);
-  --gradient-dark: linear-gradient(180deg, hsl(35 15% 94%) 0%, hsl(35 10% 92%) 100%);
-  --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.8) 0%, hsl(35 20% 96% / 0.6) 100%);
-  --gradient-upside-down: linear-gradient(180deg, transparent 0%, hsl(350 30% 90% / 0.4) 100%);
+  /* GRADIENTS: Clean & Vibrant */
+  --gradient-primary: linear-gradient(135deg, hsl(351 85% 40%) 0%, hsl(345 90% 35%) 100%);
+  --gradient-glow: linear-gradient(135deg, hsl(351 85% 40% / 0.15) 0%, hsl(345 90% 35% / 0.15) 100%);
+  --gradient-dark: linear-gradient(180deg, hsl(0 0% 98%) 0%, hsl(0 0% 95%) 100%);
+  --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.95) 0%, hsl(0 0% 100% / 0.9) 100%);
+  --gradient-upside-down: linear-gradient(180deg, transparent 0%, hsl(351 85% 40% / 0.05) 100%);
 
-  /* SHADOWS: Soft, Diffused, Realistic (No Neon) */
-  --shadow-neon-red: 0 8px 24px hsl(350 60% 40% / 0.12), 0 2px 6px hsl(350 60% 40% / 0.08);
-  --shadow-neon-crimson: 0 8px 24px hsl(345 50% 35% / 0.12), 0 2px 6px hsl(345 50% 35% / 0.08);
-  --shadow-glow: 0 10px 30px hsl(35 10% 10% / 0.05);
-  --shadow-neon-cyan: 0 4px 12px hsl(210 15% 50% / 0.15);
+  /* SHADOWS: Crisp Drop Shadows (Not murky) */
+  --shadow-neon-red: 0 8px 30px hsl(351 85% 40% / 0.15), 0 2px 8px hsl(351 85% 40% / 0.1);
+  --shadow-neon-crimson: 0 8px 30px hsl(345 90% 35% / 0.15), 0 2px 8px hsl(345 90% 35% / 0.1);
+  --shadow-glow: 0 15px 40px hsl(0 0% 0% / 0.08);
+  /* Clean gray shadow */
+  --shadow-neon-cyan: 0 4px 15px hsl(210 20% 40% / 0.15);
 }
 
-/* COMPLEX BACKGROUND: Fog, Grain, Atmosphere */
+/* COMPLEX BACKGROUND: Clean, Bright, Cinematic */
 .light body {
-  background-color: hsl(35 15% 94%);
+  background-color: hsl(0 0% 98%);
   background-image:
-    /* Soft red fog rising from bottom */
-    linear-gradient(0deg, hsl(350 70% 90% / 0.4) 0%, transparent 40%),
-    /* Ambient warm fog */
-    radial-gradient(circle at 60% 30%, hsl(35 20% 98% / 0.8) 0%, transparent 50%),
-    /* Subtle Grain Noise (simulated with repeating gradient) */
-    repeating-linear-gradient(45deg, hsl(0 0% 50% / 0.03) 0px, transparent 1px, transparent 3px),
-    /* Base */
-    linear-gradient(180deg, hsl(35 15% 96%) 0%, hsl(35 10% 92%) 100%);
+    /* Very subtle red ambient light from top */
+    radial-gradient(circle at 50% 0%, hsl(350 100% 94%) 0%, transparent 60%),
+    /* Micro grain for texture (very faint) */
+    repeating-linear-gradient(45deg, hsl(0 0% 0% / 0.02) 0px, transparent 1px, transparent 4px),
+    /* Base White/Light Gray Gradient */
+    linear-gradient(180deg, hsl(0 0% 99%) 0%, hsl(0 0% 96%) 100%);
   background-attachment: fixed;
+  color: hsl(0 0% 15%);
 }
 
 /* COMPONENT OVERRIDES */
 
-/* Glass Cards: Frosted, high blur, soft shadow */
+/* Glass Cards: High Opacity White - Pops against background */
 .light .glass {
-  backdrop-filter: blur(20px) saturate(1.1);
-  -webkit-backdrop-filter: blur(20px) saturate(1.1);
-  background: linear-gradient(135deg, hsl(0 0% 100% / 0.9) 0%, hsl(35 20% 97% / 0.8) 100%);
-  border: 1px solid hsl(0 0% 100% / 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: hsl(0 0% 100% / 0.9);
+  /* Solid White */
+  border: 1px solid hsl(0 0% 0% / 0.05);
+  /* Very subtle gray border */
   box-shadow:
-    0 10px 40px -10px hsl(35 10% 20% / 0.08),
-    0 2px 10px -2px hsl(35 10% 20% / 0.04),
-    inset 0 0 20px hsl(0 0% 100% / 0.6);
+    0 4px 6px -1px hsl(0 0% 0% / 0.05),
+    0 10px 15px -3px hsl(0 0% 0% / 0.05);
   border-radius: var(--radius);
 }
 
-/* Text Effects: No Neon, distinct shadows */
+.light .glass:hover {
+  background: hsl(0 0% 100%);
+  border-color: hsl(351 85% 40% / 0.3);
+  /* Red border on hover */
+  box-shadow:
+    0 20px 40px -5px hsl(0 0% 0% / 0.08),
+    0 0 0 1px hsl(351 85% 40% / 0.1);
+  /* Red ring */
+  transform: translateY(-4px);
+}
+
+/* Text Effects: Crisp Black & Vibrant Red */
 .light .stranger-things-text {
-  color: hsl(350 70% 45%);
-  text-shadow: 0 4px 12px hsl(350 70% 45% / 0.15);
-  filter: none;
+  color: hsl(351 85% 40%);
+  text-shadow: 0 2px 10px hsl(351 85% 40% / 0.15);
+  font-weight: 800;
   -webkit-text-stroke: 0;
 }
 
 .light .stranger-things-outline {
-  color: hsl(345 50% 35%);
-  text-shadow: none;
+  -webkit-text-stroke: 1.5px hsl(351 85% 40%);
+  color: transparent;
   filter: none;
-  -webkit-text-stroke: 1px hsl(345 50% 35% / 0.3);
+  font-weight: 800;
+}
+
+/* Timeline & Accents */
+.light .timeline-dot {
+  background-color: hsl(351 85% 40%);
+  box-shadow: 0 0 0 4px hsl(351 85% 40% / 0.2);
+}
+
+.light .timeline-line {
+  background-color: hsl(0 0% 85%);
+  /* Light gray line */
+  width: 2px;
 }
 
 /* Button Depth */
 .light .btn-glow {
-  box-shadow: 0 4px 12px -2px hsl(350 70% 45% / 0.25);
-  transition: all 0.3s ease;
+  background: hsl(351 85% 40%);
+  /* Vibrant Red */
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 12px hsl(351 85% 40% / 0.3);
+  border: none;
 }
 
 .light .btn-glow:hover {
-  filter: brightness(0.9);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 20px -4px hsl(350 70% 45% / 0.3);
+  background: hsl(345 90% 35%);
+  box-shadow: 0 8px 20px hsl(351 85% 40% / 0.4);
+  transform: translateY(-2px);
 }
 
 .light .btn-glow::before {
   display: none;
+}
+
+/* FOOTER */
+.light footer {
+  background-color: hsl(0 0% 94%);
+  /* Light Gray Footer */
+  border-top: 1px solid hsl(0 0% 0% / 0.05);
+}
+
+.light footer p,
+.light footer span,
+.light footer a {
+  color: hsl(0 0% 30%) !important;
+}
+
+.light footer svg {
+  color: hsl(351 85% 40%);
 }
 
 /* Remove vignettes */
@@ -990,20 +1042,20 @@
 }
 
 /* Scrollbar */
+.light ::-webkit-scrollbar-track {
+  background: hsl(0 0% 96%);
+}
+
 .light ::-webkit-scrollbar-thumb {
-  background: hsl(350 60% 70% / 0.5);
+  background: hsl(351 85% 40% / 0.6);
   border: 3px solid transparent;
   background-clip: content-box;
   border-radius: 99px;
 }
 
 .light ::-webkit-scrollbar-thumb:hover {
-  background: hsl(350 70% 50% / 0.8);
+  background: hsl(351 85% 40%);
   background-clip: content-box;
-}
-
-.light ::-webkit-scrollbar-track {
-  background: transparent;
 }
 
 /* =========================================================================================
