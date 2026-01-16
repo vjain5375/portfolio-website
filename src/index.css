@@ -1005,3 +1005,203 @@
 .light ::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* =========================================================================================
+   STRANGER THINGS: DAYLIGHT WORLD (REFINED HEX)
+   Aesthetic: Cinematic Daytime, Warm, Atmospheric, Red-Tinted
+   Identity:  Real World, Control, Safety (vs Upside Down)
+   ========================================================================================= */
+
+.light {
+  /* BACKGROUND: Warm Foggy Beige */
+  --background: 24 20% 95%;
+  /* #F6F1EE */
+  --foreground: 0 0% 12%;
+  /* #1E1E1E */
+
+  /* CARDS: Red-Tinted Glass */
+  --card: 351 80% 38%;
+  /* tint base for alpha usage */
+  --card-foreground: 0 0% 29%;
+  /* #4A4A4A */
+  --popover: 24 20% 95%;
+  --popover-foreground: 0 0% 12%;
+  /* #1E1E1E */
+
+  /* PRIMARY: Stranger Things Red (#B11226) */
+  --primary: 351 81% 38%;
+  /* #B11226 */
+  --primary-foreground: 0 0% 100%;
+  --primary-glow: 351 81% 48%;
+
+  /* ACCENT: Highlights & Timelines */
+  --accent: 355 65% 53%;
+  /* #D63A4A */
+  --accent-foreground: 0 0% 100%;
+  --accent-glow: 355 65% 63%;
+
+  /* SECONDARY: Muted Meta Text */
+  --accent-cyan: 210 15% 50%;
+  --accent-cyan-glow: 210 20% 60%;
+
+  /* SURFACES: Footer & Muted elements */
+  --secondary: 11 28% 88%;
+  /* #EAD9D5 (Footer bg) */
+  --secondary-foreground: 0 55% 23%;
+  /* #5A1A1A (Footer text) */
+
+  --muted: 0 0% 43%;
+  /* #6E6E6E */
+  --muted-foreground: 0 0% 43%;
+
+  --destructive: 0 75% 50%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* BORDERS: Red Tint */
+  --border: 351 81% 38%;
+  --input: 24 20% 92%;
+  --ring: 351 81% 38%;
+
+  /* GRADIENTS: Cinematic Red Fog */
+  --gradient-primary: linear-gradient(135deg, #B11226 0%, #8C0E1E 100%);
+  --gradient-glow: linear-gradient(135deg, rgba(177, 18, 38, 0.2) 0%, rgba(140, 14, 30, 0.2) 100%);
+  --gradient-dark: linear-gradient(180deg, #F6F1EE 0%, #EFE4E0 100%);
+  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(246, 241, 238, 0.8) 100%);
+  --gradient-upside-down: linear-gradient(180deg, transparent 0%, rgba(177, 18, 38, 0.08) 100%);
+
+  /* SHADOWS: Subtle & Defined */
+  --shadow-neon-red: 0 8px 24px rgba(177, 18, 38, 0.2), 0 2px 6px rgba(177, 18, 38, 0.1);
+  --shadow-neon-crimson: 0 8px 24px rgba(140, 14, 30, 0.2), 0 2px 6px rgba(140, 14, 30, 0.1);
+  --shadow-glow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  --shadow-neon-cyan: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* COMPLEX BACKGROUND: Fog, Grain, Atmosphere */
+.light body {
+  background-color: #F6F1EE;
+  background-image:
+    /* Ambient Red Fog (5-8% opacity) */
+    radial-gradient(circle at 50% 30%, rgba(177, 18, 38, 0.08), transparent 60%),
+    /* Secondary Gradient Overlay */
+    linear-gradient(160deg, rgba(239, 228, 224, 0.5) 0%, transparent 100%),
+    /* Subtle Grain Noise */
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.03) 0px, transparent 1px, transparent 3px);
+  background-attachment: fixed;
+  color: #4A4A4A;
+}
+
+/* COMPONENT OVERRIDES */
+
+/* Glass Cards: Red Tinted, floating */
+.light .glass {
+  backdrop-filter: blur(12px) saturate(1.05);
+  -webkit-backdrop-filter: blur(12px) saturate(1.05);
+  background: rgba(177, 18, 38, 0.08);
+  /* #B11226 at 8% */
+  border: 1px solid rgba(177, 18, 38, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  border-radius: var(--radius);
+}
+
+.light .glass:hover {
+  background: rgba(177, 18, 38, 0.12);
+  border-color: rgba(177, 18, 38, 0.35);
+  box-shadow:
+    0 10px 30px rgba(177, 18, 38, 0.15),
+    0 0 20px rgba(177, 18, 38, 0.1);
+  transform: translateY(-4px);
+}
+
+/* Timeline & Accents */
+.light .timeline-dot {
+  background-color: #D63A4A;
+  box-shadow: 0 0 10px rgba(214, 58, 74, 0.4);
+}
+
+.light .timeline-line {
+  background-color: #B11226;
+  opacity: 0.3;
+}
+
+/* Text Effects: Clear, High Contrast */
+.light .stranger-things-text {
+  color: #B11226;
+  text-shadow: 0 2px 4px rgba(177, 18, 38, 0.15);
+  font-weight: 700;
+  -webkit-text-stroke: 0;
+}
+
+.light .stranger-things-outline {
+  -webkit-text-stroke: 1px #8C0E1E;
+  color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(177, 18, 38, 0.1));
+}
+
+/* Headings & Text */
+.light h1,
+.light h2,
+.light h3 {
+  color: #1E1E1E;
+}
+
+.light p {
+  color: #4A4A4A;
+}
+
+.light .text-muted-foreground {
+  color: #6E6E6E;
+}
+
+/* Buttons */
+.light .btn-glow {
+  background: linear-gradient(135deg, #B11226 0%, #8C0E1E 100%);
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 15px rgba(177, 18, 38, 0.35);
+  border: none;
+}
+
+.light .btn-glow:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 20px rgba(177, 18, 38, 0.45);
+  transform: translateY(-2px);
+}
+
+.light .btn-glow::before {
+  display: none;
+}
+
+/* FOOTER FIX (High Visibility) */
+.light footer {
+  background-color: #EAD9D5;
+  border-top: 1px solid rgba(177, 18, 38, 0.25);
+}
+
+.light footer p,
+.light footer span,
+.light footer a {
+  color: #5A1A1A !important;
+}
+
+.light footer svg {
+  color: #B11226;
+}
+
+/* Remove vignettes */
+.light .vignette {
+  display: none;
+}
+
+/* Scrollbar */
+.light ::-webkit-scrollbar-track {
+  background: #EFE4E0;
+}
+
+.light ::-webkit-scrollbar-thumb {
+  background: #D63A4A;
+  border: 2px solid #EFE4E0;
+  border-radius: 99px;
+}
+
+.light ::-webkit-scrollbar-thumb:hover {
+  background: #B11226;
+}
