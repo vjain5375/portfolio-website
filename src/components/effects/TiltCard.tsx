@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRef, ReactNode, useState } from 'react';
 import { useTilt } from '@/hooks/useTilt';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 interface TiltCardProps {
   children: ReactNode;
@@ -23,6 +24,7 @@ export const TiltCard = ({
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const [isHovered, setIsHovered] = useState(false);
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
+  const { shouldReduceMotion, isMobile } = useReducedMotion();
 
   const tiltConfig = {
     subtle: { maxTilt: 5, scale: 1.01 },
@@ -30,7 +32,15 @@ export const TiltCard = ({
     strong: { maxTilt: 15, scale: 1.03 },
   };
 
-  const { style, onMouseMove: tiltMouseMove, onMouseLeave: tiltMouseLeave } = useTilt(ref, tiltConfig[intensity]);
+  // Disable tilt on mobile for performance
+  const effectiveTiltConfig = shouldReduceMotion
+    ? { maxTilt: 0, scale: 1 }
+    : tiltConfig[intensity];
+
+  const { style, onMouseMove: tiltMouseMove, onMouseLeave: tiltMouseLeave } = useTilt(ref, effectiveTiltConfig);
+
+  // Disable ripples on mobile for performance
+  const shouldShowRipples = enableRipple && !shouldReduceMotion;
 
   const glowStyles = {
     red: 'group-hover:shadow-[0_0_40px_rgba(185,28,28,0.15)]',
@@ -70,8 +80,8 @@ export const TiltCard = ({
     setIsHovered(true);
     onHoverChange?.(true);
 
-    // Create ripple on enter
-    if (enableRipple && ref.current) {
+    // Create ripple on enter (disabled on mobile for performance)
+    if (shouldShowRipples && ref.current) {
       const rect = ref.current.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 100;
       const y = ((e.clientY - rect.top) / rect.height) * 100;

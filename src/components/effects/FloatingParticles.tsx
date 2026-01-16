@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
 import { useState, useMemo } from 'react';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 interface Particle {
   id: number;
@@ -24,7 +24,31 @@ const generateParticles = (count: number): Particle[] => {
 };
 
 export const FloatingParticles = () => {
-  const [particles] = useState(() => generateParticles(8)); // Minimal particles
+  const { shouldReduceMotion } = useReducedMotion();
+  // Reduce particle count on mobile for performance
+  const particleCount = shouldReduceMotion ? 4 : 6;
+  const [particles] = useState(() => generateParticles(particleCount));
+
+  // Don't render any particles if reduced motion is preferred
+  if (shouldReduceMotion) {
+    return (
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-[1]">
+        {/* Static ambient glow only - no animation */}
+        <div
+          className="absolute -top-1/4 -right-1/4 w-[500px] h-[500px] rounded-full opacity-10"
+          style={{
+            background: 'radial-gradient(circle, hsl(0 70% 45% / 0.2) 0%, transparent 70%)',
+          }}
+        />
+        <div
+          className="absolute top-1/3 -left-1/4 w-[400px] h-[400px] rounded-full opacity-8"
+          style={{
+            background: 'radial-gradient(circle, hsl(0 80% 35% / 0.15) 0%, transparent 70%)',
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-[1]">
@@ -52,9 +76,9 @@ export const FloatingParticles = () => {
         }}
       />
 
-      {/* Minimal floating particles - CSS animations only */}
+      {/* Floating particles - CSS animations for better performance */}
       {particles.map((particle) => (
-        <motion.div
+        <div
           key={particle.id}
           className="absolute rounded-full"
           style={{
@@ -64,19 +88,26 @@ export const FloatingParticles = () => {
             height: particle.size,
             background: particle.color,
             boxShadow: `0 0 ${particle.size * 3}px ${particle.color}`,
-          }}
-          animate={{
-            y: [0, -20, 0],
-            opacity: [0.2, 0.5, 0.2],
-          }}
-          transition={{
-            duration: particle.duration,
-            repeat: Infinity,
-            delay: particle.delay,
-            ease: 'easeInOut',
+            animation: `floatParticle ${particle.duration}s ease-in-out ${particle.delay}s infinite`,
+            willChange: 'transform, opacity',
+            transform: 'translateZ(0)',
           }}
         />
       ))}
+
+      {/* Add CSS keyframes via style tag */}
+      <style>{`
+        @keyframes floatParticle {
+          0%, 100% {
+            transform: translateY(0) translateZ(0);
+            opacity: 0.2;
+          }
+          50% {
+            transform: translateY(-20px) translateZ(0);
+            opacity: 0.5;
+          }
+        }
+      `}</style>
     </div>
   );
 };

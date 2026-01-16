@@ -617,3 +617,92 @@
     box-shadow: 0 0 0 8px hsl(0 70% 45% / 0);
   }
 }
+
+/* ========================================
+   MOBILE PERFORMANCE OPTIMIZATIONS
+   These simplify expensive effects on mobile/low-end devices
+   while keeping all desktop effects completely intact
+   ======================================== */
+
+@media (max-width: 768px) {
+
+  /* Simplify Stranger Things text effects for mobile */
+  .stranger-things-text {
+    text-shadow:
+      0 0 8px hsl(0 100% 50%),
+      0 0 20px hsl(0 90% 45%);
+    filter: none;
+    -webkit-text-stroke: 1px hsl(0 85% 50%);
+  }
+
+  .stranger-things-outline {
+    text-shadow:
+      0 0 10px hsl(0 100% 50%),
+      0 0 25px hsl(0 90% 45%);
+    filter: none;
+    -webkit-text-stroke: 1px hsl(0 90% 55%);
+  }
+
+  /* Simplify glassmorphism for mobile */
+  .glass {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* Reduce vignette intensity for mobile */
+  .vignette {
+    box-shadow: inset 0 0 100px 40px hsl(0 10% 2% / 0.8);
+  }
+
+  /* Disable expensive hover animations on mobile */
+  .card-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 30px hsl(0 70% 45% / 0.1);
+  }
+
+  /* Simplify button glow for mobile */
+  .btn-glow::before {
+    filter: blur(8px);
+  }
+
+  /* Reduce grid-3d perspective calculations */
+  .grid-3d {
+    transform: perspective(300px) rotateX(50deg);
+  }
+}
+
+/* For devices that prefer reduced motion OR very small screens */
+@media (prefers-reduced-motion: reduce) {
+
+  /* Disable all CSS animations */
+  .float,
+  .pulse-glow,
+  .pulse-glow-red,
+  .flicker,
+  .cursor-blink {
+    animation: none !important;
+  }
+
+  /* Simplify all text effects for accessibility */
+  .stranger-things-text,
+  .stranger-things-outline {
+    text-shadow: 0 0 10px hsl(0 100% 50%);
+    filter: none;
+  }
+
+  /* Remove backdrop blur for performance */
+  .glass {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: hsl(0 8% 12% / 0.85);
+  }
+}
+
+/* GPU acceleration hints for animated elements */
+@layer utilities {
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+}
