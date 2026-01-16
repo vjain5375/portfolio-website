@@ -169,27 +169,33 @@ export const AboutSection = () => {
                     animate={isInView ? { opacity: 1, x: 0 } : {}}
                     transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
                   >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2 text-foreground">
-                        <span className="text-primary">{skill.icon}</span>
-                        <span className="font-medium">{skill.name}</span>
+                    <TiltCard glowColor="red" intensity="subtle" className="h-full">
+                      <div className="glass p-4 rounded-xl border border-border/50 hover:border-primary/30 transition-colors duration-300">
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-3 text-foreground">
+                            <div className="p-2 bg-primary/10 rounded-lg text-primary">
+                              {skill.icon}
+                            </div>
+                            <span className="font-semibold font-display tracking-wide">{skill.name}</span>
+                          </div>
+                          <span className="text-sm font-mono text-primary">{skill.level}%</span>
+                        </div>
+                        <div className="h-1.5 bg-secondary/50 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={isInView ? { width: `${skill.level}%` } : {}}
+                            transition={{ duration: 1, delay: 0.6 + index * 0.1 }}
+                            className="h-full bg-gradient-to-r from-primary to-accent rounded-full relative"
+                          >
+                            <motion.div
+                              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                              animate={{ x: ['-100%', '200%'] }}
+                              transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                            />
+                          </motion.div>
+                        </div>
                       </div>
-                      <span className="text-sm text-muted-foreground">{skill.level}%</span>
-                    </div>
-                    <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={isInView ? { width: `${skill.level}%` } : {}}
-                        transition={{ duration: 1, delay: 0.6 + index * 0.1 }}
-                        className="h-full bg-gradient-to-r from-primary to-accent rounded-full relative"
-                      >
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                          animate={{ x: ['-100%', '200%'] }}
-                          transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                        />
-                      </motion.div>
-                    </div>
+                    </TiltCard>
                   </motion.div>
                 ))}
               </div>
