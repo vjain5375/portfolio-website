@@ -37,12 +37,13 @@ export const HeroSection = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-background/80 pointer-events-none" />
 
-      {/* Static red glow behind title - NO ANIMATION for performance */}
+      {/* Static red glow behind title - reduced blur on mobile for performance */}
       <div
         className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] rounded-full opacity-20 pointer-events-none"
         style={{
           background: 'radial-gradient(ellipse, hsl(0 70% 40%) 0%, transparent 70%)',
-          filter: 'blur(60px)',
+          filter: shouldReduceMotion ? 'blur(30px)' : 'blur(60px)',
+          transform: 'translateZ(0)',
         }}
       />
 

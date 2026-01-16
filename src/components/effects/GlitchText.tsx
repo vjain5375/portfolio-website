@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 interface GlitchTextProps {
   children: string;
@@ -17,6 +18,10 @@ export const GlitchText = ({
   enableFlicker = false,
 }: GlitchTextProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { shouldReduceMotion } = useReducedMotion();
+
+  // On mobile/reduced motion, skip glitch effects entirely for performance
+  const shouldShowGlitch = isHovered && !shouldReduceMotion;
 
   return (
     <motion.span
@@ -27,8 +32,8 @@ export const GlitchText = ({
       {/* Main text - rendered directly without wrapper to preserve CSS styling */}
       {children}
 
-      {/* Glitch layers - only visible on hover */}
-      {isHovered && (
+      {/* Glitch layers - only visible on hover AND not on mobile */}
+      {shouldShowGlitch && (
         <>
           {/* Crimson glitch layer */}
           <motion.span
