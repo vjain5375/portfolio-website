@@ -2,6 +2,7 @@ import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { Github, Linkedin, Mail, Send, MapPin, Phone } from 'lucide-react';
 import { toast } from 'sonner';
+import { TiltCard } from '../effects/TiltCard';
 
 const socialLinks = [
   { name: 'GitHub', icon: <Github className="w-6 h-6" />, href: 'https://github.com/vjain5375', color: 'hover:text-foreground' },
@@ -11,22 +12,26 @@ const socialLinks = [
 
 const FloatingSocialIcon = ({ link, index }: { link: typeof socialLinks[0]; index: number }) => {
   return (
-    <motion.a
-      href={link.href}
-      target="_blank"
-      rel="noopener noreferrer"
+    <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ scale: 1.1, y: -5 }}
-      className={`group relative flex items-center justify-center w-16 h-16 glass rounded-2xl border border-border/50 text-muted-foreground transition-all duration-300 ${link.color} hover:border-primary/50 hover:shadow-lg hover:shadow-primary/20`}
     >
-      {link.icon}
-      <span className="absolute -bottom-8 text-xs font-mono text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-        {link.name}
-      </span>
-    </motion.a>
+      <TiltCard glowColor="red" intensity="subtle" className="rounded-2xl">
+        <a
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`group relative flex items-center justify-center w-16 h-16 glass rounded-2xl border border-border/50 text-muted-foreground transition-all duration-300 ${link.color} hover:border-primary/50`}
+        >
+          {link.icon}
+          <span className="absolute -bottom-8 text-xs font-mono text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            {link.name}
+          </span>
+        </a>
+      </TiltCard>
+    </motion.div>
   );
 };
 
@@ -158,71 +163,73 @@ export const ContactSection = () => {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <form onSubmit={handleSubmit} className="glass rounded-2xl p-8 border border-border/50">
-              <div className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    required
-                    className="w-full px-4 py-3 bg-secondary/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all"
-                    placeholder="John Doe"
-                  />
-                </div>
+            <TiltCard glowColor="red" intensity="subtle" className="h-full">
+              <form onSubmit={handleSubmit} className="glass rounded-2xl p-8 border border-border/50 h-full">
+                <div className="space-y-6">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      required
+                      className="w-full px-4 py-3 bg-secondary/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all"
+                      placeholder="John Doe"
+                    />
+                  </div>
 
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    required
-                    className="w-full px-4 py-3 bg-secondary/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all"
-                    placeholder="john@example.com"
-                  />
-                </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      required
+                      className="w-full px-4 py-3 bg-secondary/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all"
+                      placeholder="john@example.com"
+                    />
+                  </div>
 
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    required
-                    rows={5}
-                    className="w-full px-4 py-3 bg-secondary/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all resize-none"
-                    placeholder="Tell me about your project..."
-                  />
-                </div>
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
+                      Message
+                    </label>
+                    <textarea
+                      id="message"
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      required
+                      rows={5}
+                      className="w-full px-4 py-3 bg-secondary/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all resize-none"
+                      placeholder="Tell me about your project..."
+                    />
+                  </div>
 
-                <motion.button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="group w-full flex items-center justify-center gap-3 px-8 py-4 font-display font-semibold text-primary-foreground bg-gradient-to-r from-primary to-accent rounded-lg btn-glow transition-all duration-300 hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  {isSubmitting ? (
-                    <span>Sending...</span>
-                  ) : (
-                    <>
-                      <span>Send Message</span>
-                      <Send className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                    </>
-                  )}
-                </motion.button>
-              </div>
-            </form>
+                  <motion.button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="group w-full flex items-center justify-center gap-3 px-8 py-4 font-display font-semibold text-primary-foreground bg-gradient-to-r from-primary to-accent rounded-lg btn-glow transition-all duration-300 hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    {isSubmitting ? (
+                      <span>Sending...</span>
+                    ) : (
+                      <>
+                        <span>Send Message</span>
+                        <Send className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                      </>
+                    )}
+                  </motion.button>
+                </div>
+              </form>
+            </TiltCard>
           </motion.div>
         </div>
       </div>

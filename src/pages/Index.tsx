@@ -7,17 +7,17 @@ import { AboutSection } from '@/components/sections/AboutSection';
 import { ContactSection } from '@/components/sections/ContactSection';
 import { FloatingParticles } from '@/components/effects/FloatingParticles';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { CinematicBackground } from '@/components/layout/CinematicBackground';
 
 const Index = () => {
   const { shouldReduceMotion } = useReducedMotion();
 
   return (
     <div className="relative min-h-screen overflow-x-hidden">
+      <CinematicBackground />
+
       {/* Only load minimal effects - heavy effects completely removed */}
       {!shouldReduceMotion && <FloatingParticles />}
-
-      {/* Subtle vignette effect - CSS only, no animation */}
-      <div className="fixed inset-0 pointer-events-none z-[99] vignette" />
 
       {/* Upside Down glow at bottom - CSS only */}
       <div className="fixed bottom-0 left-0 right-0 h-[200px] pointer-events-none z-[97] upside-down-glow" />
