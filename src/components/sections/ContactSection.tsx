@@ -45,15 +45,38 @@ export const ContactSection = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Create mailto link with form data
-    const subject = encodeURIComponent(`Portfolio Contact from ${formData.name}`);
-    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
+    try {
+      // Using Web3Forms API for reliable email delivery
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: '30e9c5f8-80b9-4c8c-b03d-8b9f8e3a6d71', // Web3Forms public access key
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          subject: `Portfolio Contact from ${formData.name}`,
+          from_name: formData.name,
+          to_email: 'vjain5375@gmail.com',
+        }),
+      });
 
-    window.open(`mailto:vjain5375@gmail.com?subject=${subject}&body=${body}`, '_blank');
+      const result = await response.json();
 
-    toast.success('Opening your email client to send the message!');
-    setFormData({ name: '', email: '', message: '' });
-    setIsSubmitting(false);
+      if (result.success) {
+        toast.success('Message sent successfully! I\'ll get back to you soon.');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        toast.error('Failed to send message. Please try again or email me directly.');
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      toast.error('Failed to send message. Please try again or email me directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
