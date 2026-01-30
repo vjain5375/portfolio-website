@@ -118,7 +118,7 @@ const TimelineCard = ({ item, index, isActive, accentType, onHover }: TimelineCa
           delay: index * 0.15,
           ease: [0.25, 0.46, 0.45, 0.94],
         }}
-        className="w-full md:w-[calc(50%-80px)]"
+        className="w-full md:w-[calc(50%-90px)]"
       >
         <TiltCard
           glowColor={accent.glowColor}
@@ -160,11 +160,11 @@ const TimelineCard = ({ item, index, isActive, accentType, onHover }: TimelineCa
         </TiltCard>
       </motion.div>
 
-      {/* Connector line from card to timeline - perfectly centered */}
+      {/* Connector line from card to timeline - connects to center */}
       <motion.div
         className={`
-          hidden md:block absolute top-1/2 h-[2px] w-[80px]
-          ${isLeft ? 'left-[calc(50%-80px)]' : 'right-[calc(50%-80px)]'}
+          hidden md:block absolute top-1/2 h-[2px]
+          ${isLeft ? 'left-[calc(50%-90px)] w-[90px]' : 'right-[calc(50%-90px)] w-[90px]'}
         `}
         style={{ transform: 'translateY(-50%)' }}
         initial={{ scaleX: 0, opacity: 0 }}
