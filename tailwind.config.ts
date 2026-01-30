@@ -51,7 +51,7 @@ export default {
         },
       },
       fontFamily: {
-        display: ['Orbitron', 'sans-serif'],
+        display: ['Sora', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
         body: ['Inter', 'sans-serif'],
       },

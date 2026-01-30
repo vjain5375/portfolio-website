@@ -1,5 +1,5 @@
-/* Fonts: Cinzel for Stranger Things style, Orbitron for tech feel */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
+/* Fonts: Sora for modern headings, Cinzel for accents, clean professional look */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Cinzel:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -60,7 +60,7 @@
     --shadow-neon-cyan: 0 0 15px hsl(195 60% 30% / 0.3), 0 0 30px hsl(195 60% 30% / 0.2);
 
     /* Fonts */
-    --font-display: 'Orbitron', sans-serif;
+    --font-display: 'Sora', sans-serif;
     --font-stranger: 'Cinzel', serif;
     --font-mono: 'JetBrains Mono', monospace;
     --font-body: 'Inter', sans-serif;
