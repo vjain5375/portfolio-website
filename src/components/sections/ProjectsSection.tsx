@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { ExternalLink, Github, Cpu, Bot, Zap, Eye, X, Terminal } from 'lucide-react';
+import { ExternalLink, Github, Cpu, Bot, Eye, X, Terminal } from 'lucide-react';
 import { TiltCard } from '../effects/TiltCard';
 
 interface Project {
@@ -29,14 +29,14 @@ const projects: Project[] = [
   },
   {
     id: 2,
-    title: "Bond of Rakhi",
-    description: "A beautiful, heartfelt website celebrating the special bond between siblings during Raksha Bandhan, featuring interactive elements and emotional messaging.",
-    technologies: ["HTML", "CSS", "JavaScript", "GitHub Pages"],
-    icon: <Zap className="w-8 h-8" />,
+    title: "Kode Club",
+    description: "The official coding platform for RGIPT students featuring daily practice problems (DPPs), quizzes, an instant code compiler supporting 4+ languages, live leaderboards, and curated resources for competitive programming.",
+    technologies: ["Next.js", "TypeScript", "TailwindCSS", "MongoDB", "Express"],
+    icon: <Terminal className="w-8 h-8" />,
     gradient: "from-accent to-primary",
-    github: "https://github.com/vjain5375/bond-of-rakhi",
-    link: "https://vjain5375.github.io/bond-of-rakhi/",
-    previewUrl: "https://vjain5375.github.io/bond-of-rakhi/",
+    github: "https://github.com/vjain5375/kode-klub-frontend",
+    link: "https://kode-club-alpha.vercel.app/",
+    previewUrl: "https://kode-club-alpha.vercel.app/",
   },
   {
     id: 3,
