@@ -325,7 +325,7 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
       {/* Timeline container */}
       <div className="relative max-w-5xl mx-auto">
         {/* Central timeline line - perfectly centered */}
-        <div className="absolute left-[22px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[3px]">
+        <div className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-[3px] -translate-x-1/2">
           {/* Background line */}
           <div className="absolute inset-0 bg-muted/20 rounded-full" />
 
@@ -349,7 +349,7 @@ const TimelineSection = ({ title, data, accentType, id }: TimelineSectionProps) 
                   initial={{ scale: 0, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
-                  className="absolute left-[22px] md:left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
+                  className="absolute left-[20px] md:left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
                 >
                   <motion.div
                     animate={
