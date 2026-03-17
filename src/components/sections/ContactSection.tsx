@@ -53,7 +53,7 @@ export const ContactSection = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          access_key: '5c52e9ea-3373-4a22-bee5-1f80762aaf22', // Web3Forms public access key
+          access_key: import.meta.env.VITE_WEB3FORMS_KEY, // Web3Forms public access key
           name: formData.name,
           email: formData.email,
           message: formData.message,
@@ -259,5 +259,6 @@ export const ContactSection = () => {
     </section>
   );
 };
+
 
 
