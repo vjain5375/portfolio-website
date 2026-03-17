@@ -1,6 +1,6 @@
 ﻿import { motion, useScroll, useTransform } from 'framer-motion';
 import { ChevronDown, MapPin, Github, Linkedin, Mail } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 const stagger = {
   hidden: {},
@@ -10,6 +10,58 @@ const stagger = {
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] } },
+};
+
+const roles = [
+  'Full-Stack Developer',
+  'AI Engineer',
+  'Problem Solver',
+  'React Developer',
+  'Python Developer',
+];
+
+const TypingEffect = () => {
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [displayed, setDisplayed] = useState('');
+  const [deleting, setDeleting] = useState(false);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) {
+      const t = setTimeout(() => { setDeleting(true); setPaused(false); }, 1800);
+      return () => clearTimeout(t);
+    }
+
+    const current = roles[roleIndex];
+
+    if (!deleting) {
+      if (displayed.length < current.length) {
+        const t = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 60);
+        return () => clearTimeout(t);
+      } else {
+        setPaused(true);
+      }
+    } else {
+      if (displayed.length > 0) {
+        const t = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 35);
+        return () => clearTimeout(t);
+      } else {
+        setDeleting(false);
+        setRoleIndex((i) => (i + 1) % roles.length);
+      }
+    }
+  }, [displayed, deleting, paused, roleIndex]);
+
+  return (
+    <span className="text-lg md:text-xl font-medium inline-flex items-center gap-1 h-8">
+      <span className="text-primary/90">{displayed}</span>
+      <motion.span
+        animate={{ opacity: [1, 0, 1] }}
+        transition={{ duration: 0.7, repeat: Infinity }}
+        className="inline-block w-0.5 h-5 bg-primary align-middle"
+      />
+    </span>
+  );
 };
 
 export const HeroSection = () => {
@@ -46,7 +98,6 @@ export const HeroSection = () => {
         }}
       />
 
-      {/* All content in ONE centered block */}
       <motion.div
         style={{ y, opacity }}
         className="relative z-10 w-full max-w-6xl mx-auto px-6 flex flex-col items-center"
@@ -80,7 +131,7 @@ export const HeroSection = () => {
                 animate={{ rotate: 360 }}
                 transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
               />
-              {/* Photo — object-[50%_20%] focuses on face area */}
+              {/* Photo */}
               <div className="relative w-52 h-52 md:w-60 md:h-60 rounded-full overflow-hidden border-2 border-primary/40">
                 <img
                   src="/vansh.png"
@@ -129,10 +180,10 @@ export const HeroSection = () => {
               <span className="text-primary">Jain</span>
             </motion.h1>
 
-            <motion.p variants={fadeUp} className="text-lg md:text-xl text-muted-foreground font-medium mb-4">
-              Full-Stack Developer &amp;{' '}
-              <span className="text-primary/90">AI Engineer</span>
-            </motion.p>
+            {/* Typing effect */}
+            <motion.div variants={fadeUp} className="mb-4">
+              <TypingEffect />
+            </motion.div>
 
             <motion.div variants={fadeUp} className="flex items-center gap-2 mb-5 justify-center lg:justify-start">
               <MapPin className="w-4 h-4 text-primary/50 flex-shrink-0" />
@@ -151,7 +202,7 @@ export const HeroSection = () => {
             {/* Stats */}
             <motion.div variants={fadeUp} className="flex gap-8 mb-8 justify-center lg:justify-start">
               {[
-                { value: '8+', label: 'Projects' },
+                { value: '4', label: 'Projects' },
                 { value: '15+', label: 'Technologies' },
                 { value: '2nd', label: 'Year' },
               ].map((stat) => (
@@ -224,5 +275,3 @@ export const HeroSection = () => {
     </section>
   );
 };
-
-
