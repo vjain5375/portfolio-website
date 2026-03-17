@@ -1,5 +1,5 @@
 ﻿import { motion, useScroll, useTransform } from 'framer-motion';
-import { ChevronDown, Sparkles, MapPin, Github, Linkedin, Mail } from 'lucide-react';
+import { ChevronDown, MapPin, Github, Linkedin, Mail } from 'lucide-react';
 import { useRef } from 'react';
 
 const stagger = {
@@ -51,19 +51,6 @@ export const HeroSection = () => {
         style={{ y, opacity }}
         className="relative z-10 w-full max-w-6xl mx-auto px-6 flex flex-col items-center"
       >
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-10"
-        >
-          <span className="inline-flex items-center gap-2 px-4 py-2 text-sm font-mono text-primary border border-primary/30 rounded-full glass">
-            <Sparkles className="w-4 h-4" />
-            B.Tech CSE Student · RGIPT
-          </span>
-        </motion.div>
-
         {/* Photo + Bio row */}
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 w-full">
 
@@ -237,3 +224,5 @@ export const HeroSection = () => {
     </section>
   );
 };
+
+
