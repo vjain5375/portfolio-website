@@ -1,10 +1,11 @@
-import { Navbar } from '@/components/layout/Navbar';
+﻿import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { ProjectsSection } from '@/components/sections/ProjectsSection';
 import { ExperienceSection } from '@/components/sections/ExperienceSection';
 import { AboutSection } from '@/components/sections/AboutSection';
 import { ContactSection } from '@/components/sections/ContactSection';
+import { Scene3DSection } from '@/components/sections/Scene3DSection';
 import { FloatingParticles } from '@/components/effects/FloatingParticles';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { CinematicBackground } from '@/components/layout/CinematicBackground';
@@ -31,6 +32,7 @@ const Index = () => {
         <ExperienceSection />
         <AboutSection />
         <ContactSection />
+        <Scene3DSection />
       </main>
       <Footer />
     </div>

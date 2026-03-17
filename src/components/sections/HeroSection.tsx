@@ -1,5 +1,4 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Scene3D } from '../3d/Scene3D';
+﻿import { motion, useScroll, useTransform } from 'framer-motion';
 import { ChevronDown, Sparkles } from 'lucide-react';
 import { useRef } from 'react';
 import { GlitchText } from '../effects/GlitchText';
@@ -24,14 +23,9 @@ export const HeroSection = () => {
 
   return (
     <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* 3D Background - DISABLED on mobile for performance */}
-      {!shouldReduceMotion && <Scene3D />}
 
       {/* Grid overlay with 3D perspective */}
       <div className="absolute inset-0 grid-pattern opacity-15 pointer-events-none" />
-      {!shouldReduceMotion && (
-        <div className="absolute bottom-0 left-0 right-0 h-[300px] grid-3d opacity-20 pointer-events-none" />
-      )}
 
       {/* Gradient overlays */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
@@ -173,3 +167,4 @@ export const HeroSection = () => {
     </section>
   );
 };
+
