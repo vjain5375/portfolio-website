@@ -1,4 +1,4 @@
-import { motion, useInView } from 'framer-motion';
+﻿import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { Github, Linkedin, Mail, Send, MapPin, Phone } from 'lucide-react';
 import { toast } from 'sonner';
@@ -53,7 +53,7 @@ export const ContactSection = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          access_key: '30e9c5f8-80b9-4c8c-b03d-8b9f8e3a6d71', // Web3Forms public access key
+          access_key: '5c52e9ea-3373-4a22-bee5-1f80762aaf22', // Web3Forms public access key
           name: formData.name,
           email: formData.email,
           message: formData.message,
@@ -259,3 +259,4 @@ export const ContactSection = () => {
     </section>
   );
 };
+
