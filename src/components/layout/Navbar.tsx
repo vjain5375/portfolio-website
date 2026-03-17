@@ -1,137 +1,117 @@
-﻿import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { Menu, X, Terminal } from 'lucide-react';
+import { ThemeToggle } from '../ui/ThemeToggle';
 
 const navLinks = [
-  { name: 'Work', href: '#projects' },
+  { name: 'Home', href: '#' },
+  { name: 'Projects', href: '#projects' },
   { name: 'About', href: '#about' },
-  { name: 'Journey', href: '#education' },
   { name: 'Contact', href: '#contact' },
 ];
 
 export const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <motion.header
-      initial={{ y: -64, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed top-0 inset-x-0 z-50"
-      style={{
-        background: scrolled ? 'rgba(14,14,14,0.85)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(16px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent',
-        transition: 'background 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease',
-      }}
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6 }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'glass border-b border-border/50' : ''
+        }`}
     >
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <a href="#" className="flex items-center gap-1.5 group" style={{ textDecoration: 'none' }}>
-          <span style={{
-            fontFamily: 'JetBrains Mono, monospace',
-            fontWeight: 600,
-            fontSize: '18px',
-            color: '#f0f0f0',
-            letterSpacing: '-0.02em',
-          }}>
-            vj<span style={{ color: 'var(--red)' }}>.</span>
-          </span>
-        </a>
-
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              style={{
-                fontSize: '13.5px',
-                fontWeight: 500,
-                color: 'var(--text-2)',
-                textDecoration: 'none',
-                padding: '6px 14px',
-                borderRadius: '6px',
-                transition: 'color 0.15s ease, background 0.15s ease',
-              }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLElement).style.color = 'var(--text)';
-                (e.target as HTMLElement).style.background = 'rgba(255,255,255,0.05)';
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.color = 'var(--text-2)';
-                (e.target as HTMLElement).style.background = 'transparent';
-              }}
-            >
-              {link.name}
-            </a>
-          ))}
-        </nav>
-
-        {/* CTA */}
-        <div className="hidden md:flex items-center gap-3">
-          <a href="mailto:vjain5375@gmail.com" className="btn-primary" style={{ fontSize: '13px', padding: '8px 18px' }}>
-            Hire Me
+      <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <a href="#" className="flex items-center gap-2 group">
+            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-r from-primary to-accent">
+              <Terminal className="w-5 h-5 text-primary-foreground" />
+            </div>
+            <span className="font-display font-bold text-lg text-foreground group-hover:text-primary transition-colors">
+              VJ<span className="text-primary">.</span>
+            </span>
           </a>
+
+          {/* Desktop navigation */}
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="relative text-muted-foreground hover:text-foreground transition-colors font-medium group"
+              >
+                {link.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-300" />
+              </a>
+            ))}
+          </div>
+
+          {/* CTA Button and Theme Toggle */}
+          <div className="hidden md:flex items-center gap-3">
+            <ThemeToggle />
+            <motion.a
+              href="#contact"
+              className="px-5 py-2.5 font-display font-semibold text-sm text-primary-foreground bg-gradient-to-r from-primary to-accent rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/25"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Hire Me
+            </motion.a>
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 text-foreground"
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="md:hidden p-2 rounded-md"
-          style={{ color: 'var(--text-2)', background: 'transparent', border: 'none', cursor: 'pointer' }}
-        >
-          {open ? <X size={20} /> : <Menu size={20} />}
-        </button>
-      </div>
-
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {open && (
+        {/* Mobile menu */}
+        {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25 }}
-            style={{ borderTop: '1px solid rgba(255,255,255,0.06)', background: 'rgba(14,14,14,0.96)', backdropFilter: 'blur(16px)' }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="md:hidden mt-4 pb-4 border-t border-border/50"
           >
-            <div className="max-w-6xl mx-auto px-6 py-5 flex flex-col gap-2">
+            <div className="flex flex-col gap-4 pt-4">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  onClick={() => setOpen(false)}
-                  style={{
-                    fontSize: '15px',
-                    fontWeight: 500,
-                    color: 'var(--text-2)',
-                    textDecoration: 'none',
-                    padding: '10px 0',
-                    borderBottom: '1px solid rgba(255,255,255,0.05)',
-                  }}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-muted-foreground hover:text-foreground transition-colors font-medium"
                 >
                   {link.name}
                 </a>
               ))}
               <a
-                href="mailto:vjain5375@gmail.com"
-                onClick={() => setOpen(false)}
-                className="btn-primary"
-                style={{ marginTop: '8px', justifyContent: 'center' }}
+                href="#contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="w-full text-center px-5 py-2.5 font-display font-semibold text-sm text-primary-foreground bg-gradient-to-r from-primary to-accent rounded-lg"
               >
                 Hire Me
               </a>
+              <div className="flex items-center justify-center pt-2">
+                <ThemeToggle />
+              </div>
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
-    </motion.header>
+      </div>
+    </motion.nav>
   );
 };
