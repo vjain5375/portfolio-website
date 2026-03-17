@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { Menu, X, Terminal } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from '../ui/ThemeToggle';
 
 const navLinks = [
@@ -34,13 +34,14 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group">
-            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-r from-primary to-accent">
-              <Terminal className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="font-display font-bold text-lg text-foreground group-hover:text-primary transition-colors">
-              VJ<span className="text-primary">.</span>
-            </span>
+          <a href="#" className="group">
+            <motion.div
+              className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary font-display font-black text-primary-foreground text-base tracking-tight select-none"
+              whileHover={{ scale: 1.08, rotate: -3 }}
+              transition={{ type: 'spring', stiffness: 400 }}
+            >
+              VJ
+            </motion.div>
           </a>
 
           {/* Desktop navigation */}
