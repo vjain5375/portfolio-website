@@ -1,8 +1,9 @@
-import { motion, AnimatePresence } from 'framer-motion';
+﻿import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { ExternalLink, Github, Cpu, Bot, Eye, X, Terminal } from 'lucide-react';
+import { ExternalLink, Github, Eye, X, Rocket } from 'lucide-react';
 import { TiltCard } from '../effects/TiltCard';
+import { SiStreamlit, SiPython, SiNextdotjs, SiMongodb, SiReact, SiThreedotjs } from 'react-icons/si';
 
 interface Project {
   id: number;
@@ -22,7 +23,12 @@ const projects: Project[] = [
     title: "AI Assistant - Deadpool",
     description: "An interactive AI-powered assistant built with Streamlit, featuring natural language processing capabilities for intelligent conversations and task assistance.",
     technologies: ["Python", "Streamlit", "AI/ML", "NLP"],
-    icon: <Bot className="w-8 h-8" />,
+    icon: (
+      <div className="flex gap-2 items-center">
+        <SiPython className="w-7 h-7 text-[#3572A5]" />
+        <SiStreamlit className="w-7 h-7 text-[#FF4B4B]" />
+      </div>
+    ),
     gradient: "from-primary to-accent",
     link: "https://deadpools.streamlit.app/",
     previewUrl: "https://deadpools.streamlit.app/",
@@ -32,7 +38,12 @@ const projects: Project[] = [
     title: "Kode Club",
     description: "The official coding platform for RGIPT students featuring daily practice problems (DPPs), quizzes, an instant code compiler supporting 4+ languages, live leaderboards, and curated resources for competitive programming.",
     technologies: ["Next.js", "TypeScript", "TailwindCSS", "MongoDB", "Express"],
-    icon: <Terminal className="w-8 h-8" />,
+    icon: (
+      <div className="flex gap-2 items-center">
+        <SiNextdotjs className="w-7 h-7 text-white" />
+        <SiMongodb className="w-7 h-7 text-[#47A248]" />
+      </div>
+    ),
     gradient: "from-accent to-primary",
     github: "https://github.com/vjain5375/kode-klub-frontend",
     link: "https://kode-club-alpha.vercel.app/",
@@ -43,7 +54,12 @@ const projects: Project[] = [
     title: "Portfolio Website",
     description: "This immersive 3D portfolio website featuring a Stranger Things-inspired dark theme with atmospheric effects, red neon typography, and interactive previews.",
     technologies: ["React", "TypeScript", "Three.js", "Framer Motion", "TailwindCSS"],
-    icon: <Terminal className="w-8 h-8" />,
+    icon: (
+      <div className="flex gap-2 items-center">
+        <SiReact className="w-7 h-7 text-[#61DAFB]" />
+        <SiThreedotjs className="w-7 h-7 text-white" />
+      </div>
+    ),
     gradient: "from-primary via-accent to-primary",
     github: "https://github.com/vjain5375/portfolio-website",
     link: window.location.origin,
@@ -54,7 +70,7 @@ const projects: Project[] = [
     title: "Coming Soon",
     description: "Exciting new projects are in development! Stay tuned for more innovative applications and creative solutions.",
     technologies: ["React", "Node.js", "Python", "More..."],
-    icon: <Cpu className="w-8 h-8" />,
+    icon: <Rocket className="w-8 h-8 text-primary/80" />,
     gradient: "from-primary via-accent to-primary",
   },
 ];
@@ -66,14 +82,12 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [iframeError, setIframeError] = useState(false);
 
-  // Reset states when closing preview
   const handleClosePreview = () => {
     setShowPreview(false);
     setIframeLoaded(false);
     setIframeError(false);
   };
 
-  // Open preview handler
   const handleOpenPreview = () => {
     setShowPreview(true);
     setIframeLoaded(false);
@@ -108,7 +122,6 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                 transition={{ duration: 0.3 }}
                 className="absolute inset-0 z-50 bg-background/98 backdrop-blur-sm flex flex-col"
               >
-                {/* Close button */}
                 <button
                   onClick={handleClosePreview}
                   className="absolute top-3 right-3 z-50 p-2 rounded-full bg-primary/20 hover:bg-primary/40 text-primary transition-colors"
@@ -116,7 +129,6 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                   <X className="w-4 h-4" />
                 </button>
 
-                {/* Preview header */}
                 <div className="flex items-center gap-2 px-4 py-2 bg-secondary/80 border-b border-primary/30">
                   <div className="flex gap-1.5">
                     <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
@@ -128,9 +140,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                   </span>
                 </div>
 
-                {/* Live iframe preview */}
                 <div className="flex-1 relative overflow-hidden bg-white">
-                  {/* Loading indicator */}
                   {!iframeLoaded && !iframeError && (
                     <div className="absolute inset-0 flex items-center justify-center bg-secondary">
                       <div className="flex flex-col items-center gap-3">
@@ -144,7 +154,6 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                     </div>
                   )}
 
-                  {/* Error fallback */}
                   {iframeError && (
                     <div className="absolute inset-0 flex items-center justify-center bg-secondary">
                       <div className="flex flex-col items-center gap-4 text-center px-4">
@@ -167,7 +176,6 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                     </div>
                   )}
 
-                  {/* Live iframe */}
                   <iframe
                     src={project.previewUrl}
                     title={`${project.title} live preview`}
@@ -178,7 +186,6 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                     onError={() => setIframeError(true)}
                   />
 
-                  {/* Overlay with visit button - shows after iframe loads */}
                   {iframeLoaded && (
                     <motion.div
                       className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent flex justify-center py-4"
@@ -226,7 +233,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
               }}
             />
 
-            {/* Preview button for projects with preview */}
+            {/* Preview button */}
             {project.previewUrl && (
               <motion.button
                 onClick={handleOpenPreview}
@@ -239,24 +246,24 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
               </motion.button>
             )}
 
-            {/* Icon with glow */}
+            {/* Icon box */}
             <motion.div
-              className={`relative inline-flex p-4 rounded-xl bg-gradient-to-r ${project.gradient} mb-6`}
-              whileHover={{ scale: 1.1, rotate: 5 }}
+              className="relative inline-flex p-3.5 rounded-2xl bg-white/5 border border-white/10 mb-6 overflow-hidden"
+              whileHover={{ scale: 1.08, rotate: 3 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
-              <div className="text-primary-foreground relative z-10">
+              {/* Subtle gradient shimmer behind icon */}
+              <motion.div
+                className="absolute inset-0 rounded-2xl opacity-40"
+                style={{
+                  background: `linear-gradient(135deg, hsl(0 70% 45% / 0.15) 0%, transparent 60%)`,
+                }}
+                animate={{ opacity: [0.3, 0.6, 0.3] }}
+                transition={{ duration: 2.5, repeat: Infinity }}
+              />
+              <div className="relative z-10">
                 {project.icon}
               </div>
-              <motion.div
-                className="absolute inset-0 rounded-xl"
-                style={{
-                  background: `linear-gradient(135deg, hsl(0 70% 45%) 0%, transparent 100%)`,
-                  filter: 'blur(10px)',
-                }}
-                animate={{ opacity: [0.5, 0.8, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
             </motion.div>
 
             {/* Content */}
