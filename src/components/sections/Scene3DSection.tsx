@@ -5,6 +5,7 @@ import { Suspense } from 'react';
 import { FloatingGeometry } from '../3d/FloatingGeometry';
 import { Stars } from '@react-three/drei';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { GlitchText } from '../effects/GlitchText';
 
 const Scene3DCanvas = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -60,33 +61,43 @@ export const Scene3DSection = () => {
       {/* 3D canvas fills the section */}
       {!shouldReduceMotion && <Scene3DCanvas />}
 
-      {/* Gradient overlays */}
+      {/* Gradient overlays — fade in from top and out at bottom */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none z-10" />
       <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-background/80 pointer-events-none z-10" />
 
-      {/* Red glow */}
+      {/* Red glow behind text */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] rounded-full opacity-15 pointer-events-none z-10"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] rounded-full opacity-20 pointer-events-none z-10"
         style={{
           background: 'radial-gradient(ellipse, hsl(0 70% 40%) 0%, transparent 70%)',
           filter: 'blur(60px)',
         }}
       />
 
-      {/* Center label */}
+      {/* Big "ENGINEERING THE FUTURE" text overlaid on the 3D */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, delay: 0.3 }}
-        className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none"
+        initial={{ opacity: 0, y: 50, filter: 'blur(10px)' }}
+        animate={isInView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
+        transition={{ duration: 1.2, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none px-6"
       >
-        <span className="text-xs font-mono uppercase tracking-[0.3em] text-primary/50 mb-4">
-          Engineering The Future
-        </span>
-        <div
-          className="w-px h-16 opacity-30"
-          style={{ background: 'linear-gradient(to bottom, hsl(0 70% 45%), transparent)' }}
-        />
+        <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-center">
+          <GlitchText
+            className="stranger-things-text"
+            glitchColor1="hsl(0, 70%, 45%)"
+            glitchColor2="hsl(0, 80%, 35%)"
+          >
+            Engineering
+          </GlitchText>
+          <br />
+          <GlitchText
+            className="stranger-things-outline text-glow-red"
+            glitchColor1="hsl(0, 80%, 40%)"
+            glitchColor2="hsl(195, 50%, 30%)"
+          >
+            The Future
+          </GlitchText>
+        </h2>
       </motion.div>
     </section>
   );
