@@ -1,384 +1,310 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
-import { ExternalLink, Github, Cpu, Bot, Eye, X, Terminal } from 'lucide-react';
-import { TiltCard } from '../effects/TiltCard';
+﻿import { useRef, useState } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { ExternalLink, Github, X, ArrowUpRight } from 'lucide-react';
 
 interface Project {
   id: number;
   title: string;
   description: string;
-  technologies: string[];
-  icon: React.ReactNode;
-  gradient: string;
-  link?: string;
+  tech: string[];
   github?: string;
-  previewUrl?: string;
+  live?: string;
+  featured?: boolean;
+  tag?: string;
 }
 
 const projects: Project[] = [
   {
     id: 1,
-    title: "AI Assistant - Deadpool",
-    description: "An interactive AI-powered assistant built with Streamlit, featuring natural language processing capabilities for intelligent conversations and task assistance.",
-    technologies: ["Python", "Streamlit", "AI/ML", "NLP"],
-    icon: <Bot className="w-8 h-8" />,
-    gradient: "from-primary to-accent",
-    link: "https://deadpools.streamlit.app/",
-    previewUrl: "https://deadpools.streamlit.app/",
+    title: 'Kode Club',
+    description: 'The official competitive programming platform for RGIPT — daily practice problems, quiz engine, live leaderboards, and an in-browser code compiler supporting 4+ languages.',
+    tech: ['Next.js', 'TypeScript', 'MongoDB', 'Express', 'Tailwind CSS'],
+    github: 'https://github.com/vjain5375/kode-klub-frontend',
+    live: 'https://kode-club-alpha.vercel.app/',
+    featured: true,
+    tag: 'Full-Stack Platform',
   },
   {
     id: 2,
-    title: "Kode Club",
-    description: "The official coding platform for RGIPT students featuring daily practice problems (DPPs), quizzes, an instant code compiler supporting 4+ languages, live leaderboards, and curated resources for competitive programming.",
-    technologies: ["Next.js", "TypeScript", "TailwindCSS", "MongoDB", "Express"],
-    icon: <Terminal className="w-8 h-8" />,
-    gradient: "from-accent to-primary",
-    github: "https://github.com/vjain5375/kode-klub-frontend",
-    link: "https://kode-club-alpha.vercel.app/",
-    previewUrl: "https://kode-club-alpha.vercel.app/",
+    title: 'AI Assistant — Deadpool',
+    description: 'A Streamlit-based conversational AI assistant with NLP capabilities, custom persona, and intelligent task handling.',
+    tech: ['Python', 'Streamlit', 'NLP', 'AI/ML'],
+    live: 'https://deadpools.streamlit.app/',
+    tag: 'AI / ML',
   },
   {
     id: 3,
-    title: "Portfolio Website",
-    description: "This immersive 3D portfolio website featuring a Stranger Things-inspired dark theme with atmospheric effects, red neon typography, and interactive previews.",
-    technologies: ["React", "TypeScript", "Three.js", "Framer Motion", "TailwindCSS"],
-    icon: <Terminal className="w-8 h-8" />,
-    gradient: "from-primary via-accent to-primary",
-    github: "https://github.com/vjain5375/portfolio-website",
-    link: window.location.origin,
-    previewUrl: window.location.origin,
-  },
-  {
-    id: 4,
-    title: "Coming Soon",
-    description: "Exciting new projects are in development! Stay tuned for more innovative applications and creative solutions.",
-    technologies: ["React", "Node.js", "Python", "More..."],
-    icon: <Cpu className="w-8 h-8" />,
-    gradient: "from-primary via-accent to-primary",
+    title: 'Portfolio Website',
+    description: 'This portfolio — built with React, Three.js, and Framer Motion. Designed from scratch with a custom design system.',
+    tech: ['React', 'TypeScript', 'Three.js', 'Framer Motion'],
+    github: 'https://github.com/vjain5375/portfolio-website',
+    live: 'https://vansh-jain-portfolio.vercel.app/',
+    tag: 'Design + Code',
   },
 ];
 
-const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [showPreview, setShowPreview] = useState(false);
-  const [iframeLoaded, setIframeLoaded] = useState(false);
-  const [iframeError, setIframeError] = useState(false);
-
-  // Reset states when closing preview
-  const handleClosePreview = () => {
-    setShowPreview(false);
-    setIframeLoaded(false);
-    setIframeError(false);
-  };
-
-  // Open preview handler
-  const handleOpenPreview = () => {
-    setShowPreview(true);
-    setIframeLoaded(false);
-    setIframeError(false);
-  };
-
+const PreviewModal = ({ url, title, onClose }: { url: string; title: string; onClose: () => void }) => {
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
   return (
     <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 60, rotateX: 10 }}
-      animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
-      transition={{
-        duration: 0.8,
-        delay: index * 0.15,
-        ease: [0.25, 0.46, 0.45, 0.94],
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 200,
+        background: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(8px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '24px',
       }}
-      className="perspective-1000"
+      onClick={onClose}
     >
-      <TiltCard
-        glowColor="red"
-        intensity="medium"
-        className="h-full"
+      <motion.div
+        initial={{ scale: 0.94, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.94, opacity: 0 }}
+        transition={{ duration: 0.25 }}
+        style={{
+          width: '100%', maxWidth: '960px', height: '80vh',
+          background: 'var(--bg-card)', border: '1px solid rgba(255,255,255,0.1)',
+          borderRadius: '14px', overflow: 'hidden', display: 'flex', flexDirection: 'column',
+        }}
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative glass rounded-2xl border border-border/50 overflow-hidden h-full group">
-          {/* Screenshot Preview inside the card */}
-          <AnimatePresence>
-            {showPreview && project.previewUrl && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="absolute inset-0 z-50 bg-background/98 backdrop-blur-sm flex flex-col"
-              >
-                {/* Close button */}
-                <button
-                  onClick={handleClosePreview}
-                  className="absolute top-3 right-3 z-50 p-2 rounded-full bg-primary/20 hover:bg-primary/40 text-primary transition-colors"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-
-                {/* Preview header */}
-                <div className="flex items-center gap-2 px-4 py-2 bg-secondary/80 border-b border-primary/30">
-                  <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
-                  </div>
-                  <span className="ml-2 text-xs font-mono text-muted-foreground truncate flex-1">
-                    {project.previewUrl}
-                  </span>
-                </div>
-
-                {/* Live iframe preview */}
-                <div className="flex-1 relative overflow-hidden bg-white">
-                  {/* Loading indicator */}
-                  {!iframeLoaded && !iframeError && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-secondary">
-                      <div className="flex flex-col items-center gap-3">
-                        <motion.div
-                          className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full"
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                        />
-                        <span className="text-sm text-muted-foreground">Loading live preview...</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Error fallback */}
-                  {iframeError && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-secondary">
-                      <div className="flex flex-col items-center gap-4 text-center px-4">
-                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                          <ExternalLink className="w-6 h-6 text-primary" />
-                        </div>
-                        <div>
-                          <p className="text-foreground font-medium mb-1">Preview unavailable</p>
-                          <p className="text-sm text-muted-foreground mb-4">This site blocks embedded previews</p>
-                        </div>
-                        <a
-                          href={project.previewUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium text-sm hover:bg-primary/90 transition-colors"
-                        >
-                          Open in New Tab →
-                        </a>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Live iframe */}
-                  <iframe
-                    src={project.previewUrl}
-                    title={`${project.title} live preview`}
-                    className={`w-full h-full border-0 transition-opacity duration-300 ${iframeLoaded ? 'opacity-100' : 'opacity-0'}`}
-                    sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-                    loading="eager"
-                    onLoad={() => setIframeLoaded(true)}
-                    onError={() => setIframeError(true)}
-                  />
-
-                  {/* Overlay with visit button - shows after iframe loads */}
-                  {iframeLoaded && (
-                    <motion.div
-                      className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent flex justify-center py-4"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.3 }}
-                    >
-                      <a
-                        href={project.previewUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-5 py-2 bg-primary text-primary-foreground rounded-lg font-medium text-sm hover:bg-primary/90 transition-all hover:scale-105 flex items-center gap-2 shadow-lg"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                        Open Full Site
-                      </a>
-                    </motion.div>
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Regular card content */}
-          <div className="p-6 md:p-8">
-            {/* Animated gradient background on hover */}
-            <motion.div
-              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-              animate={{
-                background: [
-                  `linear-gradient(135deg, hsl(0 70% 45% / 0.05) 0%, transparent 50%)`,
-                  `linear-gradient(225deg, hsl(0 80% 35% / 0.05) 0%, transparent 50%)`,
-                  `linear-gradient(135deg, hsl(0 70% 45% / 0.05) 0%, transparent 50%)`,
-                ],
-              }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-            />
-
-            {/* Glowing orb */}
-            <motion.div
-              className="absolute -top-20 -right-20 w-40 h-40 rounded-full opacity-0 group-hover:opacity-30 transition-opacity duration-500"
-              style={{
-                background: `radial-gradient(circle, hsl(0 70% 45%) 0%, transparent 70%)`,
-                filter: 'blur(40px)',
-              }}
-            />
-
-            {/* Preview button for projects with preview */}
-            {project.previewUrl && (
-              <motion.button
-                onClick={handleOpenPreview}
-                className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono text-primary bg-primary/10 rounded-full border border-primary/30 hover:bg-primary/20 hover:border-primary/50 transition-all z-10"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Eye className="w-3 h-3" />
-                Preview
-              </motion.button>
-            )}
-
-            {/* Icon with glow */}
-            <motion.div
-              className={`relative inline-flex p-4 rounded-xl bg-gradient-to-r ${project.gradient} mb-6`}
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              transition={{ type: 'spring', stiffness: 300 }}
-            >
-              <div className="text-primary-foreground relative z-10">
-                {project.icon}
-              </div>
-              <motion.div
-                className="absolute inset-0 rounded-xl"
-                style={{
-                  background: `linear-gradient(135deg, hsl(0 70% 45%) 0%, transparent 100%)`,
-                  filter: 'blur(10px)',
-                }}
-                animate={{ opacity: [0.5, 0.8, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-            </motion.div>
-
-            {/* Content */}
-            <h3 className="font-display text-xl md:text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
-              {project.title}
-            </h3>
-
-            <p className="text-muted-foreground mb-6 leading-relaxed">
-              {project.description}
-            </p>
-
-            {/* Technologies */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {project.technologies.map((tech, i) => (
-                <motion.span
-                  key={tech}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                  transition={{ delay: 0.3 + i * 0.1 }}
-                  className="px-3 py-1 text-xs font-mono text-primary bg-primary/10 rounded-full border border-primary/20 hover:border-primary/50 hover:bg-primary/20 transition-all duration-300"
-                >
-                  {tech}
-                </motion.span>
-              ))}
-            </div>
-
-            {/* Links */}
-            <div className="flex gap-4 relative z-10">
-              {project.github && (
-                <motion.a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer group/link"
-                  whileHover={{ x: 5 }}
-                >
-                  <Github className="w-4 h-4 transition-transform group-hover/link:rotate-12" />
-                  <span>Code</span>
-                </motion.a>
-              )}
-              {project.link && (
-                <motion.a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-accent transition-colors cursor-pointer group/link"
-                  whileHover={{ x: 5 }}
-                >
-                  <ExternalLink className="w-4 h-4 transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
-                  <span>Live Demo</span>
-                </motion.a>
-              )}
-            </div>
+        {/* Browser bar */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px',
+          borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)',
+        }}>
+          <div style={{ display: 'flex', gap: '5px' }}>
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ef4444', opacity: 0.7 }} />
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#f59e0b', opacity: 0.7 }} />
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981', opacity: 0.7 }} />
           </div>
+          <span style={{ flex: 1, fontSize: '12px', color: 'var(--text-3)', fontFamily: 'JetBrains Mono, monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginLeft: '8px' }}>{url}</span>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-3)', display: 'flex', alignItems: 'center', padding: '4px' }}>
+            <X size={14} />
+          </button>
         </div>
-      </TiltCard>
+        {/* Content */}
+        <div style={{ flex: 1, position: 'relative', background: '#fff' }}>
+          {!loaded && !error && (
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-card)' }}>
+              <motion.div
+                animate={{ rotate: 360 }} transition={{ duration: 0.9, repeat: Infinity, ease: 'linear' }}
+                style={{ width: '22px', height: '22px', border: '2px solid rgba(239,68,68,0.2)', borderTopColor: 'var(--red)', borderRadius: '50%' }}
+              />
+            </div>
+          )}
+          {error && (
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-card)', gap: '12px' }}>
+              <p style={{ color: 'var(--text-2)', fontSize: '14px' }}>Preview blocked by this site</p>
+              <a href={url} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ fontSize: '13px', padding: '8px 18px' }}>Open in new tab <ExternalLink size={13} /></a>
+            </div>
+          )}
+          <iframe
+            src={url} title={title}
+            style={{ width: '100%', height: '100%', border: 'none', opacity: loaded ? 1 : 0, transition: 'opacity 0.3s' }}
+            sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+            onLoad={() => setLoaded(true)}
+            onError={() => setError(true)}
+          />
+        </div>
+      </motion.div>
     </motion.div>
   );
 };
 
-export const ProjectsSection = () => {
-  const headerRef = useRef(null);
-  const isHeaderInView = useInView(headerRef, { once: true });
+const FeaturedProject = ({ project }: { project: Project }) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-80px' });
+  const [preview, setPreview] = useState(false);
 
   return (
-    <section id="projects" className="relative py-32 px-6">
-      {/* Background effects */}
-      <div className="absolute inset-0 grid-pattern opacity-10 pointer-events-none" />
-
-      {/* Ambient glow */}
+    <>
       <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-10 pointer-events-none"
+        ref={ref}
+        initial={{ opacity: 0, y: 30 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         style={{
-          background: 'radial-gradient(circle, hsl(0 70% 45% / 0.3) 0%, transparent 70%)',
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border)',
+          borderRadius: '14px',
+          overflow: 'hidden',
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0,1fr)',
         }}
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-      />
+      >
+        <div style={{ padding: '36px 40px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px', marginBottom: '20px' }}>
+            <div>
+              <span className="section-eyebrow" style={{ marginBottom: '8px', display: 'block' }}>Featured Project</span>
+              <h3 style={{ fontSize: '26px', fontWeight: 700, letterSpacing: '-0.025em', color: 'var(--text)' }}>{project.title}</h3>
+            </div>
+            {project.tag && (
+              <span style={{
+                fontSize: '11px', fontWeight: 500, padding: '4px 10px',
+                background: 'var(--indigo-dim)', color: 'var(--indigo)',
+                border: '1px solid rgba(99,102,241,0.2)',
+                borderRadius: '99px', whiteSpace: 'nowrap', fontFamily: 'JetBrains Mono, monospace',
+              }}>{project.tag}</span>
+            )}
+          </div>
+          <p style={{ fontSize: '15px', color: 'var(--text-2)', lineHeight: 1.7, marginBottom: '24px', maxWidth: '580px' }}>{project.description}</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '28px' }}>
+            {project.tech.map((t) => <span key={t} className="chip">{t}</span>)}
+          </div>
+          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            {project.github && (
+              <a href={project.github} target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ fontSize: '13px', padding: '8px 16px' }}>
+                <Github size={14} /> Code
+              </a>
+            )}
+            {project.live && (
+              <button onClick={() => setPreview(true)} className="btn-primary" style={{ fontSize: '13px', padding: '8px 16px' }}>
+                Live Preview <ArrowUpRight size={14} />
+              </button>
+            )}
+          </div>
+        </div>
+      </motion.div>
+      <AnimatePresence>
+        {preview && project.live && (
+          <PreviewModal url={project.live} title={project.title} onClose={() => setPreview(false)} />
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        {/* Section header */}
+const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-60px' });
+  const [hover, setHover] = useState(false);
+  const [preview, setPreview] = useState(false);
+
+  return (
+    <>
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: 24 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.55, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        style={{
+          background: 'var(--bg-card)',
+          border: `1px solid ${hover ? 'rgba(239,68,68,0.22)' : 'var(--border)'}`,
+          borderRadius: '12px',
+          padding: '28px 28px 24px',
+          transition: 'border-color 0.2s ease, transform 0.2s ease',
+          transform: hover ? 'translateY(-4px)' : 'translateY(0)',
+          position: 'relative',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+        }}
+      >
+        {/* Faint red corner glow on hover */}
+        <div style={{
+          position: 'absolute', top: '-40px', right: '-40px',
+          width: '120px', height: '120px',
+          background: 'radial-gradient(circle, rgba(239,68,68,0.07) 0%, transparent 70%)',
+          opacity: hover ? 1 : 0, transition: 'opacity 0.3s ease',
+        }} />
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            {project.tag && (
+              <span style={{
+                fontSize: '10.5px', fontWeight: 500, display: 'block', marginBottom: '8px',
+                color: 'var(--text-3)', fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.08em', textTransform: 'uppercase',
+              }}>{project.tag}</span>
+            )}
+            <h3 style={{ fontSize: '18px', fontWeight: 650, letterSpacing: '-0.02em', color: 'var(--text)' }}>{project.title}</h3>
+          </div>
+          <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
+            {project.github && (
+              <a href={project.github} target="_blank" rel="noopener noreferrer"
+                style={{ color: 'var(--text-3)', display: 'flex', alignItems: 'center', padding: '5px', borderRadius: '6px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', transition: 'all 0.15s ease', textDecoration: 'none' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--text)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-2)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--text-3)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; }}
+              >
+                <Github size={14} />
+              </a>
+            )}
+            {project.live && (
+              <button onClick={() => setPreview(true)}
+                style={{ color: 'var(--text-3)', display: 'flex', alignItems: 'center', padding: '5px', borderRadius: '6px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', cursor: 'pointer', transition: 'all 0.15s ease' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--red)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--red-border)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--text-3)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; }}
+              >
+                <ArrowUpRight size={14} />
+              </button>
+            )}
+          </div>
+        </div>
+
+        <p style={{ fontSize: '13.5px', color: 'var(--text-2)', lineHeight: 1.7, flex: 1 }}>{project.description}</p>
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+          {project.tech.map((t) => <span key={t} className="chip" style={{ fontSize: '11.5px', padding: '3px 10px' }}>{t}</span>)}
+        </div>
+      </motion.div>
+      <AnimatePresence>
+        {preview && project.live && (
+          <PreviewModal url={project.live} title={project.title} onClose={() => setPreview(false)} />
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
+
+export const ProjectsSection = () => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-80px' });
+  const featured = projects.find((p) => p.featured)!;
+  const rest = projects.filter((p) => !p.featured);
+
+  return (
+    <section id="projects" style={{ padding: '100px 24px' }}>
+      <div className="max-w-6xl mx-auto" ref={ref}>
         <motion.div
-          ref={headerRef}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.55 }}
+          style={{ marginBottom: '52px' }}
         >
-          <motion.span
-            className="inline-block px-4 py-2 mb-4 text-sm font-mono text-accent border border-accent/30 rounded-full"
-            animate={{
-              boxShadow: [
-                '0 0 15px hsl(0 80% 35% / 0.2)',
-                '0 0 25px hsl(0 80% 35% / 0.4)',
-                '0 0 15px hsl(0 80% 35% / 0.2)',
-              ],
-            }}
-            transition={{ duration: 3, repeat: Infinity }}
-          >
-            Featured Work
-          </motion.span>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            <span className="text-foreground">My </span>
-            <motion.span
-              className="gradient-text"
-              animate={{ filter: ['brightness(1)', 'brightness(1.2)', 'brightness(1)'] }}
-              transition={{ duration: 4, repeat: Infinity }}
-            >
-              Projects
-            </motion.span>
+          <span className="section-eyebrow" style={{ marginBottom: '10px', display: 'block' }}>Selected Work</span>
+          <h2 style={{ fontSize: 'clamp(26px, 4vw, 40px)', fontWeight: 700, letterSpacing: '-0.03em', color: 'var(--text)' }}>
+            Things I've built
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A collection of software projects showcasing my expertise in web development, AI, and full-stack applications.
-            <span className="text-primary ml-1">Click "Preview" to see a live demo!</span>
-          </p>
         </motion.div>
 
-        {/* Projects grid */}
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+        {/* Featured */}
+        <div style={{ marginBottom: '16px' }}>
+          <FeaturedProject project={featured} />
+        </div>
+
+        {/* Remaining 2-col grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px' }}>
+          {rest.map((p, i) => (
+            <ProjectCard key={p.id} project={p} index={i} />
           ))}
+          {/* Coming soon card */}
+          <div style={{
+            background: 'var(--bg-elevated)', border: '1px dashed rgba(255,255,255,0.08)',
+            borderRadius: '12px', padding: '28px',
+            display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+            gap: '8px', minHeight: '180px',
+          }}>
+            <span style={{ fontSize: '22px' }}>🚧</span>
+            <p style={{ fontSize: '13px', color: 'var(--text-3)', textAlign: 'center', lineHeight: 1.6 }}>
+              More projects<br />in progress...
+            </p>
+          </div>
         </div>
       </div>
     </section>

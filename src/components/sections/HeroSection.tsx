@@ -1,175 +1,299 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Scene3D } from '../3d/Scene3D';
-import { ChevronDown, Sparkles } from 'lucide-react';
-import { useRef } from 'react';
-import { GlitchText } from '../effects/GlitchText';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
+﻿import { useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Github, Linkedin } from 'lucide-react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Suspense } from 'react';
+import * as THREE from 'three';
 
-export const HeroSection = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { shouldReduceMotion } = useReducedMotion();
+// Minimal rotating wireframe geometry
+const FloatingSphere = () => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  const mouseRef = useRef({ x: 0, y: 0 });
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end start'],
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      mouseRef.current = {
+        x: (e.clientX / window.innerWidth - 0.5) * 2,
+        y: -(e.clientY / window.innerHeight - 0.5) * 2,
+      };
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+    return () => window.removeEventListener('mousemove', onMove);
+  }, []);
+
+  useFrame((_, delta) => {
+    if (!meshRef.current) return;
+    meshRef.current.rotation.y += delta * 0.18;
+    meshRef.current.rotation.x += delta * 0.07;
+    meshRef.current.rotation.x += (mouseRef.current.y * 0.12 - meshRef.current.rotation.x) * 0.04;
+    meshRef.current.rotation.y += (mouseRef.current.x * 0.12 - meshRef.current.rotation.y) * 0.03;
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
-
-  const scrollToProjects = () => {
-    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
-    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* 3D Background - DISABLED on mobile for performance */}
-      {!shouldReduceMotion && <Scene3D />}
+    <mesh ref={meshRef}>
+      <icosahedronGeometry args={[1.6, 1]} />
+      <meshBasicMaterial color="#ef4444" wireframe opacity={0.18} transparent />
+    </mesh>
+  );
+};
 
-      {/* Grid overlay with 3D perspective */}
-      <div className="absolute inset-0 grid-pattern opacity-15 pointer-events-none" />
-      {!shouldReduceMotion && (
-        <div className="absolute bottom-0 left-0 right-0 h-[300px] grid-3d opacity-20 pointer-events-none" />
-      )}
+// Outer ring
+const Ring = () => {
+  const ref = useRef<THREE.Mesh>(null);
+  useFrame((_, delta) => {
+    if (!ref.current) return;
+    ref.current.rotation.z += delta * 0.1;
+    ref.current.rotation.x = 1.1;
+  });
+  return (
+    <mesh ref={ref}>
+      <torusGeometry args={[2.4, 0.008, 8, 80]} />
+      <meshBasicMaterial color="#6366f1" opacity={0.22} transparent />
+    </mesh>
+  );
+};
 
-      {/* Gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-background/80 pointer-events-none" />
+const Scene = () => (
+  <>
+    <ambientLight intensity={0.2} />
+    <FloatingSphere />
+    <Ring />
+  </>
+);
 
-      {/* Static red glow behind title - NO ANIMATION for performance */}
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1 } },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 22 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+};
+
+export const HeroSection = () => {
+  return (
+    <section
+      className="relative min-h-screen flex items-center"
+      style={{ paddingTop: '80px' }}
+    >
+      {/* Subtle red glow — very diffuse */}
       <div
-        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] rounded-full opacity-20 pointer-events-none"
+        className="absolute pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse, hsl(0 70% 40%) 0%, transparent 70%)',
-          filter: 'blur(60px)',
+          top: '20%',
+          right: '10%',
+          width: '480px',
+          height: '480px',
+          background: 'radial-gradient(circle, rgba(239,68,68,0.06) 0%, transparent 70%)',
+          filter: 'blur(40px)',
+        }}
+      />
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          bottom: '15%',
+          left: '5%',
+          width: '300px',
+          height: '300px',
+          background: 'radial-gradient(circle, rgba(99,102,241,0.05) 0%, transparent 70%)',
+          filter: 'blur(40px)',
         }}
       />
 
-      {/* Content with parallax */}
-      <motion.div
-        style={{ y, opacity, scale }}
-        className="relative z-10 text-center px-6 max-w-5xl mx-auto"
-      >
-        {/* Cinematic entrance animation */}
-        <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-        >
-          <span className="inline-flex items-center gap-2 px-4 py-2 mb-6 text-sm font-mono text-primary border border-primary/30 rounded-full glass">
-            <Sparkles className="w-4 h-4" />
-            B.Tech CSE Student
-          </span>
-        </motion.div>
+      <div className="max-w-6xl mx-auto px-6 w-full">
+        <div className="grid lg:grid-cols-[1fr_420px] gap-12 items-center min-h-[calc(100vh-80px)]">
 
-        <motion.h1
-          initial={{ opacity: 0, y: 50, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          transition={{ duration: 1.2, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight"
-        >
-          <GlitchText
-            className="stranger-things-text"
-            glitchColor1="hsl(0, 70%, 45%)"
-            glitchColor2="hsl(0, 80%, 35%)"
-          >
-            Engineering
-          </GlitchText>
-          <br />
-          <GlitchText
-            className="stranger-things-outline text-glow-red"
-            glitchColor1="hsl(0, 80%, 40%)"
-            glitchColor2="hsl(195, 50%, 30%)"
-          >
-            The Future
-          </GlitchText>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.8 }}
-          className="text-xl md:text-2xl text-muted-foreground font-light mb-4 max-w-2xl mx-auto"
-        >
-          Hi, I'm <span className="text-primary font-medium">Vansh Jain</span>
-        </motion.p>
-
-        <motion.p
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.95 }}
-          className="text-lg text-muted-foreground/80 mb-12 max-w-xl mx-auto"
-        >
-          Passionate about web development, AI, and building innovative software solutions that push the boundaries of technology.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.1 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-        >
-          <motion.button
-            onClick={scrollToProjects}
-            className="group relative px-8 py-4 font-display font-semibold text-primary-foreground bg-primary rounded-lg btn-glow overflow-hidden"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <span className="relative z-10">View My Work</span>
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary"
-              animate={{
-                backgroundPosition: ['0% center', '200% center'],
-              }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-              style={{ backgroundSize: '200% 100%' }}
-            />
-          </motion.button>
-
-          <motion.a
-            href="#about"
-            className="px-8 py-4 font-display font-semibold text-foreground border border-border rounded-lg glass glass-hover transition-all duration-300"
-            whileHover={{
-              scale: 1.05,
-              borderColor: 'hsl(0 70% 45% / 0.5)',
-            }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Learn More
-          </motion.a>
-        </motion.div>
-      </motion.div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer"
-        onClick={scrollToProjects}
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2.5 }}
-          className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-        >
-          <span className="text-xs font-mono uppercase tracking-widest">Scroll</span>
+          {/* LEFT — Text content */}
           <motion.div
-            animate={{
-              boxShadow: [
-                '0 0 10px hsl(0 70% 45% / 0.3)',
-                '0 0 20px hsl(0 70% 45% / 0.5)',
-                '0 0 10px hsl(0 70% 45% / 0.3)',
-              ],
-            }}
-            transition={{ duration: 2.5, repeat: Infinity }}
-            className="p-2 rounded-full border border-primary/30"
+            variants={stagger}
+            initial="hidden"
+            animate="show"
+            className="flex flex-col justify-center py-16 lg:py-0"
           >
-            <ChevronDown className="w-5 h-5" />
+            <motion.div variants={fadeUp} className="mb-5">
+              <span className="section-eyebrow">B.Tech CSE · RGIPT · 2024–2028</span>
+            </motion.div>
+
+            <motion.h1
+              variants={fadeUp}
+              style={{
+                fontSize: 'clamp(42px, 6vw, 68px)',
+                fontWeight: 700,
+                lineHeight: 1.1,
+                letterSpacing: '-0.03em',
+                color: 'var(--text)',
+                marginBottom: '4px',
+              }}
+            >
+              Vansh Jain
+            </motion.h1>
+
+            <motion.p
+              variants={fadeUp}
+              style={{
+                fontSize: 'clamp(18px, 2.5vw, 26px)',
+                fontWeight: 400,
+                color: 'var(--text-2)',
+                marginBottom: '20px',
+                letterSpacing: '-0.01em',
+              }}
+            >
+              Full-Stack Developer &{' '}
+              <span style={{ color: 'var(--red)' }}>AI Engineer</span>
+            </motion.p>
+
+            <motion.p
+              variants={fadeUp}
+              style={{
+                fontSize: '15.5px',
+                color: 'var(--text-2)',
+                lineHeight: 1.65,
+                maxWidth: '420px',
+                marginBottom: '36px',
+              }}
+            >
+              I build products at the intersection of clean UI and meaningful AI —
+              from full-stack platforms to machine learning pipelines.
+            </motion.p>
+
+            <motion.div variants={fadeUp} className="flex flex-wrap gap-3 items-center mb-10">
+              <a href="#projects" className="btn-primary">
+                View Work
+                <ArrowRight size={15} />
+              </a>
+              <a href="#contact" className="btn-outline">
+                Get in Touch
+              </a>
+            </motion.div>
+
+            <motion.div variants={fadeUp} className="flex items-center gap-4">
+              <a
+                href="https://github.com/vjain5375"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: 'var(--text-3)', transition: 'color 0.15s ease' }}
+                onMouseEnter={(e) => ((e.target as HTMLElement).style.color = 'var(--text)')}
+                onMouseLeave={(e) => ((e.target as HTMLElement).style.color = 'var(--text-3)')}
+              >
+                <Github size={18} />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/vansh-jain-8b3704273/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: 'var(--text-3)', transition: 'color 0.15s ease' }}
+                onMouseEnter={(e) => ((e.target as HTMLElement).style.color = 'var(--text)')}
+                onMouseLeave={(e) => ((e.target as HTMLElement).style.color = 'var(--text-3)')}
+              >
+                <Linkedin size={18} />
+              </a>
+              <span style={{ width: '1px', height: '16px', background: 'var(--border)', display: 'inline-block' }} />
+              <a
+                href="mailto:vjain5375@gmail.com"
+                style={{
+                  fontSize: '12.5px',
+                  color: 'var(--text-3)',
+                  textDecoration: 'none',
+                  fontFamily: 'JetBrains Mono, monospace',
+                  transition: 'color 0.15s ease',
+                }}
+                onMouseEnter={(e) => ((e.target as HTMLElement).style.color = 'var(--text-2)')}
+                onMouseLeave={(e) => ((e.target as HTMLElement).style.color = 'var(--text-3)')}
+              >
+                vjain5375@gmail.com
+              </a>
+            </motion.div>
           </motion.div>
+
+          {/* RIGHT — Interactive 3D */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="hidden lg:flex items-center justify-center"
+            style={{ height: '420px', position: 'relative' }}
+          >
+            {/* Card behind canvas */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'var(--bg-card)',
+                border: '1px solid var(--border)',
+                borderRadius: '20px',
+              }}
+            />
+            {/* Stats overlay */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '20px',
+                left: '20px',
+                right: '20px',
+                display: 'flex',
+                gap: '8px',
+                zIndex: 10,
+              }}
+            >
+              {[
+                { label: 'Projects', value: '8+' },
+                { label: 'Tech Stack', value: '15+' },
+                { label: 'Year', value: '2nd' },
+              ].map((s) => (
+                <div
+                  key={s.label}
+                  style={{
+                    flex: 1,
+                    background: 'rgba(14,14,14,0.75)',
+                    backdropFilter: 'blur(12px)',
+                    border: '1px solid rgba(255,255,255,0.07)',
+                    borderRadius: '8px',
+                    padding: '10px 12px',
+                    textAlign: 'center',
+                  }}
+                >
+                  <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.02em' }}>{s.value}</div>
+                  <div style={{ fontSize: '11px', color: 'var(--text-3)', marginTop: '2px' }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+            <Canvas
+              style={{ width: '100%', height: '100%', borderRadius: '20px', position: 'relative', zIndex: 1 }}
+              camera={{ position: [0, 0, 4.5], fov: 50 }}
+              dpr={[1, 1.5]}
+            >
+              <Suspense fallback={null}>
+                <Scene />
+              </Suspense>
+            </Canvas>
+          </motion.div>
+        </div>
+
+        {/* Scroll cue */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.6, duration: 0.8 }}
+          style={{
+            position: 'absolute',
+            bottom: '32px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '6px',
+          }}
+        >
+          <span style={{ fontSize: '10px', fontFamily: 'JetBrains Mono, monospace', color: 'var(--text-3)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>scroll</span>
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+            style={{ width: '1px', height: '28px', background: 'linear-gradient(to bottom, var(--text-3), transparent)' }}
+          />
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 };

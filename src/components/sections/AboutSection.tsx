@@ -1,222 +1,232 @@
+﻿import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
-import { Download, Code, Database, Cpu, Layers } from 'lucide-react';
-import { TiltCard } from '../effects/TiltCard';
+import { Download, MapPin, GraduationCap } from 'lucide-react';
 
 const terminalLines = [
-  { type: 'command', content: 'whoami' },
-  { type: 'output', content: 'vansh_jain' },
-  { type: 'command', content: 'cat education.txt' },
-  { type: 'output', content: 'B.Tech in Computer Science Engineering' },
-  { type: 'output', content: 'Expected Graduation: 2028' },
-  { type: 'command', content: 'ls skills/' },
-  { type: 'output', content: 'web-dev/ ai/ programming/ databases/' },
-  { type: 'command', content: 'echo $PASSION' },
-  { type: 'output', content: 'Building innovative tech solutions' },
+  { cmd: true,  text: 'whoami' },
+  { cmd: false, text: 'vansh_jain — b.tech cse, rgipt' },
+  { cmd: true,  text: 'cat stack.txt' },
+  { cmd: false, text: 'react · next.js · node · python · three.js' },
+  { cmd: true,  text: 'ls projects/ | wc -l' },
+  { cmd: false, text: '8 shipped, 3 in progress' },
+  { cmd: true,  text: 'echo $CURRENTLY_BUILDING' },
+  { cmd: false, text: 'ai tools + full-stack platforms' },
+  { cmd: true,  text: '_' },
 ];
 
-const skills = [
-  { name: 'Web Development', icon: <Code className="w-5 h-5" />, level: 85 },
-  { name: 'Machine Learning', icon: <Layers className="w-5 h-5" />, level: 80 },
-  { name: 'Programming', icon: <Cpu className="w-5 h-5" />, level: 90 },
-  { name: 'Database Systems', icon: <Database className="w-5 h-5" />, level: 82 },
-];
-
-const Terminal = () => {
-  const [lineIndex, setLineIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+const TerminalBlock = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-60px' });
+  const [lineIdx, setLineIdx] = useState(0);
+  const [charIdx, setCharIdx] = useState(0);
 
   useEffect(() => {
-    if (!isInView) return;
-
-    if (lineIndex >= terminalLines.length) return;
-
-    const currentLineContent = terminalLines[lineIndex].content;
-
-    if (charIndex < currentLineContent.length) {
-      // Typing characters
-      const timeout = setTimeout(() => {
-        setCharIndex((prev) => prev + 1);
-      }, 40); // Fast typing speed
-      return () => clearTimeout(timeout);
-    } else {
-      // Line completed, simple delay before next line
-      const timeout = setTimeout(() => {
-        setLineIndex((prev) => prev + 1);
-        setCharIndex(0);
-      }, 300); // Pause between lines
-      return () => clearTimeout(timeout);
+    if (!inView || lineIdx >= terminalLines.length) return;
+    const line = terminalLines[lineIdx].text;
+    if (charIdx < line.length) {
+      const t = setTimeout(() => setCharIdx((c) => c + 1), 28);
+      return () => clearTimeout(t);
     }
-  }, [isInView, lineIndex, charIndex]);
+    if (lineIdx < terminalLines.length - 1) {
+      const t = setTimeout(() => { setLineIdx((l) => l + 1); setCharIdx(0); }, 220);
+      return () => clearTimeout(t);
+    }
+  }, [inView, lineIdx, charIdx]);
 
   return (
-    <TiltCard glowColor="red" intensity="subtle">
-      <div ref={ref} className="glass rounded-2xl overflow-hidden border border-border/50 shadow-2xl">
-        <div className="flex items-center gap-2 px-4 py-3 bg-primary/5 border-b border-border/50">
-          <div className="flex gap-2">
-            <motion.div className="w-3 h-3 rounded-full bg-destructive/80" whileHover={{ scale: 1.2 }} />
-            <motion.div className="w-3 h-3 rounded-full bg-yellow-500/80" whileHover={{ scale: 1.2 }} />
-            <motion.div className="w-3 h-3 rounded-full bg-green-500/80" whileHover={{ scale: 1.2 }} />
-          </div>
-          <span className="ml-2 text-xs font-mono text-muted-foreground">terminal — vansh@portfolio</span>
-        </div>
-        <div className="p-6 font-mono text-sm min-h-[300px] flex flex-col items-start bg-black/40 backdrop-blur-md">
-          {terminalLines.map((line, index) => {
-            // Only show lines that have started typing
-            if (index > lineIndex) return null;
-
-            // For the current line, slice the content. For completed lines, show full content.
-            const displayContent = index === lineIndex
-              ? line.content.slice(0, charIndex)
-              : line.content;
-
-            return (
-              <div
-                key={index}
-                className={`mb-2 break-all text-left w-full ${line.type === 'command' ? 'text-red-500' : 'text-zinc-400'}`}
-              >
-                {/* Visual marker for command lines */}
-                {line.type === 'command' && <span className="mr-2 opacity-50">$</span>}
-
-                {/* The text content (slicing out the '$ ' if it was part of content, but terminalLines content includes it? No, content includes '$ ' in the data above. Let's fix that data presentation.) */}
-                {/* Looking at lines 6-16, content includes '$ whoami'. 
-                    So I should remove the '$ ' from content if I'm adding it manually, OR just display content as is. 
-                    The original data has '$ whoami'.
-                    Let's just display content as is to be safe, but the flashing cursor needs to be at the end.
-                */}
-                <span>{displayContent.startsWith('$ ') ? displayContent.slice(2) : displayContent}</span>
-
-                {/* Show cursor only on the active line */}
-                {index === lineIndex && (
-                  <motion.span
-                    className="inline-block w-2 h-4 bg-red-500 ml-1 align-middle"
-                    animate={{ opacity: [1, 0, 1] }}
-                    transition={{ duration: 0.8, repeat: Infinity }}
-                  />
-                )}
-              </div>
-            );
-          })}
-        </div>
+    <div
+      ref={ref}
+      style={{
+        background: '#0a0a0a',
+        border: '1px solid rgba(255,255,255,0.07)',
+        borderRadius: '12px',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Terminal title bar */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        padding: '10px 14px',
+        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        background: 'rgba(255,255,255,0.02)',
+      }}>
+        <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ef4444', opacity: 0.7 }} />
+        <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#f59e0b', opacity: 0.7 }} />
+        <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981', opacity: 0.7 }} />
+        <span style={{ marginLeft: '10px', fontSize: '11px', color: 'var(--text-3)', fontFamily: 'JetBrains Mono, monospace' }}>
+          vansh@portfolio ~ zsh
+        </span>
       </div>
-    </TiltCard>
+      {/* Terminal content */}
+      <div style={{ padding: '18px 20px', minHeight: '200px', fontFamily: 'JetBrains Mono, monospace', fontSize: '13px', lineHeight: 1.75 }}>
+        {terminalLines.map((line, i) => {
+          if (i > lineIdx) return null;
+          const display = i === lineIdx ? line.text.slice(0, charIdx) : line.text;
+          const isLast = i === lineIdx;
+          return (
+            <div key={i} style={{ color: line.cmd ? '#ef4444' : '#a1a1aa' }}>
+              {line.cmd && <span style={{ color: 'var(--text-3)', marginRight: '8px' }}>$</span>}
+              {!line.cmd && <span style={{ color: 'var(--text-3)', marginRight: '8px' }}>→</span>}
+              {display}
+              {isLast && line.cmd && (
+                <motion.span
+                  animate={{ opacity: [1, 0, 1] }}
+                  transition={{ duration: 0.75, repeat: Infinity }}
+                  style={{ display: 'inline-block', width: '7px', height: '13px', background: '#ef4444', marginLeft: '2px', verticalAlign: 'middle' }}
+                />
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 
+const skillCategories = [
+  {
+    label: 'Frontend',
+    color: 'var(--red)',
+    skills: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Three.js'],
+  },
+  {
+    label: 'Backend & Data',
+    color: 'var(--indigo)',
+    skills: ['Node.js', 'Express', 'MongoDB', 'Python', 'FastAPI', 'PostgreSQL'],
+  },
+  {
+    label: 'AI / ML',
+    color: '#10b981',
+    skills: ['PyTorch', 'scikit-learn', 'Streamlit', 'LangChain', 'NLP'],
+  },
+  {
+    label: 'Tools',
+    color: 'var(--text-3)',
+    skills: ['Git', 'Docker', 'Vercel', 'Linux', 'Figma', 'VS Code'],
+  },
+];
+
+const fadeUp = (delay = 0) => ({
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] } },
+});
+
 export const AboutSection = () => {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section id="about" className="relative py-32 px-6">
-      {/* Ambient red glow */}
-      <motion.div
-        className="absolute top-1/2 right-0 w-[500px] h-[500px] rounded-full opacity-10 pointer-events-none"
-        style={{ background: 'radial-gradient(circle, hsl(0 70% 45%) 0%, transparent 70%)', filter: 'blur(80px)' }}
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 6, repeat: Infinity }}
-      />
+    <section id="about" style={{ padding: '120px 24px' }}>
+      <div className="max-w-6xl mx-auto" ref={ref}>
 
-      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header */}
         <motion.div
-          ref={sectionRef}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          variants={fadeUp(0)}
+          initial="hidden"
+          animate={inView ? 'show' : 'hidden'}
+          style={{ marginBottom: '64px' }}
         >
-          <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-primary border border-primary/30 rounded-full">About Me</span>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            <span className="text-foreground">Who </span>
-            <span className="gradient-text">I Am</span>
+          <span className="section-eyebrow" style={{ marginBottom: '12px', display: 'block' }}>About</span>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 42px)', fontWeight: 700, letterSpacing: '-0.03em', color: 'var(--text)', lineHeight: 1.15 }}>
+            I'm a CS student who ships.
           </h2>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="grid lg:grid-cols-[1fr_1fr] gap-14 items-start">
+          {/* LEFT — Story + quick facts */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            variants={fadeUp(0.1)}
+            initial="hidden"
+            animate={inView ? 'show' : 'hidden'}
+            className="flex flex-col gap-8"
           >
-            <Terminal />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <p style={{ fontSize: '15.5px', color: 'var(--text-2)', lineHeight: 1.75, maxWidth: '480px' }}>
+                I'm Vansh — a 2nd-year B.Tech student at RGIPT specializing in CS &amp; Design Engineering.
+                I write code that bridges design intuition with engineering precision.
+              </p>
+              <p style={{ fontSize: '15.5px', color: 'var(--text-2)', lineHeight: 1.75, maxWidth: '480px' }}>
+                My focus areas are{' '}
+                <span style={{ color: 'var(--text)', fontWeight: 500 }}>full-stack web applications</span> and{' '}
+                <span style={{ color: 'var(--text)', fontWeight: 500 }}>AI-powered tools</span> — building
+                things that solve real problems and look good doing it.
+              </p>
+            </div>
+
+            {/* Quick facts */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '10px',
+            }}>
+              {[
+                { icon: <MapPin size={13} />, text: 'Bathinda, Punjab' },
+                { icon: <GraduationCap size={13} />, text: 'RGIPT · 2028' },
+              ].map((f) => (
+                <div
+                  key={f.text}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '10px 14px',
+                    background: 'var(--bg-card)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    color: 'var(--text-2)',
+                  }}
+                >
+                  <span style={{ color: 'var(--text-3)' }}>{f.icon}</span>
+                  {f.text}
+                </div>
+              ))}
+            </div>
+
+            <TerminalBlock />
+
+            <div>
+              <a
+                href="/Vansh_Jain_Resume.pdf"
+                download
+                className="btn-outline"
+                style={{ display: 'inline-flex', gap: '8px' }}
+              >
+                <Download size={14} />
+                Download Resume
+              </a>
+            </div>
           </motion.div>
 
+          {/* RIGHT — Skill categories */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="space-y-8"
+            variants={fadeUp(0.2)}
+            initial="hidden"
+            animate={inView ? 'show' : 'hidden'}
+            className="flex flex-col gap-7"
           >
-            <div>
-              <h3 className="font-display text-2xl font-bold text-foreground mb-4">Computer Science Engineering Student</h3>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                I'm a B.Tech CSE student with a deep passion for software development, artificial intelligence, and building innovative web applications.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                From developing full-stack applications to exploring machine learning algorithms, I thrive on challenging projects that push the boundaries of what's possible.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="font-display text-lg font-semibold text-foreground mb-4">Core Competencies</h4>
-              <div className="space-y-4">
-                {skills.map((skill, index) => (
-                  <motion.div
-                    key={skill.name}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
-                  >
-                    <TiltCard glowColor="red" intensity="subtle" className="h-full">
-                      <div className="glass p-4 rounded-xl border border-border/50 hover:border-primary/30 transition-colors duration-300">
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-3 text-foreground">
-                            <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                              {skill.icon}
-                            </div>
-                            <span className="font-semibold font-display tracking-wide">{skill.name}</span>
-                          </div>
-                          <span className="text-sm font-mono text-primary">{skill.level}%</span>
-                        </div>
-                        <div className="h-1.5 bg-secondary/50 rounded-full overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={isInView ? { width: `${skill.level}%` } : {}}
-                            transition={{ duration: 1, delay: 0.6 + index * 0.1 }}
-                            className="h-full bg-gradient-to-r from-primary to-accent rounded-full relative"
-                          >
-                            <motion.div
-                              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
-                              animate={{ x: ['-100%', '200%'] }}
-                              transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                            />
-                          </motion.div>
-                        </div>
-                      </div>
-                    </TiltCard>
-                  </motion.div>
-                ))}
+            {skillCategories.map((cat) => (
+              <div key={cat.label}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginBottom: '12px',
+                }}>
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: cat.color, flexShrink: 0 }} />
+                  <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-3)', letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: 'JetBrains Mono, monospace' }}>
+                    {cat.label}
+                  </span>
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {cat.skills.map((sk) => (
+                    <span key={sk} className="chip">{sk}</span>
+                  ))}
+                </div>
               </div>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0.9 }}
-            >
-              <motion.a
-                href="/Vansh_Jain_Resume.pdf"
-                download="Vansh_Jain_Resume.pdf"
-                className="group relative inline-flex items-center gap-3 px-8 py-4 font-display font-semibold text-primary-foreground bg-gradient-to-r from-primary to-accent rounded-lg btn-glow"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Download className="w-5 h-5 transition-transform group-hover:-translate-y-1" />
-                <span>Download Resume</span>
-              </motion.a>
-            </motion.div>
+            ))}
           </motion.div>
         </div>
       </div>
