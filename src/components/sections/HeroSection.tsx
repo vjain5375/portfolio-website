@@ -1,4 +1,4 @@
-﻿import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { ChevronDown, MapPin, Github, Linkedin, Mail } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 
