@@ -34,7 +34,7 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a href="#" className="group">
+          <a href="/" className="group">
             <motion.div
               className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary font-display font-black text-primary-foreground text-base tracking-tight select-none"
               whileHover={{ scale: 1.08, rotate: -3 }}
